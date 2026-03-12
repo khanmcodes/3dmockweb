@@ -1,0 +1,48 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  overflow-x: hidden;
+  background: #0a0a0a;
+  color: #e8e6e3;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+::selection {
+  background: rgba(180, 170, 155, 0.3);
+  color: #fff;
+}
