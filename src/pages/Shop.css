@@ -1,0 +1,128 @@
+.shop {
+    padding: var(--space-3xl) var(--space-lg);
+    background: var(--color-bg);
+    min-height: 100vh;
+}
+
+.shop__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: var(--space-2xl);
+}
+
+.shop__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+    position: relative;
+    z-index: 2;
+}
+
+.shop__title {
+    font-size: var(--fs-display);
+    font-weight: 400; /* Playfair Display */
+    letter-spacing: var(--ls-tight);
+    color: var(--color-text);
+    text-shadow: 0 0 80px rgba(255, 255, 255, 0.05); /* Soft cinematic glow */
+}
+
+/* ── Grid ── */
+
+.shop__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl) var(--space-lg);
+}
+
+/* ── Product Card ── */
+
+.shop-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.shop-card__image-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: var(--color-surface);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: var(--space-md);
+    cursor: pointer;
+}
+
+.shop-card__image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03), transparent 70%);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    color: var(--color-text-dim);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    font-size: var(--fs-label);
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.shop-card:hover .shop-card__image-placeholder {
+    transform: scale(1.05);
+}
+
+.shop-card__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.shop-card__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.shop-card__name {
+    font-size: var(--fs-h3);
+    font-weight: 400; /* Playfair Display */
+    letter-spacing: var(--ls-normal);
+    color: var(--color-text);
+    transition: color 0.3s;
+}
+
+.shop-card:hover .shop-card__name {
+    color: var(--color-accent-gold);
+}
+
+.shop-card__material {
+    font-family: var(--font-sans);
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+}
+
+.shop-card__price {
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    color: var(--color-text);
+    letter-spacing: var(--ls-wide);
+}
+
+@media (max-width: 1024px) {
+    .shop__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .shop__grid {
+        grid-template-columns: 1fr;
+    }
+    .shop__title {
+        font-size: var(--fs-h1);
+    }
+}

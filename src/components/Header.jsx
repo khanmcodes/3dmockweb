@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 export default function Header() {
@@ -9,16 +10,19 @@ export default function Header() {
                   mixBlendMode: 'screen' or 'lighten' to blend it perfectly 
                   into the dark theme of the website.
                 */}
-                <img 
-                    src="/logo.png" 
-                    alt="Studio Vortessa Logo" 
-                    className="header__logo" 
-                />
+                <Link to="/">
+                    <img 
+                        src="/logo.png" 
+                        alt="Studio Vortessa Logo" 
+                        className="header__logo" 
+                    />
+                </Link>
             </div>
             
             <nav className="header__nav">
-                <a href="#philosophy" className="header__link label">Philosophy</a>
-                <a href="#gallery" className="header__link label">Gallery</a>
+                <Link to="/shop" className="header__link label">Shop</Link>
+                <Link to="/about" className="header__link label">About</Link>
+                <Link to="/contact" className="header__link label">Contact</Link>
             </nav>
         </header>
     );

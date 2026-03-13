@@ -1,0 +1,102 @@
+.about {
+    background: var(--color-bg);
+}
+
+.about__hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: var(--space-xl) var(--space-lg);
+    text-align: center;
+    overflow: hidden;
+}
+
+.about__hero-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.about__label {
+    display: block;
+    margin-bottom: var(--space-md);
+    color: var(--color-accent-gold);
+}
+
+.about__title {
+    font-size: var(--fs-display);
+    font-weight: 400; /* Playfair Display */
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tight);
+    color: var(--color-text);
+    text-shadow: 0 0 100px rgba(255, 255, 255, 0.05); /* Cinematic glow */
+}
+
+/* ── Content Grid ── */
+
+.about__content {
+    padding: var(--space-2xl) var(--space-lg) var(--space-3xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+}
+
+.about__p {
+    margin-bottom: var(--space-lg);
+}
+
+.about__p.font-serif {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-normal);
+    color: var(--color-text);
+}
+
+.about__p.font-sans {
+    font-size: var(--fs-body);
+    line-height: var(--lh-loose);
+    font-weight: 300;
+}
+
+/* ── Media ── */
+
+.about__media {
+    padding: 0 var(--space-lg) var(--space-3xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.about__media-frame {
+    width: 100%;
+    aspect-ratio: 21 / 9; /* Cinematic ultra-wide */
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about__media-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(3, 3, 2, 0.9) 100%);
+}
+
+@media (max-width: 900px) {
+    .about__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+    }
+    
+    .about__media-frame {
+        aspect-ratio: 16 / 9;
+    }
+}
