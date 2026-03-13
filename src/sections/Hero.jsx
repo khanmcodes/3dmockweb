@@ -24,12 +24,15 @@ export default function Hero() {
             const titleChars = titleRef.current.querySelectorAll('.hero__char');
             const subtitleChars = subtitleRef.current.querySelectorAll('.hero__char');
 
-            // Set initial state without blur
+            // Set initial state with blur for cinematic reveal
             tl.set([titleChars, subtitleChars], {
                 yPercent: 120, // push down out of wrapper
-                rotateX: -90,  // dramatic rotation
+                rotateX: -110,  // dramatic rotation
+                scaleKeyframes: [0.8, 1], // internal GSAP syntax not used here, we use scale
+                scale: 0.8,
                 opacity: 0,
-                transformOrigin: "50% 100%"
+                filter: 'blur(10px)',
+                transformOrigin: "50% 100% -50px" // Adds 3D depth to the swing
             })
                 .set(lineRef.current, { scaleX: 0, opacity: 0 })
                 .set(scrollIndicatorRef.current, { opacity: 0, y: 30 })
@@ -37,10 +40,15 @@ export default function Hero() {
                 .to(titleChars, {
                     yPercent: 0,
                     rotateX: 0,
+                    scale: 1,
                     opacity: 1,
-                    duration: 1.2,
-                    ease: 'expo.out',
-                    stagger: 0.04,
+                    filter: 'blur(0px)',
+                    duration: 1.4,
+                    ease: 'power4.out',
+                    stagger: {
+                        amount: 0.5,
+                        from: "start"
+                    }
                 })
                 // Line scales in
                 .to(lineRef.current, {
@@ -48,16 +56,21 @@ export default function Hero() {
                     opacity: 1,
                     duration: 1.4,
                     ease: 'expo.inOut',
-                }, '-=0.8')
+                }, '-=1.0')
                 // Animate subtitle
                 .to(subtitleChars, {
                     yPercent: 0,
                     rotateX: 0,
+                    scale: 1,
                     opacity: 1,
-                    duration: 1.0,
-                    ease: 'expo.out',
-                    stagger: 0.03,
-                }, '-=1.0') // align with line animation
+                    filter: 'blur(0px)',
+                    duration: 1.4,
+                    ease: 'power4.out',
+                    stagger: {
+                        amount: 0.4,
+                        from: "center"
+                    }
+                }, '-=1.2') // align with line animation
                 // Show scroll indicator
                 .to(scrollIndicatorRef.current, {
                     opacity: 1,

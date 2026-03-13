@@ -67,6 +67,25 @@
     transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+/* ── Complex Hover Logic ── */
+
+.shop__grid:hover .shop-card {
+    opacity: 0.4;
+    filter: blur(2px);
+    transform: scale(0.98);
+}
+
+.shop__grid .shop-card {
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+}
+
+.shop__grid .shop-card:hover {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+    z-index: 10;
+}
+
 .shop-card:hover .shop-card__image-placeholder {
     transform: scale(1.05);
 }

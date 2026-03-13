@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useLenis } from './hooks/useLenis';
 import CustomCursor from './components/CustomCursor';
 import GrainOverlay from './components/GrainOverlay';
@@ -9,6 +10,7 @@ import Landing from './pages/Landing';
 import Shop from './pages/Shop';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Product from './pages/Product';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -19,6 +21,22 @@ function ScrollToTop() {
     }, [pathname]);
     
     return null;
+}
+
+function AnimatedRoutes() {
+    const location = useLocation();
+    
+    return (
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Landing />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/:id" element={<Product />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+        </AnimatePresence>
+    );
 }
 
 export default function App() {
@@ -34,12 +52,7 @@ export default function App() {
       <Header />
       
       <main className="main-content">
-        <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-        </Routes>
+          <AnimatedRoutes />
       </main>
     </BrowserRouter>
   );

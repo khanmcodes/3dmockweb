@@ -1,8 +1,9 @@
+import PageTransition from '../components/PageTransition';
 import './Contact.css';
 
 export default function Contact() {
     return (
-        <div className="contact page">
+        <PageTransition className="contact page">
             <div className="contact__container">
                 <div className="contact__header">
                     <h1 className="contact__title font-serif">Inquiries.</h1>
@@ -51,6 +52,6 @@ export default function Contact() {
                 {/* Background glow accent */}
                 <div className="accent-glow" style={{ bottom: '-10%', right: '-10%', opacity: 0.3 }} />
             </div>
-        </div>
+        </PageTransition>
     );
 }
