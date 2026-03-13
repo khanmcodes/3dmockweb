@@ -19,43 +19,46 @@ export default function Hero() {
     useEffect(() => {
         const ctx = gsap.context(() => {
             // ── Intro animation timeline ──
-            const tl = gsap.timeline({ delay: 0.6 });
+            const tl = gsap.timeline({ delay: 0.3 }); // slightly faster start
 
             const titleChars = titleRef.current.querySelectorAll('.hero__char');
             const subtitleChars = subtitleRef.current.querySelectorAll('.hero__char');
 
+            // Set initial state without blur
             tl.set([titleChars, subtitleChars], {
+                yPercent: 120, // push down out of wrapper
+                rotateX: -90,  // dramatic rotation
                 opacity: 0,
-                y: 80,
-                rotateX: -60,
-                filter: 'blur(8px)',
+                transformOrigin: "50% 100%"
             })
                 .set(lineRef.current, { scaleX: 0, opacity: 0 })
                 .set(scrollIndicatorRef.current, { opacity: 0, y: 30 })
+                // Animate title
                 .to(titleChars, {
-                    opacity: 1,
-                    y: 0,
+                    yPercent: 0,
                     rotateX: 0,
-                    filter: 'blur(0px)',
-                    duration: 1.4,
-                    ease: 'power4.out',
-                    stagger: 0.035,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: 'expo.out',
+                    stagger: 0.04,
                 })
+                // Line scales in
                 .to(lineRef.current, {
                     scaleX: 1,
                     opacity: 1,
-                    duration: 1.2,
-                    ease: 'power3.inOut',
+                    duration: 1.4,
+                    ease: 'expo.inOut',
                 }, '-=0.8')
+                // Animate subtitle
                 .to(subtitleChars, {
-                    opacity: 1,
-                    y: 0,
+                    yPercent: 0,
                     rotateX: 0,
-                    filter: 'blur(0px)',
+                    opacity: 1,
                     duration: 1.0,
-                    ease: 'power4.out',
-                    stagger: 0.025,
-                }, '-=0.7')
+                    ease: 'expo.out',
+                    stagger: 0.03,
+                }, '-=1.0') // align with line animation
+                // Show scroll indicator
                 .to(scrollIndicatorRef.current, {
                     opacity: 1,
                     y: 0,
@@ -64,11 +67,10 @@ export default function Hero() {
                 }, '-=0.4');
 
             // ── Scroll-driven parallax ──
-            // Content drifts up + fades as you scroll
+            // Note: removed `filter: 'blur(6px)'` from scrollTrigger
             gsap.to(contentRef.current, {
                 y: -120,
                 opacity: 0,
-                filter: 'blur(6px)',
                 ease: 'none',
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -121,8 +123,10 @@ export default function Hero() {
 
     const splitText = (text) =>
         text.split('').map((char, i) => (
-            <span key={i} className="hero__char">
-                {char === ' ' ? '\u00A0' : char}
+            <span key={i} className="hero__char-wrapper">
+                <span className="hero__char">
+                    {char === ' ' ? '\u00A0' : char}
+                </span>
             </span>
         ));
 

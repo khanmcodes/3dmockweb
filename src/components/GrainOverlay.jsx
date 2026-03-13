@@ -1,53 +1,18 @@
-import { useEffect, useRef } from 'react';
-
 export default function GrainOverlay() {
-    const canvasRef = useRef(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        let animationId;
-        let patternSize = 150;
-
-        const resize = () => {
-            canvas.width = patternSize;
-            canvas.height = patternSize;
-        };
-
-        const drawGrain = () => {
-            const imageData = ctx.createImageData(patternSize, patternSize);
-            const data = imageData.data;
-
-            for (let i = 0; i < data.length; i += 4) {
-                const value = Math.random() * 255;
-                data[i] = value;
-                data[i + 1] = value;
-                data[i + 2] = value;
-                data[i + 3] = 25;
-            }
-
-            ctx.putImageData(imageData, 0, 0);
-            animationId = requestAnimationFrame(drawGrain);
-        };
-
-        resize();
-        drawGrain();
-
-        return () => {
-            cancelAnimationFrame(animationId);
-        };
-    }, []);
+    const svgNoise = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`;
 
     return (
-        <canvas
-            ref={canvasRef}
+        <div
             className="grain-overlay"
             style={{
-                width: '100%',
-                height: '100%',
-                imageRendering: 'pixelated',
+                position: 'fixed',
+                inset: 0,
+                backgroundImage: svgNoise,
+                backgroundRepeat: 'repeat',
+                opacity: 0.05,
+                pointerEvents: 'none',
+                zIndex: 9999,
+                mixBlendMode: 'overlay',
             }}
         />
     );

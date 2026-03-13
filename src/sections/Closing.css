@@ -18,22 +18,23 @@
 
 .closing__line {
     font-size: var(--fs-h1);
-    font-weight: 300;
-    letter-spacing: 0.04em;
+    font-weight: 400; /* Playfair */
+    letter-spacing: var(--ls-tight); /* Tighter for large serif */
     line-height: var(--lh-tight);
     color: var(--color-text);
     will-change: transform, opacity;
+    text-shadow: 0 0 40px rgba(230, 194, 135, 0.1); /* Subtle glow */
 }
 
 .closing__line+.closing__line {
     margin-top: var(--space-xs);
-    color: var(--color-text-muted);
+    color: var(--color-accent-gold); /* Emphasize second line with gold */
 }
 
 .closing__divider {
-    width: 100px;
+    width: 60px;
     height: 1px;
-    background: var(--color-accent);
+    background: linear-gradient(90deg, transparent, var(--color-accent-gold), transparent);
     margin: var(--space-xl) auto;
     transform-origin: center;
 }

@@ -1,6 +1,7 @@
 import { useLenis } from './hooks/useLenis';
 import CustomCursor from './components/CustomCursor';
 import GrainOverlay from './components/GrainOverlay';
+import Header from './components/Header';
 import Hero from './sections/Hero';
 import Philosophy from './sections/Philosophy';
 import Gallery from './sections/Gallery';
@@ -14,6 +15,7 @@ export default function App() {
     <>
       <CustomCursor />
       <GrainOverlay />
+      <Header />
       <main>
         <Hero />
         <Philosophy />

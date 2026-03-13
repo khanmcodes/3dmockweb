@@ -33,16 +33,18 @@
 
 .gallery__title {
     font-size: var(--fs-h1);
-    font-weight: 300;
-    letter-spacing: var(--ls-wide);
+    font-weight: 400; /* Playfair Display */
+    letter-spacing: var(--ls-tight);
     color: var(--color-text);
-    text-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+    text-shadow: 0 0 60px rgba(230, 194, 135, 0.15); /* Refined gold glow */
 }
 
 .gallery__grid {
     display: flex;
     flex-direction: column;
     gap: var(--space-2xl);
+    position: relative;
+    z-index: 2;
 }
 
 /* ── Card ── */
@@ -70,6 +72,7 @@
     aspect-ratio: 4 / 5;
     will-change: clip-path;
     cursor: pointer;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5); /* Depth shadow */
 }
 
 .gallery-card__image-inner {
@@ -108,12 +111,13 @@
 
 .gallery-card__index {
     color: var(--color-text-dim);
+    font-weight: 600; /* Bolder numeric index */
 }
 
 .gallery-card__name {
     font-size: var(--fs-h2);
-    font-weight: 300;
-    letter-spacing: 0.05em;
+    font-weight: 400;
+    letter-spacing: var(--ls-normal);
     color: var(--color-text);
     line-height: var(--lh-tight);
 }
@@ -121,8 +125,9 @@
 .gallery-card__material {
     font-family: var(--font-sans);
     font-size: var(--fs-small);
-    color: var(--color-text-muted);
-    letter-spacing: var(--ls-wide);
+    color: var(--color-accent); /* Use warm accent for material names */
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
     text-transform: uppercase;
 }
 

@@ -2,36 +2,39 @@
 
 :root {
     /* ── Colors ── */
-    --color-bg: #0a0a0a;
-    --color-bg-elevated: #111111;
-    --color-surface: #161616;
-    --color-border: #222222;
-    --color-text: #e8e6e3;
-    --color-text-muted: #8a8680;
-    --color-text-dim: #5a5652;
-    --color-accent: #b4aa9b;
+    --color-bg: #030302; /* Deeper, warmer black */
+    --color-bg-elevated: #0a0908;
+    --color-surface: #121110;
+    --color-border: #1f1d1b;
+    --color-text: #f0eee9; /* Warmer paper white */
+    --color-text-muted: #9e988e;
+    --color-text-dim: #635f59;
+    --color-accent: #d4a373; /* Rich amber/bronze */
+    --color-accent-gold: #e6c287;
     --color-metallic: #c8bfb0;
-    --color-highlight: rgba(200, 191, 176, 0.08);
+    --color-highlight: rgba(212, 163, 115, 0.15); /* Warmer glow */
 
     /* ── Typography ── */
-    --font-serif: 'Cormorant Garamond', 'Georgia', serif;
-    --font-sans: 'Inter', -apple-system, sans-serif;
+    --font-serif: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
+    --font-sans: 'Outfit', 'Inter', -apple-system, sans-serif;
 
-    --fs-display: clamp(3.5rem, 8vw, 9rem);
-    --fs-h1: clamp(2.5rem, 5vw, 5rem);
-    --fs-h2: clamp(1.8rem, 3.5vw, 3.5rem);
-    --fs-h3: clamp(1.2rem, 2vw, 1.8rem);
-    --fs-body: clamp(0.95rem, 1.1vw, 1.15rem);
-    --fs-small: clamp(0.75rem, 0.85vw, 0.875rem);
-    --fs-label: 0.7rem;
+    --fs-display: clamp(4rem, 10vw, 12rem); /* More massive headers */
+    --fs-h1: clamp(3rem, 6vw, 6rem);
+    --fs-h2: clamp(2rem, 4vw, 4rem);
+    --fs-h3: clamp(1.4rem, 2vw, 2rem);
+    --fs-body: clamp(1rem, 1.2vw, 1.25rem);
+    --fs-small: clamp(0.8rem, 0.9vw, 0.95rem);
+    --fs-label: 0.65rem; /* Smaller, sharper labels */
 
-    --lh-tight: 1.05;
+    --lh-tight: 1.0;
     --lh-normal: 1.6;
-    --lh-loose: 1.9;
+    --lh-loose: 2.0;
 
+    --ls-tight: -0.02em; /* Modern sharp tracking for big headers */
+    --ls-normal: 0.02em;
     --ls-wide: 0.15em;
-    --ls-wider: 0.25em;
-    --ls-widest: 0.4em;
+    --ls-wider: 0.3em;
+    --ls-widest: 0.6em; /* Extreme tracking for labels */
 
     /* ── Spacing ── */
     --space-xs: 0.5rem;
@@ -69,13 +72,29 @@
     color: var(--color-text-dim);
 }
 
+.text-accent {
+    color: var(--color-accent);
+}
+
 .label {
     font-family: var(--font-sans);
     font-size: var(--fs-label);
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: var(--ls-widest);
     text-transform: uppercase;
     color: var(--color-text-muted);
+}
+
+/* ── Premium Glow Accents ── */
+
+.accent-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle at center, var(--color-highlight) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
 }
 
 /* ── Section layout ── */

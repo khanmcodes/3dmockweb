@@ -19,10 +19,11 @@
 
 .materials__title {
     font-size: var(--fs-h1);
-    font-weight: 300;
-    letter-spacing: var(--ls-wide);
+    font-weight: 400; /* Playfair Display */
+    letter-spacing: var(--ls-tight);
     color: var(--color-text);
     line-height: var(--lh-tight);
+    text-shadow: 0 0 60px rgba(230, 194, 135, 0.15); /* Gold text glow */
 }
 
 .materials__content {
@@ -47,7 +48,7 @@
     padding: var(--space-sm) var(--space-md);
     font-family: var(--font-sans);
     font-size: var(--fs-body);
-    font-weight: 300;
+    font-weight: 400; /* Richer font weight */
     color: var(--color-text-dim);
     letter-spacing: var(--ls-wide);
     text-align: left;
@@ -63,7 +64,7 @@
 }
 
 .material-card--active {
-    color: var(--color-text);
+    color: var(--color-accent-gold); /* Gold active state */
     background: var(--color-highlight);
 }
 
@@ -76,14 +77,15 @@
 }
 
 .material-card--active .material-card__indicator {
-    background: var(--color-accent);
+    background: var(--color-accent-gold);
     transform: scale(1.3);
 }
 
 .material-card__name {
     text-transform: uppercase;
     font-size: var(--fs-small);
-    letter-spacing: var(--ls-wider);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest); /* Ultra wide tracking */
 }
 
 /* ── Display ── */
@@ -101,6 +103,7 @@
     border-radius: 2px;
     overflow: hidden;
     transition: background-image 0.8s var(--ease-out-quart);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3); /* Premium depth shadow */
 }
 
 .materials__swatch::after {
@@ -122,7 +125,7 @@
 .materials__swatch-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 30%, rgba(10, 10, 10, 0.6) 100%);
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(3, 3, 2, 0.8) 100%);
 }
 
 .materials__detail {
@@ -131,8 +134,8 @@
 
 .materials__detail-name {
     font-size: var(--fs-h2);
-    font-weight: 300;
-    letter-spacing: 0.05em;
+    font-weight: 400; /* Playfair Display */
+    letter-spacing: var(--ls-normal);
     color: var(--color-text);
     margin-bottom: var(--space-md);
     line-height: var(--lh-tight);
@@ -141,6 +144,7 @@
 .materials__detail-desc {
     font-family: var(--font-sans);
     font-size: var(--fs-body);
+    font-weight: 300;
     color: var(--color-text-muted);
     line-height: var(--lh-loose);
 }

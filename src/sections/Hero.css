@@ -36,16 +36,16 @@
 
 .hero__title {
     font-size: var(--fs-display);
-    font-weight: 300;
-    letter-spacing: var(--ls-wide);
+    font-weight: 400;
+    letter-spacing: var(--ls-tight);
     line-height: var(--lh-tight);
     color: var(--color-text);
-    margin-bottom: var(--space-sm);
-    text-shadow: 0 0 80px rgba(180, 170, 155, 0.08);
+    margin-bottom: var(--space-xs);
+    text-shadow: 0 0 100px rgba(212, 163, 115, 0.15); /* Warmer amber glow */
 }
 
 .hero__line {
-    width: 100px;
+    width: 60px;
     height: 1px;
     background: linear-gradient(90deg,
             transparent,
@@ -58,15 +58,22 @@
 .hero__subtitle {
     font-family: var(--font-sans);
     font-size: var(--fs-small);
-    font-weight: 300;
+    font-weight: 500;
     letter-spacing: var(--ls-widest);
     text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-accent); /* Changed to use amber accent */
+}
+
+.hero__char-wrapper {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom; /* Prevents jumping */
+    padding-bottom: 0.1em; /* extra space for descenders if needed */
 }
 
 .hero__char {
     display: inline-block;
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
 }
 
 .hero__scroll-indicator {

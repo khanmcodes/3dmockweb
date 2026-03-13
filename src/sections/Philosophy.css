@@ -19,7 +19,7 @@
 .philosophy__accent {
     width: 60px;
     height: 1px;
-    background: var(--color-accent);
+    background: linear-gradient(90deg, var(--color-accent-gold), transparent);
     margin-bottom: var(--space-xl);
     transform-origin: left center;
 }
@@ -29,14 +29,26 @@
     flex-direction: column;
     gap: var(--space-lg);
     margin-bottom: var(--space-xl);
+    position: relative;
+    z-index: 2;
 }
 
 .philosophy__line {
-    font-size: var(--fs-h3);
-    font-weight: 300;
-    line-height: var(--lh-loose);
+    font-size: var(--fs-h2);
+    font-weight: 400; /* Playfair Display */
+    line-height: var(--lh-normal);
+    letter-spacing: var(--ls-normal);
     color: var(--color-text);
     will-change: transform, opacity;
+}
+
+.philosophy__line:first-child {
+    font-size: var(--fs-h1);
+    color: var(--color-accent-gold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tight);
+    margin-bottom: var(--space-xl);
+    text-shadow: 0 0 60px rgba(230, 194, 135, 0.15); /* Soft gold text glow */
 }
 
 .philosophy__aside {

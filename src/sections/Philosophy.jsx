@@ -43,6 +43,7 @@ export default function Philosophy() {
     return (
         <section ref={ref} className="philosophy section" id="philosophy">
             <div className="philosophy__container">
+                <div className="accent-glow" style={{ top: '30%', left: '0%', opacity: 0.6 }} />
                 <span className="philosophy__label label">Philosophy</span>
                 <div className="philosophy__accent" />
                 <div className="philosophy__text">
