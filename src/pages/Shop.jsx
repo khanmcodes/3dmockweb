@@ -1,8 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { products } from '../data/products';
+import { products, getProductPath } from '../data/products';
 import PageTransition from '../components/PageTransition';
+import Hero from '../sections/Hero';
+import Philosophy from '../sections/Philosophy';
+import Gallery from '../sections/Gallery';
+import Materials from '../sections/Materials';
+import Closing from '../sections/Closing';
 import './Shop.css';
 
 export default function Shop() {
@@ -61,14 +66,19 @@ export default function Shop() {
 
     return (
         <PageTransition className="shop page">
+            <Hero variant="catalog" />
+            <Philosophy />
+            <Gallery />
+            <Materials />
             <div className="shop__container">
                 <div className="shop__header">
-                    <h1 className="shop__title font-serif">The Collection</h1>
+                    <span className="shop__title-eyebrow label">Catalog</span>
+                    <h2 className="shop__title font-serif">The Collection</h2>
                 </div>
 
                 <div ref={gridRef} className="shop__grid">
                     {products.map((product, i) => (
-                        <Link to={`/product/${product.id}`} key={product.id} className="shop-card">
+                        <Link to={getProductPath(product)} key={product.id} className="shop-card">
                             <div className="shop-card__image-wrapper">
                                 {/* Simulated image with subtle gradient matching colorTone */}
                                 <div 
@@ -91,6 +101,7 @@ export default function Shop() {
                     ))}
                 </div>
             </div>
+            <Closing />
         </PageTransition>
     );
 }

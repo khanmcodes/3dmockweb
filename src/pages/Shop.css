@@ -1,5 +1,6 @@
+/* No outer padding: hero stays full-bleed; sections set their own horizontal padding. */
 .shop {
-    padding: var(--space-3xl) var(--space-lg);
+    padding: 0;
     background: var(--color-bg);
     min-height: 100vh;
 }
@@ -7,22 +8,28 @@
 .shop__container {
     max-width: 1400px;
     margin: 0 auto;
-    padding-top: var(--space-2xl);
+    padding: var(--space-3xl) var(--space-lg) var(--space-3xl);
 }
 
 .shop__header {
     text-align: center;
-    margin-bottom: var(--space-3xl);
+    margin-bottom: var(--space-2xl);
     position: relative;
     z-index: 2;
 }
 
 .shop__title {
-    font-size: var(--fs-display);
-    font-weight: 400; /* Playfair Display */
+    font-size: var(--fs-h1);
+    font-weight: 300;
     letter-spacing: var(--ls-tight);
     color: var(--color-text);
-    text-shadow: 0 0 80px rgba(255, 255, 255, 0.05); /* Soft cinematic glow */
+    text-shadow: 0 0 60px rgba(255, 255, 255, 0.04);
+}
+
+.shop__title-eyebrow {
+    display: block;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-dim);
 }
 
 /* ── Grid ── */

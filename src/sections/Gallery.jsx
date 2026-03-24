@@ -1,10 +1,14 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { getProductPath } from '../data/products';
 import './Gallery.css';
 
+/** Editorial gallery items; each links to a catalog product detail page. */
 const OBJECTS = [
     {
         id: 'throne',
+        productSlug: 'monolith-table',
         name: 'Monolith Throne',
         material: 'Black Marble & Stainless Steel',
         year: '2024',
@@ -12,6 +16,7 @@ const OBJECTS = [
     },
     {
         id: 'table',
+        productSlug: 'void-side-table',
         name: 'Arc Side Table',
         material: 'Polished Chrome & Engraved Stone',
         year: '2024',
@@ -19,6 +24,7 @@ const OBJECTS = [
     },
     {
         id: 'console',
+        productSlug: 'aurelia-credenza',
         name: 'Drift Console',
         material: 'Brushed Metal & Black Marble',
         year: '2023',
@@ -26,6 +32,7 @@ const OBJECTS = [
     },
     {
         id: 'vessel',
+        productSlug: 'nucleus-stool',
         name: 'Erosion Vessel',
         material: 'Black Marble & Stainless Steel',
         year: '2024',
@@ -75,28 +82,30 @@ function GalleryCard({ item, index }) {
     });
 
     return (
-        <article
-            ref={ref}
-            className={`gallery-card gallery-card--${index % 2 === 0 ? 'left' : 'right'}`}
-        >
-            <div className="gallery-card__image-wrapper">
-                <div className="gallery-card__image-inner">
-                    <img
-                        ref={imageRef}
-                        src={item.image}
-                        alt={item.name}
-                        className="gallery-card__image"
-                        loading="lazy"
-                    />
+        <div ref={ref} className="gallery-card__root">
+            <Link
+                to={getProductPath(item.productSlug)}
+                className={`gallery-card gallery-card--${index % 2 === 0 ? 'left' : 'right'}`}
+            >
+                <div className="gallery-card__image-wrapper">
+                    <div className="gallery-card__image-inner">
+                        <img
+                            ref={imageRef}
+                            src={item.image}
+                            alt={item.name}
+                            className="gallery-card__image"
+                            loading="lazy"
+                        />
+                    </div>
                 </div>
-            </div>
-            <div ref={infoRef} className="gallery-card__info">
-                <span className="gallery-card__index label">{String(index + 1).padStart(2, '0')}</span>
-                <h3 className="gallery-card__name font-serif">{item.name}</h3>
-                <p className="gallery-card__material">{item.material}</p>
-                <span className="gallery-card__year text-dim">{item.year}</span>
-            </div>
-        </article>
+                <div ref={infoRef} className="gallery-card__info">
+                    <span className="gallery-card__index label">{String(index + 1).padStart(2, '0')}</span>
+                    <h3 className="gallery-card__name font-serif">{item.name}</h3>
+                    <p className="gallery-card__material">{item.material}</p>
+                    <span className="gallery-card__year text-dim">{item.year}</span>
+                </div>
+            </Link>
+        </div>
     );
 }
 

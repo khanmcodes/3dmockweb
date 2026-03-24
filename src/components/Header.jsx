@@ -1,7 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 
 export default function Header() {
+    const { pathname } = useLocation();
+
+    if (pathname === '/') {
+        return null;
+    }
+
     return (
         <header className="header">
             <div className="header__brand">
@@ -10,7 +16,7 @@ export default function Header() {
                   mixBlendMode: 'screen' or 'lighten' to blend it perfectly 
                   into the dark theme of the website.
                 */}
-                <Link to="/">
+                <Link to="/shop">
                     <img 
                         src="/logo.png" 
                         alt="Studio Vortessa Logo" 

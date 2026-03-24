@@ -51,16 +51,7 @@ export default function Philosophy() {
                         We believe furniture should challenge the boundary
                         between function and sculpture.
                     </p>
-                    <p className="philosophy__line font-serif">
-                        Each piece begins as raw material — stone pulled from earth,
-                        metal forged under pressure — and through obsessive craft,
-                        transforms into an object that commands presence.
-                    </p>
-                    <p className="philosophy__line font-serif">
-                        Our work is not made for comfort alone.
-                        It is made to be felt, to occupy space with intention,
-                        and to endure beyond trend.
-                    </p>
+                    
                 </div>
                 <div className="philosophy__aside">
                     <p className="philosophy__line text-muted">

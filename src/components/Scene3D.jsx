@@ -1,7 +1,31 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Environment, Float, Sparkles, Lightformer } from '@react-three/drei';
 import * as THREE from 'three';
+
+function useNoiseTexture() {
+    return useMemo(() => {
+        const size = 256;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.createImageData(size, size);
+        for (let i = 0; i < imageData.data.length; i += 4) {
+            const n = 90 + Math.random() * 165;
+            imageData.data[i] = n;
+            imageData.data[i + 1] = n;
+            imageData.data[i + 2] = n;
+            imageData.data[i + 3] = 255;
+        }
+        ctx.putImageData(imageData, 0, 0);
+        const tex = new THREE.CanvasTexture(canvas);
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(3, 3);
+        tex.anisotropy = 4;
+        return tex;
+    }, []);
+}
 
 function SculpturalObject() {
     const meshRef = useRef();
@@ -26,6 +50,40 @@ function SculpturalObject() {
                 clearcoat={1.0}
                 clearcoatRoughness={0.1}
                 envMapIntensity={2.5}
+            />
+        </mesh>
+    );
+}
+
+/** Softer void gate: sphere with grainy roughness map */
+function VoidSphere() {
+    const meshRef = useRef();
+    const noiseTex = useNoiseTexture();
+
+    useFrame((state) => {
+        const t = state.clock.elapsedTime;
+        if (meshRef.current) {
+            meshRef.current.rotation.y = t * 0.12;
+            meshRef.current.rotation.x = Math.sin(t * 0.25) * 0.12;
+            meshRef.current.position.y = Math.sin(t * 0.4) * 0.08;
+        }
+    });
+
+    return (
+        <mesh ref={meshRef}>
+            <sphereGeometry args={[1.15, 96, 96]} />
+            <meshPhysicalMaterial
+                color="#0c0b0a"
+                emissive="#030302"
+                emissiveIntensity={0.15}
+                roughness={0.42}
+                roughnessMap={noiseTex}
+                bumpMap={noiseTex}
+                bumpScale={0.04}
+                metalness={0.88}
+                clearcoat={0.85}
+                clearcoatRoughness={0.35}
+                envMapIntensity={2.2}
             />
         </mesh>
     );
@@ -61,7 +119,9 @@ function OrbitingLights() {
     );
 }
 
-export default function Scene3D({ style, className }) {
+export default function Scene3D({ style, className, variant = 'default' }) {
+    const isVoid = variant === 'void';
+
     return (
         <div style={{ width: '100%', height: '100%', ...style }} className={className}>
             <Canvas
@@ -71,14 +131,21 @@ export default function Scene3D({ style, className }) {
             >
                 <ambientLight intensity={0.5} color="#ffffff" />
                 <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" />
-                
+
                 <OrbitingLights />
 
-                <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-                    <SculpturalObject />
+                <Float speed={isVoid ? 1.2 : 1.5} rotationIntensity={isVoid ? 0.35 : 0.5} floatIntensity={isVoid ? 0.4 : 0.5}>
+                    {isVoid ? <VoidSphere /> : <SculpturalObject />}
                 </Float>
-                
-                <Sparkles count={80} scale={12} size={1.5} speed={0.4} opacity={0.3} color="#ffe8cc" />
+
+                <Sparkles
+                    count={isVoid ? 56 : 80}
+                    scale={12}
+                    size={isVoid ? 1.2 : 1.5}
+                    speed={0.35}
+                    opacity={isVoid ? 0.22 : 0.3}
+                    color="#ffe8cc"
+                />
 
                 <Environment resolution={256} background={false}>
                     <Lightformer form="rect" intensity={5} color="#ffebc2" position={[-5, 5, -5]} scale={[10, 5]} />

@@ -1,7 +1,21 @@
+import { useSearchParams } from 'react-router-dom';
+import { useMemo } from 'react';
 import PageTransition from '../components/PageTransition';
 import './Contact.css';
 
 export default function Contact() {
+    const [searchParams] = useSearchParams();
+    const piece = searchParams.get('piece');
+    const defaultMessage = useMemo(() => {
+        if (!piece) return '';
+        try {
+            const name = decodeURIComponent(piece);
+            return `I would like to inquire about: ${name}.`;
+        } catch {
+            return '';
+        }
+    }, [piece]);
+
     return (
         <PageTransition className="contact page">
             <div className="contact__container">
@@ -24,7 +38,14 @@ export default function Contact() {
                         </div>
                         <div className="contact__group">
                             <label htmlFor="message" className="label">Directive</label>
-                            <textarea id="message" className="contact__input contact__input--area font-sans" placeholder="Details regarding your inquiry..." rows={5}></textarea>
+                            <textarea
+                                key={piece || 'message'}
+                                id="message"
+                                className="contact__input contact__input--area font-sans"
+                                placeholder="Details regarding your inquiry..."
+                                rows={5}
+                                defaultValue={defaultMessage}
+                            />
                         </div>
                         <button type="submit" className="contact__btn">
                             <span className="label">Transmit</span>

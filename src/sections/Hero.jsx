@@ -1,12 +1,24 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Scene3D from '../components/Scene3D';
 import './Hero.css';
+
+const Scene3D = lazy(() => import('../components/Scene3D'));
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Hero() {
+const COPY = {
+    default: {
+        title: 'Studio Vortessa',
+        subtitle: 'Sculptural Objects',
+    },
+    catalog: {
+        title: 'Studio Vortessa',
+        subtitle: 'Furniture',
+    },
+};
+
+export default function Hero({ variant = 'default' }) {
     const sectionRef = useRef(null);
     const titleRef = useRef(null);
     const subtitleRef = useRef(null);
@@ -16,27 +28,26 @@ export default function Hero() {
     const sceneRef = useRef(null);
     const overlayRef = useRef(null);
 
+    const isCatalog = variant === 'catalog';
+    const copy = isCatalog ? COPY.catalog : COPY.default;
+
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // ── Intro animation timeline ──
-            const tl = gsap.timeline({ delay: 0.3 }); // slightly faster start
+            const tl = gsap.timeline({ delay: 0.3 });
 
             const titleChars = titleRef.current.querySelectorAll('.hero__char');
             const subtitleChars = subtitleRef.current.querySelectorAll('.hero__char');
 
-            // Set initial state with blur for cinematic reveal
             tl.set([titleChars, subtitleChars], {
-                yPercent: 120, // push down out of wrapper
-                rotateX: -110,  // dramatic rotation
-                scaleKeyframes: [0.8, 1], // internal GSAP syntax not used here, we use scale
+                yPercent: 120,
+                rotateX: -110,
                 scale: 0.8,
                 opacity: 0,
                 filter: 'blur(10px)',
-                transformOrigin: "50% 100% -50px" // Adds 3D depth to the swing
+                transformOrigin: '50% 100% -50px',
             })
                 .set(lineRef.current, { scaleX: 0, opacity: 0 })
                 .set(scrollIndicatorRef.current, { opacity: 0, y: 30 })
-                // Animate title
                 .to(titleChars, {
                     yPercent: 0,
                     rotateX: 0,
@@ -47,78 +58,94 @@ export default function Hero() {
                     ease: 'power4.out',
                     stagger: {
                         amount: 0.5,
-                        from: "start"
-                    }
+                        from: 'start',
+                    },
                 })
-                // Line scales in
-                .to(lineRef.current, {
-                    scaleX: 1,
-                    opacity: 1,
-                    duration: 1.4,
-                    ease: 'expo.inOut',
-                }, '-=1.0')
-                // Animate subtitle
-                .to(subtitleChars, {
-                    yPercent: 0,
-                    rotateX: 0,
-                    scale: 1,
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    duration: 1.4,
-                    ease: 'power4.out',
-                    stagger: {
-                        amount: 0.4,
-                        from: "center"
-                    }
-                }, '-=1.2') // align with line animation
-                // Show scroll indicator
-                .to(scrollIndicatorRef.current, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.0,
-                    ease: 'power3.out',
-                }, '-=0.4');
+                .to(
+                    lineRef.current,
+                    {
+                        scaleX: 1,
+                        opacity: 1,
+                        duration: 1.4,
+                        ease: 'expo.inOut',
+                    },
+                    '-=1.0'
+                )
+                .to(
+                    subtitleChars,
+                    {
+                        yPercent: 0,
+                        rotateX: 0,
+                        scale: 1,
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 1.4,
+                        ease: 'power4.out',
+                        stagger: {
+                            amount: 0.4,
+                            from: 'center',
+                        },
+                    },
+                    '-=1.2'
+                )
+                .to(
+                    scrollIndicatorRef.current,
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.0,
+                        ease: 'power3.out',
+                    },
+                    '-=0.4'
+                );
 
-            // ── Scroll-driven parallax ──
-            // Note: removed `filter: 'blur(6px)'` from scrollTrigger
+            const scrollEase = isCatalog
+                ? {
+                      content: { y: -56, opacity: 0.45 },
+                      scene: { y: 28, scale: 1.02 },
+                      overlay: { opacity: 1 },
+                      scrub: 0.45,
+                  }
+                : {
+                      content: { y: -120, opacity: 0 },
+                      scene: { y: 80, scale: 1.08 },
+                      overlay: { opacity: 1 },
+                      scrub: 0.8,
+                  };
+
             gsap.to(contentRef.current, {
-                y: -120,
-                opacity: 0,
+                ...scrollEase.content,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: 'top top',
                     end: 'bottom top',
-                    scrub: 0.8,
+                    scrub: scrollEase.scrub,
                 },
             });
 
-            // 3D scene drifts down + zooms slightly
             gsap.to(sceneRef.current, {
-                y: 80,
-                scale: 1.08,
+                ...scrollEase.scene,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: 'top top',
                     end: 'bottom top',
-                    scrub: 0.8,
+                    scrub: scrollEase.scrub,
                 },
             });
 
-            // Overlay darkens on scroll
             gsap.to(overlayRef.current, {
-                opacity: 1.5,
+                opacity: scrollEase.overlay.opacity,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: '60% top',
                     end: 'bottom top',
-                    scrub: 0.8,
+                    scrub: scrollEase.scrub,
                 },
             });
 
-            // Scroll indicator fades out early
             gsap.to(scrollIndicatorRef.current, {
                 opacity: 0,
                 ease: 'none',
@@ -132,7 +159,7 @@ export default function Hero() {
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [isCatalog]);
 
     const splitText = (text) =>
         text.split('').map((char, i) => (
@@ -144,18 +171,24 @@ export default function Hero() {
         ));
 
     return (
-        <section ref={sectionRef} className="hero section section--full" id="hero">
+        <section
+            ref={sectionRef}
+            className={`hero section section--full${isCatalog ? ' hero--catalog' : ''}`}
+            id="hero"
+        >
             <div ref={sceneRef} className="hero__scene">
-                <Scene3D />
+                <Suspense fallback={<div className="hero__scene-placeholder" aria-hidden />}>
+                    <Scene3D />
+                </Suspense>
             </div>
             <div ref={overlayRef} className="hero__overlay" />
             <div ref={contentRef} className="hero__content">
                 <h1 ref={titleRef} className="hero__title font-serif">
-                    {splitText('Studio Vortessa')}
+                    {splitText(copy.title)}
                 </h1>
                 <div ref={lineRef} className="hero__line" />
                 <p ref={subtitleRef} className="hero__subtitle">
-                    {splitText('Sculptural Objects')}
+                    {splitText(copy.subtitle)}
                 </p>
             </div>
             <div ref={scrollIndicatorRef} className="hero__scroll-indicator">

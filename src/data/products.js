@@ -1,14 +1,16 @@
 export const products = [
     {
         id: 'vortessa-001',
+        slug: 'monolith-table',
         name: 'Monolith Table',
         material: 'Nero Marquina Marble / Brushed Steel',
         price: '$12,500',
         description: 'A brutalist centerpiece carved from a single block of Nero Marquina marble, suspended by paradoxically thin brushed steel legs.',
-        colorTone: '#ffffff', // Used for lighting/background hints
+        colorTone: '#ffffff',
     },
     {
         id: 'vortessa-002',
+        slug: 'echo-lounge',
         name: 'Echo Lounge',
         material: 'Black Leather / Chrome',
         price: '$8,200',
@@ -17,6 +19,7 @@ export const products = [
     },
     {
         id: 'vortessa-003',
+        slug: 'void-side-table',
         name: 'Void Side Table',
         material: 'Cast Glass / Obsidian',
         price: '$4,100',
@@ -25,6 +28,7 @@ export const products = [
     },
     {
         id: 'vortessa-004',
+        slug: 'aurelia-credenza',
         name: 'Aurelia Credenza',
         material: 'Ebonized Oak / Polished Brass',
         price: '$15,800',
@@ -33,6 +37,7 @@ export const products = [
     },
     {
         id: 'vortessa-005',
+        slug: 'sentinel-lamp',
         name: 'Sentinel Lamp',
         material: 'Machined Aluminum / Onyx',
         price: '$2,900',
@@ -41,6 +46,7 @@ export const products = [
     },
     {
         id: 'vortessa-006',
+        slug: 'apex-dining-chair',
         name: 'Apex Dining Chair',
         material: 'Matte Steel / Suede',
         price: '$3,400',
@@ -49,6 +55,7 @@ export const products = [
     },
     {
         id: 'vortessa-007',
+        slug: 'eclipse-wall-mirror',
         name: 'Eclipse Wall Mirror',
         material: 'Smoked Glass / Travertine',
         price: '$5,200',
@@ -57,6 +64,7 @@ export const products = [
     },
     {
         id: 'vortessa-008',
+        slug: 'lithic-desk',
         name: 'Lithic Desk',
         material: 'Concrete / Walnut',
         price: '$9,500',
@@ -65,6 +73,7 @@ export const products = [
     },
     {
         id: 'vortessa-009',
+        slug: 'vesper-sconce',
         name: 'Vesper Sconce',
         material: 'Brass / Frosted Quartz',
         price: '$1,800',
@@ -73,6 +82,7 @@ export const products = [
     },
     {
         id: 'vortessa-010',
+        slug: 'crescent-sofa',
         name: 'Crescent Sofa',
         material: 'Bouclé / Gunmetal',
         price: '$14,200',
@@ -81,6 +91,7 @@ export const products = [
     },
     {
         id: 'vortessa-011',
+        slug: 'obelisk-bookshelf',
         name: 'Obelisk Bookshelf',
         material: 'Blackened Steel',
         price: '$7,900',
@@ -89,10 +100,51 @@ export const products = [
     },
     {
         id: 'vortessa-012',
+        slug: 'nucleus-stool',
         name: 'Nucleus Stool',
         material: 'Solid Titanium',
         price: '$4,500',
         description: 'A perfectly lathed cylinder of solid titanium, cold to the touch and virtually indestructible.',
         colorTone: '#b5b9bd',
-    }
+    },
 ];
+
+/** Stable URL for a product detail page. */
+export function getProductPath(productOrSlug) {
+    const slug =
+        typeof productOrSlug === 'string' ? productOrSlug : productOrSlug?.slug;
+    if (!slug) return '/shop';
+    return `/product/${slug}`;
+}
+
+/** Resolve a product from the URL segment (slug preferred; legacy id still supported). */
+export function getProductBySlugOrId(param) {
+    if (param == null || param === '') return undefined;
+    const raw = String(param).trim();
+    let decoded = raw;
+    try {
+        decoded = decodeURIComponent(raw);
+    } catch {
+        decoded = raw;
+    }
+    return products.find(
+        (p) =>
+            p.slug === raw ||
+            p.slug === decoded ||
+            p.id === raw ||
+            p.id === decoded
+    );
+}
+
+export function getProductNeighbors(product) {
+    const i = products.findIndex((p) => p.id === product.id);
+    if (i === -1) return { prev: null, next: null };
+    return {
+        prev: i > 0 ? products[i - 1] : null,
+        next: i < products.length - 1 ? products[i + 1] : null,
+    };
+}
+
+export function getOtherProducts(product, limit = 4) {
+    return products.filter((p) => p.id !== product.id).slice(0, limit);
+}
