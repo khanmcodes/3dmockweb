@@ -90,7 +90,7 @@ export default function CustomCursor() {
         // Bind interactive elements
         const bindElements = () => {
             // Magnetic elements (buttons, nav links)
-            document.querySelectorAll('a:not(.shop-card):not(.gallery-card), button').forEach(el => {
+            document.querySelectorAll('a:not(.catalog-card):not(.gallery-card), button').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     isHoveringMagnetic = true;
                     activeMagneticTarget = el;
@@ -106,8 +106,8 @@ export default function CustomCursor() {
                 });
             });
 
-            // View elements (shop cards, gallery cards)
-            document.querySelectorAll('.shop-card, .gallery-card').forEach(el => {
+            // View elements (catalog cards, gallery cards)
+            document.querySelectorAll('.catalog-card, .gallery-card').forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     isHoveringView = true;
                     cursor.style.mixBlendMode = 'normal';

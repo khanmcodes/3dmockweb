@@ -1,18 +1,19 @@
 @import './reset.css';
 
 :root {
-    /* ── Colors ── */
-    --color-bg: #030302; /* Deeper, warmer black */
-    --color-bg-elevated: #0a0908;
-    --color-surface: #121110;
-    --color-border: #1f1d1b;
-    --color-text: #f0eee9; /* Warmer paper white */
-    --color-text-muted: #9e988e;
-    --color-text-dim: #635f59;
-    --color-accent: #d4a373; /* Rich amber/bronze */
+    /* ── Colors — graphite / silver / black + logo bronze & gold ── */
+    --color-bg: #050608;
+    --color-bg-elevated: #0c0e11;
+    --color-surface: #14161a;
+    --color-border: #2a2d34;
+    --color-text: #eceef2;
+    --color-text-muted: #8e939c;
+    --color-text-dim: #5c6068;
+    --color-accent: #d4a373;
     --color-accent-gold: #e6c287;
-    --color-metallic: #c8bfb0;
-    --color-highlight: rgba(212, 163, 115, 0.15); /* Warmer glow */
+    --color-metallic: #b8bec8;
+    --color-silver: #c5cad3;
+    --color-highlight: rgba(196, 200, 210, 0.12);
 
     /* ── Typography ── */
     --font-serif: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;

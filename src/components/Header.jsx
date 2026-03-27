@@ -16,7 +16,7 @@ export default function Header() {
                   mixBlendMode: 'screen' or 'lighten' to blend it perfectly 
                   into the dark theme of the website.
                 */}
-                <Link to="/shop">
+                <Link to="/catalog">
                     <img 
                         src="/logo.png" 
                         alt="Studio Vortessa Logo" 
@@ -26,7 +26,7 @@ export default function Header() {
             </div>
             
             <nav className="header__nav">
-                <Link to="/shop" className="header__link label">Shop</Link>
+                <Link to="/catalog" className="header__link label">Catalog</Link>
                 <Link to="/about" className="header__link label">About</Link>
                 <Link to="/contact" className="header__link label">Contact</Link>
             </nav>

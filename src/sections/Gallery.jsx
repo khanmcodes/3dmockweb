@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { getProductPath } from '../data/products';
+import { getProductPath, catalogImagePath } from '../data/products';
 import './Gallery.css';
 
 /** Editorial gallery items; each links to a catalog product detail page. */
@@ -9,34 +9,34 @@ const OBJECTS = [
     {
         id: 'throne',
         productSlug: 'monolith-table',
-        name: 'Monolith Throne',
-        material: 'Black Marble & Stainless Steel',
-        year: '2024',
-        image: '/images/furniture_throne.png',
+        name: 'Monolith Table',
+        material: 'Marble & brushed steel',
+        year: '2026',
+        image: catalogImagePath('diningtable.png'),
     },
     {
         id: 'table',
         productSlug: 'void-side-table',
-        name: 'Arc Side Table',
-        material: 'Polished Chrome & Engraved Stone',
-        year: '2024',
-        image: '/images/furniture_table.png',
+        name: 'Void Side Table',
+        material: 'Silver & graphite finishes',
+        year: '2026',
+        image: catalogImagePath('sidetable2.png'),
     },
     {
         id: 'console',
         productSlug: 'aurelia-credenza',
-        name: 'Drift Console',
-        material: 'Brushed Metal & Black Marble',
-        year: '2023',
-        image: '/images/furniture_console.png',
+        name: 'Aurelia Credenza',
+        material: 'Warm oak & metal',
+        year: '2026',
+        image: catalogImagePath('coffeetable.png'),
     },
     {
         id: 'vessel',
         productSlug: 'nucleus-stool',
-        name: 'Erosion Vessel',
-        material: 'Black Marble & Stainless Steel',
-        year: '2024',
-        image: '/images/furniture_vessel.png',
+        name: 'Nucleus Stool',
+        material: 'Machined titanium tone',
+        year: '2026',
+        image: catalogImagePath('chair3.png'),
     },
 ];
 

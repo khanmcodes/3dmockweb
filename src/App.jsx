@@ -2,6 +2,7 @@ import {
     BrowserRouter,
     Routes,
     Route,
+    Navigate,
     useLocation,
     Outlet,
 } from 'react-router-dom';
@@ -13,7 +14,7 @@ import GrainOverlay from './components/GrainOverlay';
 import Header from './components/Header';
 
 import Landing from './pages/Landing';
-import Shop from './pages/Shop';
+import Catalog from './pages/Catalog';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Product from './pages/Product';
@@ -26,12 +27,13 @@ function RootLayout() {
 function AppRoutes() {
     return (
         <Routes>
-            <Route element={<RootLayout />}>
-                <Route path="/" element={<Landing />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/product/:slug" element={<Product />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+            <Route path="/" element={<RootLayout />}>
+                <Route index element={<Landing />} />
+                <Route path="shop" element={<Navigate to="/catalog" replace />} />
+                <Route path="catalog" element={<Catalog />} />
+                <Route path="product/:slug" element={<Product />} />
+                <Route path="about" element={<About />} />
+                <Route path="contact" element={<Contact />} />
             </Route>
         </Routes>
     );

@@ -1,6 +1,6 @@
 import Void from './Void';
 
-/** Entry gate: void experience → user continues to `/shop` from Void. */
+/** Entrance: split editorial landing → catalog, about, and client imagery. */
 export default function Landing() {
     return <Void />;
 }
