@@ -5,12 +5,14 @@ import {
     products,
     getProductPath,
     getDefaultVariant,
+    catalogImagePath,
 } from '../data/products';
 import PageTransition from '../components/PageTransition';
 import Hero from '../sections/Hero';
 import Gallery from '../sections/Gallery';
-import Materials from '../sections/Materials';
 import Closing from '../sections/Closing';
+
+const CATALOG_HERO_CHAIR_SRC = catalogImagePath('chair.webp');
 
 function CatalogCard({ product }) {
     const initial = getDefaultVariant(product);
@@ -138,10 +140,28 @@ export default function Catalog() {
     }, []);
 
     return (
-        <PageTransition className="catalog page min-h-screen bg-bg p-0">
-            <Hero variant="catalog" />
+        <PageTransition className="catalog page relative min-h-screen bg-bg p-0">
+            <Hero />
+            {/* Page-level focal cutout: sits on the first-viewport / gallery seam, not part of Hero */}
+            <div
+                className="pointer-events-none absolute z-20 w-[min(92vw,880px)] max-w-[920px] right-2 -translate-y-1/2 max-md:w-[min(94vw,540px)] will-change-transform select-none"
+                style={{ top: '100dvh' }}
+                aria-hidden
+            >
+                <div className="hero-float-drift">
+                    <img
+                        src={CATALOG_HERO_CHAIR_SRC}
+                        alt=""
+                        width={900}
+                        height={900}
+                        fetchPriority="high"
+                        className="mx-auto h-auto w-full object-contain opacity-100 saturate-[1.02] contrast-[1.08] drop-shadow-[0_48px_110px_rgba(0,0,0,0.75)]"
+                        decoding="async"
+                    />
+                </div>
+            </div>
             <Gallery />
-            <Materials />
+            <section className="catalog__collection texture-noise relative z-0 border-t border-[rgba(236,238,242,0.06)]">
             <div className="catalog__container mx-auto max-w-screen-2xl px-16 pb-64 pt-64">
                 <div className="catalog__header relative z-[2] mb-48 text-center">
                     <span className="catalog__title-eyebrow label mb-4 block text-dim">Studio Vortessa</span>
@@ -159,6 +179,7 @@ export default function Catalog() {
                     ))}
                 </div>
             </div>
+            </section>
             <Closing />
         </PageTransition>
     );

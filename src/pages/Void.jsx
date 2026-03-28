@@ -7,15 +7,15 @@ import { catalogImagePath } from '../data/products';
 const Scene3D = lazy(() => import('../components/Scene3D'));
 
 const MOSAIC = [
-    catalogImagePath('diningtable.png'),
-    catalogImagePath('chair.png'),
-    catalogImagePath('coffeetable.png'),
-    catalogImagePath('sidetable.png'),
-    catalogImagePath('loungebed.png'),
-    catalogImagePath('workdesk.png'),
+    catalogImagePath('diningtable.webp'),
+    catalogImagePath('chair.webp'),
+    catalogImagePath('coffeetable.webp'),
+    catalogImagePath('sidetable.webp'),
+    catalogImagePath('loungebed.webp'),
+    catalogImagePath('workdesk.webp'),
 ];
 
-const VIDEO_SRC = encodeURI('/VORTESSAWEB Material/PICTURES.jpg/Untitled design.mp4');
+const VIDEO_SRC = encodeURI('/VORTESSAWEB Material/PICTURES.jpg/Untitled-design.mp4');
 
 export default function Void() {
     const navigate = useNavigate();

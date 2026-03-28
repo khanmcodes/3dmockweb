@@ -1,195 +1,238 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageTransition from '../components/PageTransition';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const STUDIO_ARCHIVE_IMG = encodeURI(
-    '/VORTESSAWEB Material/PICTURES.jpg/StudioVortessa_2026.jpg'
-);
+const FOUNDER_IMG = encodeURI('/VORTESSAWEB Material/PICTURES.jpg/founder.png');
+
+function SectionBlock({ eyebrow, title, children, className = '' }) {
+    return (
+        <div className={`about-section-block ${className}`}>
+            <header className="mb-10 flex flex-col gap-5 md:mb-14">
+                <div className="flex items-end justify-between gap-6">
+                    <div className="min-w-0">
+                        <span className="label mb-5 block text-dim">{eyebrow}</span>
+                        <div className="mb-5 h-px w-[60px] origin-left bg-accent" />
+                        <h2 className="font-serif text-3xl font-normal leading-tight tracking-tight text-text [text-shadow:0_0_60px_rgba(230,194,135,0.12)] md:text-4xl lg:text-[2.35rem]">
+                            {title}
+                        </h2>
+                    </div>
+                    <span className="shrink-0 pb-1 font-sans text-lg font-light text-dim/80" aria-hidden>
+                        &gt;
+                    </span>
+                </div>
+                <div className="h-px w-full bg-[linear-gradient(90deg,rgba(212,163,115,0.35),transparent_65%)]" />
+            </header>
+            {children}
+        </div>
+    );
+}
 
 export default function About() {
-    const containerRef = useRef(null);
-    const titleRef = useRef(null);
-    const leadRef = useRef(null);
-    const mediaSectionRef = useRef(null);
-    const mediaFrameRef = useRef(null);
+    const rootRef = useRef(null);
+    const heroRef = useRef(null);
+    const heroLeadRef = useRef(null);
 
     useEffect(() => {
-        const el = containerRef.current;
-        if (!el) return;
+        const root = rootRef.current;
+        if (!root) return;
 
         const ctx = gsap.context(() => {
-            const chars = titleRef.current?.querySelectorAll('.hero__char') ?? [];
-            const media = mediaFrameRef.current;
-            const gridCols = el.querySelectorAll('.about__grid .about__col');
-
-            const tl = gsap.timeline({ delay: 0.2 });
-
-            tl.set(chars, {
-                yPercent: 100,
-                rotateX: -90,
-                opacity: 0,
-                filter: 'blur(10px)',
-                transformOrigin: '50% 100% -50px',
-            }).to(chars, {
-                yPercent: 0,
-                rotateX: 0,
-                opacity: 1,
-                filter: 'blur(0px)',
-                duration: 1.4,
-                ease: 'power4.out',
-                stagger: {
-                    amount: 0.6,
-                    from: 'start',
-                },
-            });
-
-            if (leadRef.current) {
-                gsap.set(leadRef.current, { opacity: 0, y: 28, filter: 'blur(8px)' });
-                tl.to(
-                    leadRef.current,
-                    {
-                        opacity: 1,
-                        y: 0,
-                        filter: 'blur(0px)',
-                        duration: 1.15,
-                        ease: 'power3.out',
-                    },
-                    '-=1.05'
-                );
-            }
-
-            if (media) {
-                tl.fromTo(
-                    media,
-                    { scale: 0.94, opacity: 0 },
-                    { scale: 1, opacity: 1, duration: 1.45, ease: 'expo.out' },
-                    '-=0.95'
-                );
-            }
-
-            gridCols.forEach((col, i) => {
+            if (heroRef.current) {
                 gsap.fromTo(
-                    col,
-                    { opacity: 0, y: 48, filter: 'blur(6px)' },
+                    heroRef.current.querySelectorAll('.about-hero__reveal'),
+                    { y: 36, opacity: 0, filter: 'blur(8px)' },
                     {
-                        opacity: 1,
                         y: 0,
+                        opacity: 1,
                         filter: 'blur(0px)',
-                        duration: 1.15,
+                        duration: 1.05,
                         ease: 'power3.out',
-                        delay: i * 0.06,
+                        stagger: 0.12,
+                        delay: 0.15,
+                    }
+                );
+            }
+            if (heroLeadRef.current) {
+                gsap.fromTo(
+                    heroLeadRef.current,
+                    { y: 28, opacity: 0, filter: 'blur(6px)' },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 1.0,
+                        ease: 'power3.out',
+                        delay: 0.35,
+                    }
+                );
+            }
+
+            const blocks = root.querySelectorAll('.about-animate');
+            blocks.forEach((block) => {
+                gsap.fromTo(
+                    block,
+                    { y: 40, opacity: 0, filter: 'blur(6px)' },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 0.95,
+                        ease: 'power3.out',
                         scrollTrigger: {
-                            trigger: col,
-                            start: 'top 82%',
+                            trigger: block,
+                            start: 'top 86%',
                             toggleActions: 'play none none reverse',
                         },
                     }
                 );
             });
-
-            if (mediaFrameRef.current && mediaSectionRef.current) {
-                gsap.to(mediaFrameRef.current, {
-                    yPercent: -5,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: mediaSectionRef.current,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: 1.1,
-                    },
-                });
-            }
-        }, el);
+        }, root);
 
         return () => ctx.revert();
     }, []);
 
-    const splitText = (text) =>
-        text.split('').map((char, i) => (
-            <span key={i} className="hero__char-wrapper inline-block overflow-hidden">
-                <span
-                    className="hero__char inline-block will-change-[transform,filter,opacity]"
-                    style={{ display: 'inline-block' }}
-                >
-                    {char === ' ' ? '\u00A0' : char}
-                </span>
-            </span>
-        ));
-
     return (
         <PageTransition className="about page bg-bg">
-            <div ref={containerRef}>
-                <div className="about__hero relative flex min-h-[75vh] flex-col justify-center overflow-hidden px-16 pt-16 pb-32 max-md:px-8">
-                    <div className="about__hero-split relative z-[2] mx-auto grid max-w-7xl grid-cols-1 items-end gap-8 px-0 text-left max-[900px]:grid-cols-1 max-[900px]:gap-16 md:grid-cols-2 md:gap-12 md:px-16 lg:gap-16">
-                        <div className="about__hero-col about__hero-col--left min-w-0">
-                            <span className="about__label label mb-8 block text-accent-gold">Studio Vortessa</span>
-                            <h1 ref={titleRef} className="about__title font-serif m-0 text-5xl font-normal leading-tight tracking-tight text-text [text-shadow:0_0_80px_rgba(196,200,210,0.06)] sm:text-6xl md:text-7xl lg:text-8xl">
-                                {splitText('Matter.')}
-                                <br />
-                                {splitText('Memory.')}
-                                <br />
-                                {splitText('Obsession.')}
-                            </h1>
-                        </div>
-                        <div className="about__hero-col about__hero-col--right min-w-0 pb-[0.35em] max-[900px]:order-first max-[900px]:pb-0">
-                            <p
-                                ref={leadRef}
-                                className="about__lead font-serif m-0 max-w-xl text-base font-normal leading-loose text-muted md:text-lg"
-                            >
-                                Founded on the principle that objects should possess a gravitational pull, Studio
-                                Vortessa designs furniture that challenges the boundary between brutalism and high
-                                luxury.
-                            </p>
-                        </div>
+            <div ref={rootRef} className="texture-noise texture-noise--footer relative min-h-screen">
+                {/* Hero — catalog / hero split rhythm */}
+                <section className="about__hero relative overflow-hidden border-b border-[rgba(236,238,242,0.06)]">
+                    <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_0%,rgba(212,163,115,0.1),transparent_55%)]" />
+                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_10%_100%,rgba(230,194,135,0.05),transparent_50%)]" />
                     </div>
-
                     <div
-                        className="pointer-events-none absolute h-[600px] w-[600px] rounded-full mix-blend-screen"
-                        style={{
-                            top: '55%',
-                            left: '40%',
-                            transform: 'translate(-50%, -50%)',
-                            opacity: 0.35,
-                            background: 'radial-gradient(circle at center, var(--color-highlight) 0%, transparent 60%)',
-                        }}
-                        aria-hidden
-                    />
-                </div>
-
-                <div className="about__content mx-auto max-w-7xl px-16 pb-64 pt-32 max-md:px-8">
-                    <div className="about__grid grid grid-cols-1 gap-64 max-[900px]:grid-cols-1 max-[900px]:gap-32 md:grid-cols-2">
-                        <div className="about__col">
-                            <p className="about__p font-sans m-0 text-base font-light leading-loose text-muted md:text-lg">
-                                Every piece we create is an exercise in extreme material discipline. We strip away
-                                ornamentation until only structural inevitability remains. Our works are not designed
-                                to fade into the background—they are built to anchor the spaces they inhabit.
-                            </p>
-                        </div>
-                        <div className="about__col">
-                            <p className="about__p font-sans m-0 text-base font-light leading-loose text-muted md:text-lg">
-                                Operating without compromise, we source absolute black marble from ancient quarries,
-                                forge solid titanium, and pour concrete with surgical precision.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div ref={mediaSectionRef} className="about__media mx-auto max-w-screen-2xl px-16 pb-64 max-md:px-8">
-                    <div
-                        ref={mediaFrameRef}
-                        className="about__media-frame about__media-frame--studio relative flex aspect-[21/9] w-full items-end justify-start overflow-hidden bg-surface bg-cover bg-center p-16 max-[900px]:aspect-video max-[900px]:p-8"
-                        style={{ backgroundImage: `url(${STUDIO_ARCHIVE_IMG})` }}
+                        ref={heroRef}
+                        className="relative z-1 mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 px-6 py-20 max-md:gap-12 sm:px-8 md:grid-cols-2 md:gap-16 md:px-12 md:py-28 lg:gap-20 lg:px-16 lg:py-32"
                     >
-                        <span className="label about__media-label relative z-[2] text-text/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-                            Archive — Studio Vortessa 2026
-                        </span>
-                        <span
-                            className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,6,8,0.65)_100%)]"
-                            aria-hidden
-                        />
+                        <div className="about-hero__col about-hero__col--primary min-w-0">
+                            <span className="about-hero__reveal label mb-6 block text-accent-gold">Studio Vortessa</span>
+                            <h1 className="about-hero__reveal font-serif text-5xl font-normal leading-[1.02] tracking-tight text-text [text-shadow:0_0_80px_rgba(212,163,115,0.12)] sm:text-6xl md:text-7xl lg:text-8xl">
+                                About
+                            </h1>
+                            <div className="about-hero__reveal mt-8 h-px w-[60px] bg-[linear-gradient(90deg,var(--color-accent),transparent)]" />
+                        </div>
+                        <div className="about-hero__col about-hero__col--secondary min-w-0 pb-1 max-md:order-first max-md:pb-0 md:pb-2">
+                            <p
+                                ref={heroLeadRef}
+                                className="about__lead font-serif m-0 max-w-lg text-base font-normal leading-loose text-muted md:text-lg"
+                            >
+                                Sculptural furniture and objects between art and function — forms distilled to essence,
+                                materials chosen for permanence.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 md:px-12 md:py-28 lg:px-16 lg:py-32">
+                    <div className="mx-auto max-w-3xl space-y-24 md:space-y-32">
+                        <section className="about-animate">
+                            <SectionBlock eyebrow="Philosophy" title="About studio">
+                                <div className="space-y-6 font-sans text-base font-light leading-loose text-muted md:text-[1.0625rem] md:leading-[1.85]">
+                                    <p>
+                                        Studio Vortessa creates sculptural furniture and objects that exist between art
+                                        and function.
+                                    </p>
+                                    <p>
+                                        The studio approaches furniture as spatial composition — objects that shape
+                                        atmosphere rather than simply occupy space. Through sculptural forms, refined
+                                        materials, and quiet geometry, Studio Vortessa explores a new dimension of living
+                                        where interiors become environments of presence.
+                                    </p>
+                                    <p>
+                                        Guided by the belief that less is more, each piece is reduced to its essential
+                                        form, conceived as an artifact rather than an object of trend.
+                                    </p>
+                                    <p className="text-text/90">
+                                        Forms distilled to their essence. Materials chosen for permanence.
+                                    </p>
+                                    <p className="text-text/90">
+                                        Objects designed to inhabit space with quiet authority.
+                                    </p>
+                                </div>
+                            </SectionBlock>
+                        </section>
+
+                        <section className="about-animate border-t border-[rgba(236,238,242,0.06)] pt-24 md:pt-32">
+                            <SectionBlock eyebrow="Principles" title="Manifesto">
+                                <ul className="list-none space-y-4 border-l border-[rgba(212,163,115,0.25)] pl-6 font-sans text-base font-light lowercase leading-relaxed tracking-normal text-muted md:text-[1.0625rem]">
+                                    <li>art as furniture.</li>
+                                    <li>objects as artifacts.</li>
+                                    <li>spaces as sanctuaries.</li>
+                                </ul>
+                                <ul className="mt-12 list-none space-y-4 border-l border-[rgba(236,238,242,0.12)] pl-6 font-sans text-base font-light lowercase leading-relaxed text-muted md:text-[1.0625rem]">
+                                    <li>silence over excess.</li>
+                                    <li>form over ornament.</li>
+                                    <li>material over trend.</li>
+                                </ul>
+                            </SectionBlock>
+                        </section>
+
+                        <section className="about-animate border-t border-[rgba(236,238,242,0.06)] pt-24 md:pt-32">
+                            <SectionBlock eyebrow="Profile" title="Founder">
+                                <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_min(42%,380px)] lg:items-start lg:gap-16">
+                                    <div className="space-y-6 font-sans text-base font-light leading-loose text-muted md:text-[1.0625rem] md:leading-[1.85]">
+                                        <p>
+                                            Çilga Yesilyaprak is a Turkish–American designer based in New York and the
+                                            founder of Studio Vortessa. Her work explores furniture as collectible
+                                            sculpture, creating objects that feel like artifacts from a future yet to
+                                            arrive.
+                                        </p>
+                                        <p>
+                                            Influenced by celestial geometry, ancient relics, and modern minimalism, she
+                                            designs sculptural pieces that exist between art, architecture, and
+                                            atmosphere — objects intended to transform interiors into environments of
+                                            presence and quiet ritual.
+                                        </p>
+                                        <p>
+                                            Through Studio Vortessa, she develops furniture and objects that explore a new
+                                            dimension of living, where design moves beyond function to shape the emotional
+                                            and spatial experience of a room.
+                                        </p>
+                                        {/* Studio address — add when ready */}
+                                    </div>
+                                    <figure className="about-founder-photo group relative mx-auto w-full max-w-sm overflow-hidden rounded-[2px] bg-surface shadow-[0_24px_90px_rgba(0,0,0,0.55)] ring-1 ring-[rgba(236,238,242,0.06)] lg:mx-0 lg:max-w-none">
+                                        <img
+                                            src={FOUNDER_IMG}
+                                            alt="Çilga Yesilyaprak, founder of Studio Vortessa"
+                                            className="aspect-3/4 h-full w-full object-cover transition-[transform,filter] duration-[1.2s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.03] group-hover:brightness-[1.04] md:aspect-4/5"
+                                            loading="lazy"
+                                        />
+                                        <span
+                                            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(5,6,8,0.35)_100%)]"
+                                            aria-hidden
+                                        />
+                                    </figure>
+                                </div>
+                            </SectionBlock>
+                        </section>
+
+                        <section className="about-animate border-t border-[rgba(236,238,242,0.06)] pb-16 pt-24 md:pb-24 md:pt-32">
+                            <SectionBlock eyebrow="North star" title="Vision">
+                                <p className="max-w-2xl font-serif text-lg font-normal leading-relaxed text-text/95 [text-shadow:0_0_48px_rgba(230,194,135,0.08)] md:text-xl md:leading-relaxed">
+                                    To redefine furniture as sculptural presence, creating a new dimension of living where
+                                    objects transform space into sanctuary.
+                                </p>
+                            </SectionBlock>
+                            <div className="mt-16 flex flex-wrap items-center gap-8 border-t border-[rgba(236,238,242,0.06)] pt-12">
+                                <Link
+                                    to="/catalog"
+                                    className="label text-dim transition-colors duration-300 hover:text-accent-gold"
+                                >
+                                    View catalogue
+                                </Link>
+                                <span className="hidden h-3 w-px bg-border sm:block" aria-hidden />
+                                <Link
+                                    to="/contact"
+                                    className="label text-dim transition-colors duration-300 hover:text-accent-gold"
+                                >
+                                    Contact
+                                </Link>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
