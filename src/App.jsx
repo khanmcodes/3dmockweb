@@ -5,6 +5,7 @@ import {
     Navigate,
     useLocation,
     Outlet,
+    useParams,
 } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -19,6 +20,12 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Product from './pages/Product';
 
+/** Remount product page when slug changes so variant state resets without an effect. */
+function ProductRoute() {
+    const { slug } = useParams();
+    return <Product key={slug} />;
+}
+
 /** Plain outlet — no Framer route wrapper */
 function RootLayout() {
     return <Outlet />;
@@ -31,7 +38,7 @@ function AppRoutes() {
                 <Route index element={<Landing />} />
                 <Route path="shop" element={<Navigate to="/catalog" replace />} />
                 <Route path="catalog" element={<Catalog />} />
-                <Route path="product/:slug" element={<Product />} />
+                <Route path="product/:slug" element={<ProductRoute />} />
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />
             </Route>
@@ -73,7 +80,7 @@ function AppShell() {
             <GrainOverlay />
             <Header />
 
-            <main className="main-content">
+            <main className="block min-h-0">
                 <AppRoutes />
             </main>
         </>

@@ -11,22 +11,21 @@ import Hero from '../sections/Hero';
 import Gallery from '../sections/Gallery';
 import Materials from '../sections/Materials';
 import Closing from '../sections/Closing';
-import './Catalog.css';
 
 function CatalogCard({ product }) {
     const initial = getDefaultVariant(product);
     const [variant, setVariant] = useState(initial);
 
     return (
-        <div className="catalog-card">
-            <div className="catalog-card__image-wrapper">
+        <div className="catalog-card group relative z-0 flex flex-col text-inherit no-underline transition-[opacity,filter,transform] duration-500 ease-in-out group-hover/grid:scale-[0.98] group-hover/grid:opacity-40 group-hover/grid:blur-[2px] hover:z-10 hover:scale-100 hover:!opacity-100 hover:!blur-none">
+            <div className="catalog-card__image-wrapper relative mb-8 aspect-[3/4] w-full cursor-pointer overflow-hidden bg-surface">
                 <Link
                     to={getProductPath(product)}
-                    className="catalog-card__image-hit"
+                    className="catalog-card__image-hit absolute inset-0 z-[1] block overflow-hidden indent-[200%] whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-gold"
                     aria-label={`View ${product.name}`}
                 />
                 <div
-                    className="catalog-card__visual"
+                    className="catalog-card__visual relative z-0 flex h-full w-full items-center justify-center transition-transform duration-[1.2s] [transition-timing-function:cubic-bezier(0.19,1,0.22,1)]"
                     style={
                         variant?.image
                             ? undefined
@@ -36,18 +35,24 @@ function CatalogCard({ product }) {
                     }
                 >
                     {variant?.image ? (
-                        <img src={variant.image} alt="" loading="lazy" />
+                        <img src={variant.image} alt="" loading="lazy" className="block h-full w-full object-cover" />
                     ) : (
-                        <div className="catalog-card__placeholder">Visual pending</div>
+                        <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_70%)] font-sans text-xs font-light tracking-widest text-dim uppercase">
+                            Visual pending
+                        </div>
                     )}
                 </div>
                 {product.variants?.length > 1 ? (
-                    <div className="catalog-card__swatches">
+                    <div className="pointer-events-auto absolute bottom-4 left-4 z-[2] flex gap-1.5 [isolation:isolate]">
                         {product.variants.map((v) => (
                             <button
                                 key={v.id}
                                 type="button"
-                                className={`catalog-card__swatch${v.id === variant?.id ? ' catalog-card__swatch--active' : ''}`}
+                                className={`h-[1.125rem] w-[1.125rem] cursor-pointer rounded-full border border-[rgba(236,238,242,0.35)] p-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.25)] transition-[transform,box-shadow] duration-200 [transition-timing-function:var(--ease-out-expo)] hover:scale-[1.08] ${
+                                    v.id === variant?.id
+                                        ? 'shadow-[inset_0_0_0_1px_rgba(0,0,0,0.3),0_0_0_2px_var(--color-accent-gold)]'
+                                        : ''
+                                }`}
                                 style={{ backgroundColor: v.swatch }}
                                 title={v.label}
                                 aria-label={`${product.name} — ${v.label}`}
@@ -57,12 +62,19 @@ function CatalogCard({ product }) {
                     </div>
                 ) : null}
             </div>
-            <div className="catalog-card__info">
-                <Link to={getProductPath(product)} className="catalog-card__text">
-                    <h2 className="catalog-card__name font-serif">{product.name}</h2>
-                    <span className="catalog-card__material">{product.material}</span>
+            <div className="catalog-card__info flex items-start justify-between gap-8">
+                <Link to={getProductPath(product)} className="catalog-card__text flex min-w-0 flex-1 flex-col gap-2 no-underline text-inherit">
+                    <h2 className="catalog-card__name font-serif text-xl font-normal tracking-normal text-text transition-colors duration-300 group-hover:text-accent-gold md:text-2xl">
+                        {product.name}
+                    </h2>
+                    <span className="catalog-card__material font-sans text-xs tracking-wider text-muted uppercase">
+                        {product.material}
+                    </span>
                 </Link>
-                <Link to={getProductPath(product)} className="catalog-card__price">
+                <Link
+                    to={getProductPath(product)}
+                    className="catalog-card__price shrink-0 font-sans text-sm font-medium tracking-wide text-text no-underline"
+                >
                     {product.price}
                 </Link>
             </div>
@@ -126,17 +138,22 @@ export default function Catalog() {
     }, []);
 
     return (
-        <PageTransition className="catalog page">
+        <PageTransition className="catalog page min-h-screen bg-bg p-0">
             <Hero variant="catalog" />
             <Gallery />
             <Materials />
-            <div className="catalog__container">
-                <div className="catalog__header">
-                    <span className="catalog__title-eyebrow label">Studio Vortessa</span>
-                    <h2 className="catalog__title font-serif">The Collection</h2>
+            <div className="catalog__container mx-auto max-w-screen-2xl px-16 pb-64 pt-64">
+                <div className="catalog__header relative z-[2] mb-48 text-center">
+                    <span className="catalog__title-eyebrow label mb-4 block text-dim">Studio Vortessa</span>
+                    <h2 className="catalog__title font-serif text-4xl font-light tracking-tight text-text [text-shadow:0_0_60px_rgba(255,255,255,0.04)] md:text-5xl lg:text-6xl">
+                        The Collection
+                    </h2>
                 </div>
 
-                <div ref={gridRef} className="catalog__grid">
+                <div
+                    ref={gridRef}
+                    className="catalog__grid group/grid grid grid-cols-1 gap-x-16 gap-y-64 md:grid-cols-2 lg:grid-cols-3"
+                >
                     {products.map((product) => (
                         <CatalogCard key={product.id} product={product} />
                     ))}

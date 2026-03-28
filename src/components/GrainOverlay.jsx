@@ -3,17 +3,12 @@ export default function GrainOverlay() {
 
     return (
         <div
-            className="grain-overlay"
+            className="pointer-events-none fixed inset-0 z-[9999] opacity-[0.05] mix-blend-overlay"
             style={{
-                position: 'fixed',
-                inset: 0,
                 backgroundImage: svgNoise,
                 backgroundRepeat: 'repeat',
-                opacity: 0.05,
-                pointerEvents: 'none',
-                zIndex: 9999,
-                mixBlendMode: 'overlay',
             }}
+            aria-hidden
         />
     );
 }

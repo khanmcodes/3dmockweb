@@ -1,7 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import PageTransition from '../components/PageTransition';
-import './Contact.css';
 
 export default function Contact() {
     const [searchParams] = useSearchParams();
@@ -17,61 +16,92 @@ export default function Contact() {
     }, [piece]);
 
     return (
-        <PageTransition className="contact page">
-            <div className="contact__container">
-                <div className="contact__header">
-                    <h1 className="contact__title font-serif">Inquiries.</h1>
-                    <p className="contact__subtitle font-sans text-muted">
+        <PageTransition className="contact page relative flex min-h-screen items-center overflow-hidden bg-bg px-16 py-64 max-md:px-8">
+            <div className="contact__container relative z-[2] mx-auto w-full max-w-5xl">
+                <div className="contact__header mb-64 grid grid-cols-1 items-end gap-6 max-[900px]:grid-cols-1 max-[900px]:items-start md:gap-10">
+                    <h1 className="contact__title font-serif m-0 text-5xl font-normal leading-tight tracking-tight text-text [text-shadow:0_0_80px_rgba(196,200,210,0.05)] sm:text-6xl md:text-7xl lg:text-8xl">
+                        Inquiries.
+                    </h1>
+                    <p className="contact__subtitle font-sans m-0 max-w-md justify-self-end text-base font-light leading-loose text-muted max-[900px]:max-w-xl max-[900px]:justify-self-start md:text-lg">
                         For commissions, press, or private acquisitions, please leave an encrypted transmission.
                     </p>
                 </div>
 
-                <div className="contact__layout">
-                    <form className="contact__form">
-                        <div className="contact__group">
-                            <label htmlFor="name" className="label">Identity</label>
-                            <input type="text" id="name" className="contact__input font-sans" placeholder="John Doe" />
+                <div className="contact__layout grid grid-cols-1 gap-64 max-[900px]:grid-cols-1 max-[900px]:gap-32 lg:grid-cols-[1fr_300px]">
+                    <form className="contact__form flex flex-col gap-32">
+                        <div className="contact__group flex flex-col gap-2">
+                            <label htmlFor="name" className="label text-accent-gold">
+                                Identity
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                className="contact__input font-sans w-full border-0 border-b border-border bg-transparent py-4 text-xl font-light text-text outline-none transition-colors duration-300 placeholder:text-border focus:border-b-accent-gold md:text-2xl"
+                                placeholder="John Doe"
+                            />
                         </div>
-                        <div className="contact__group">
-                            <label htmlFor="email" className="label">Transmission Point</label>
-                            <input type="email" id="email" className="contact__input font-sans" placeholder="jd@example.com" />
+                        <div className="contact__group flex flex-col gap-2">
+                            <label htmlFor="email" className="label text-accent-gold">
+                                Transmission Point
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                className="contact__input font-sans w-full border-0 border-b border-border bg-transparent py-4 text-xl font-light text-text outline-none transition-colors duration-300 placeholder:text-border focus:border-b-accent-gold md:text-2xl"
+                                placeholder="jd@example.com"
+                            />
                         </div>
-                        <div className="contact__group">
-                            <label htmlFor="message" className="label">Directive</label>
+                        <div className="contact__group flex flex-col gap-2">
+                            <label htmlFor="message" className="label text-accent-gold">
+                                Directive
+                            </label>
                             <textarea
                                 key={piece || 'message'}
                                 id="message"
-                                className="contact__input contact__input--area font-sans"
+                                className="contact__input contact__input--area font-sans w-full resize-none border-0 border-b border-border bg-transparent py-4 text-xl font-light text-text outline-none transition-colors duration-300 placeholder:text-border focus:border-b-accent-gold md:text-2xl"
                                 placeholder="Details regarding your inquiry..."
                                 rows={5}
                                 defaultValue={defaultMessage}
                             />
                         </div>
-                        <button type="submit" className="contact__btn">
-                            <span className="label">Transmit</span>
+                        <button
+                            type="submit"
+                            className="contact__btn group mt-8 self-start border-0 bg-text px-32 py-8 text-bg transition-[background,transform] duration-300 hover:bg-accent-gold"
+                        >
+                            <span className="label font-semibold text-bg">Transmit</span>
                         </button>
                     </form>
 
-                    <div className="contact__info">
+                    <div className="contact__info flex flex-col gap-32 pt-8 max-[900px]:flex-row max-[900px]:justify-between max-[900px]:border-t max-[900px]:border-border max-[900px]:pt-0 max-[600px]:flex-col max-[600px]:gap-32">
                         <div className="contact__block">
-                            <span className="label">Headquarters</span>
-                            <p className="font-serif text-dim">
-                                404 Brutalist Ave,<br />
+                            <span className="label mb-8 block">Headquarters</span>
+                            <p className="font-serif text-dim text-base leading-loose md:text-lg">
+                                404 Brutalist Ave,
+                                <br />
                                 Neo-Reykjavik, 00100
                             </p>
                         </div>
                         <div className="contact__block">
-                            <span className="label">Direct</span>
-                            <p className="font-serif text-dim">
-                                +1 (800) 555-0199<br />
+                            <span className="label mb-8 block">Direct</span>
+                            <p className="font-serif text-dim text-base leading-loose md:text-lg">
+                                +1 (800) 555-0199
+                                <br />
                                 studio@vortessa.com
                             </p>
                         </div>
                     </div>
                 </div>
-                
-                {/* Background glow accent */}
-                <div className="accent-glow" style={{ bottom: '-10%', right: '-10%', opacity: 0.3 }} />
+
+                <div
+                    className="pointer-events-none absolute h-[600px] w-[600px] rounded-full mix-blend-screen"
+                    style={{
+                        bottom: '-10%',
+                        right: '-10%',
+                        opacity: 0.3,
+                        background: 'radial-gradient(circle at center, var(--color-highlight) 0%, transparent 60%)',
+                    }}
+                    aria-hidden
+                />
             </div>
         </PageTransition>
     );

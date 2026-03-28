@@ -1,7 +1,6 @@
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import './Hero.css';
 
 const Scene3D = lazy(() => import('../components/Scene3D'));
 
@@ -191,61 +190,90 @@ export default function Hero({ variant = 'default', layout }) {
 
     const splitText = (text) =>
         text.split('').map((char, i) => (
-            <span key={i} className="hero__char-wrapper">
-                <span className="hero__char">
+            <span key={i} className="inline-block overflow-hidden pb-[0.1em] align-bottom">
+                <span className="hero__char inline-block will-change-[transform,opacity]">
                     {char === ' ' ? '\u00A0' : char}
                 </span>
             </span>
         ));
 
-    const sectionClass = `hero section section--full${isCatalog ? ' hero--catalog' : ''}${isSplit ? ' hero--split' : ''}`;
+    const sectionClass = `hero relative flex h-screen w-full items-center justify-center overflow-hidden bg-bg ${isCatalog ? 'hero--catalog' : ''} ${isSplit ? 'hero--split' : ''}`;
 
     return (
         <section ref={sectionRef} className={sectionClass} id="hero">
-            <div ref={sceneRef} className="hero__scene">
-                <Suspense fallback={<div className="hero__scene-placeholder" aria-hidden />}>
+            <div ref={sceneRef} className="hero__scene absolute inset-0 z-[1] will-change-transform">
+                <Suspense fallback={<div className="h-full w-full bg-bg" aria-hidden />}>
                     <Scene3D />
                 </Suspense>
             </div>
-            <div ref={overlayRef} className="hero__overlay" />
+            <div
+                ref={overlayRef}
+                className="hero__overlay absolute inset-0 z-[2] bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(10,10,10,0.5)_55%,rgba(10,10,10,0.9)_100%)]"
+            />
             <div
                 ref={contentRef}
-                className={`hero__content${isSplit ? ' hero__content--split' : ''}`}
+                className={`hero__content relative z-[3] will-change-[transform,opacity] [perspective:800px] ${
+                    isSplit
+                        ? 'hero__content--split mx-auto grid w-full max-w-7xl grid-cols-1 items-end gap-8 px-4 pb-12 text-left sm:px-8 md:grid-cols-2 md:gap-16 md:px-16 lg:gap-20 lg:pb-24'
+                        : 'text-center'
+                } ${isCatalog && !isSplit ? 'px-8' : ''}`}
             >
                 {isSplit ? (
                     <>
-                        <div className="hero__split-col hero__split-col--primary">
-                            <h1 ref={titleRef} className="hero__title font-serif">
+                        <div className="hero__split-col hero__split-col--primary min-w-0">
+                            <h1
+                                ref={titleRef}
+                                className={`hero__title font-serif font-normal tracking-tight leading-tight text-text [text-shadow:0_0_100px_rgba(212,163,115,0.15)] md:mb-2 ${
+                                    isCatalog
+                                        ? 'text-4xl max-md:text-3xl md:text-7xl lg:text-8xl'
+                                        : 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl'
+                                }`}
+                            >
                                 {splitText(copy.title)}
                             </h1>
-                            <div ref={lineRef} className="hero__line hero__line--split" />
+                            <div
+                                ref={lineRef}
+                                className="hero__line hero__line--split mx-0 mt-8 h-px w-[60px] origin-center bg-[linear-gradient(90deg,transparent,var(--color-accent),transparent)] md:mt-8"
+                            />
                         </div>
-                        <div className="hero__split-col hero__split-col--secondary">
+                        <div className="hero__split-col hero__split-col--secondary min-w-0 pb-[0.2em] max-md:order-first max-md:items-start max-md:pb-0">
                             {copy.description ? (
-                                <p ref={descRef} className="hero__desc font-sans">
+                                <p
+                                    ref={descRef}
+                                    className="hero__desc font-sans mb-8 max-w-lg text-base font-normal leading-loose tracking-normal text-muted md:text-lg"
+                                >
                                     {copy.description}
                                 </p>
                             ) : null}
-                            <p ref={subtitleRef} className="hero__subtitle">
+                            <p ref={subtitleRef} className="hero__subtitle m-0 text-left font-sans text-sm font-medium tracking-widest text-accent uppercase">
                                 {splitText(copy.subtitle)}
                             </p>
                         </div>
                     </>
                 ) : (
                     <>
-                        <h1 ref={titleRef} className="hero__title font-serif">
+                        <h1
+                            ref={titleRef}
+                            className="hero__title font-serif mb-2 text-6xl font-normal tracking-tight leading-tight text-text sm:text-7xl md:text-8xl lg:text-9xl [text-shadow:0_0_100px_rgba(212,163,115,0.15)]"
+                        >
                             {splitText(copy.title)}
                         </h1>
-                        <div ref={lineRef} className="hero__line" />
-                        <p ref={subtitleRef} className="hero__subtitle">
+                        <div
+                            ref={lineRef}
+                            className="hero__line mx-auto my-8 h-px w-[60px] origin-center bg-[linear-gradient(90deg,transparent,var(--color-accent),transparent)]"
+                        />
+                        <p ref={subtitleRef} className="hero__subtitle font-sans text-sm font-medium tracking-widest text-accent uppercase">
                             {splitText(copy.subtitle)}
                         </p>
                     </>
                 )}
             </div>
-            <div ref={scrollIndicatorRef} className="hero__scroll-indicator">
-                <span className="hero__scroll-text label">Scroll</span>
-                <div className="hero__scroll-line" />
+            <div
+                ref={scrollIndicatorRef}
+                className="hero__scroll-indicator absolute bottom-16 left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2"
+            >
+                <span className="hero__scroll-text label text-dim">Scroll</span>
+                <div className="hero__scroll-line h-12 w-px origin-top animate-scroll-pulse bg-[linear-gradient(to_bottom,var(--color-text-dim),transparent)]" />
             </div>
         </section>
     );

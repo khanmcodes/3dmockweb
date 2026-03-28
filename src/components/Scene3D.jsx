@@ -12,7 +12,7 @@ function useNoiseTexture() {
         const ctx = canvas.getContext('2d');
         const imageData = ctx.createImageData(size, size);
         for (let i = 0; i < imageData.data.length; i += 4) {
-            const n = 90 + Math.random() * 165;
+            const n = 90 + (((i * 2654435761) >>> 0) % 166);
             imageData.data[i] = n;
             imageData.data[i + 1] = n;
             imageData.data[i + 2] = n;

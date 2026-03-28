@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageTransition from '../components/PageTransition';
-import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,10 +109,10 @@ export default function About() {
 
     const splitText = (text) =>
         text.split('').map((char, i) => (
-            <span key={i} className="hero__char-wrapper" style={{ display: 'inline-block', overflow: 'hidden' }}>
+            <span key={i} className="hero__char-wrapper inline-block overflow-hidden">
                 <span
-                    className="hero__char"
-                    style={{ display: 'inline-block', willChange: 'transform, filter, opacity' }}
+                    className="hero__char inline-block will-change-[transform,filter,opacity]"
+                    style={{ display: 'inline-block' }}
                 >
                     {char === ' ' ? '\u00A0' : char}
                 </span>
@@ -121,13 +120,13 @@ export default function About() {
         ));
 
     return (
-        <PageTransition className="about page">
+        <PageTransition className="about page bg-bg">
             <div ref={containerRef}>
-                <div className="about__hero">
-                    <div className="about__hero-split">
-                        <div className="about__hero-col about__hero-col--left">
-                            <span className="about__label label">Studio Vortessa</span>
-                            <h1 ref={titleRef} className="about__title font-serif">
+                <div className="about__hero relative flex min-h-[75vh] flex-col justify-center overflow-hidden px-16 pt-16 pb-32 max-md:px-8">
+                    <div className="about__hero-split relative z-[2] mx-auto grid max-w-7xl grid-cols-1 items-end gap-8 px-0 text-left max-[900px]:grid-cols-1 max-[900px]:gap-16 md:grid-cols-2 md:gap-12 md:px-16 lg:gap-16">
+                        <div className="about__hero-col about__hero-col--left min-w-0">
+                            <span className="about__label label mb-8 block text-accent-gold">Studio Vortessa</span>
+                            <h1 ref={titleRef} className="about__title font-serif m-0 text-5xl font-normal leading-tight tracking-tight text-text [text-shadow:0_0_80px_rgba(196,200,210,0.06)] sm:text-6xl md:text-7xl lg:text-8xl">
                                 {splitText('Matter.')}
                                 <br />
                                 {splitText('Memory.')}
@@ -135,47 +134,62 @@ export default function About() {
                                 {splitText('Obsession.')}
                             </h1>
                         </div>
-                        <div className="about__hero-col about__hero-col--right">
-                            <p ref={leadRef} className="about__lead font-serif">
-                                Founded on the principle that objects should possess a gravitational pull,
-                                Studio Vortessa designs furniture that challenges the boundary between
-                                brutalism and high luxury.
+                        <div className="about__hero-col about__hero-col--right min-w-0 pb-[0.35em] max-[900px]:order-first max-[900px]:pb-0">
+                            <p
+                                ref={leadRef}
+                                className="about__lead font-serif m-0 max-w-xl text-base font-normal leading-loose text-muted md:text-lg"
+                            >
+                                Founded on the principle that objects should possess a gravitational pull, Studio
+                                Vortessa designs furniture that challenges the boundary between brutalism and high
+                                luxury.
                             </p>
                         </div>
                     </div>
 
                     <div
-                        className="accent-glow"
-                        style={{ top: '55%', left: '40%', transform: 'translate(-50%, -50%)', opacity: 0.35 }}
+                        className="pointer-events-none absolute h-[600px] w-[600px] rounded-full mix-blend-screen"
+                        style={{
+                            top: '55%',
+                            left: '40%',
+                            transform: 'translate(-50%, -50%)',
+                            opacity: 0.35,
+                            background: 'radial-gradient(circle at center, var(--color-highlight) 0%, transparent 60%)',
+                        }}
+                        aria-hidden
                     />
                 </div>
 
-                <div className="about__content">
-                    <div className="about__grid">
+                <div className="about__content mx-auto max-w-7xl px-16 pb-64 pt-32 max-md:px-8">
+                    <div className="about__grid grid grid-cols-1 gap-64 max-[900px]:grid-cols-1 max-[900px]:gap-32 md:grid-cols-2">
                         <div className="about__col">
-                            <p className="about__p font-sans text-muted">
-                                Every piece we create is an exercise in extreme material discipline. We strip
-                                away ornamentation until only structural inevitability remains. Our works are
-                                not designed to fade into the background—they are built to anchor the spaces
-                                they inhabit.
+                            <p className="about__p font-sans m-0 text-base font-light leading-loose text-muted md:text-lg">
+                                Every piece we create is an exercise in extreme material discipline. We strip away
+                                ornamentation until only structural inevitability remains. Our works are not designed
+                                to fade into the background—they are built to anchor the spaces they inhabit.
                             </p>
                         </div>
                         <div className="about__col">
-                            <p className="about__p font-sans text-muted">
-                                Operating without compromise, we source absolute black marble from ancient
-                                quarries, forge solid titanium, and pour concrete with surgical precision.
+                            <p className="about__p font-sans m-0 text-base font-light leading-loose text-muted md:text-lg">
+                                Operating without compromise, we source absolute black marble from ancient quarries,
+                                forge solid titanium, and pour concrete with surgical precision.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div ref={mediaSectionRef} className="about__media">
+                <div ref={mediaSectionRef} className="about__media mx-auto max-w-screen-2xl px-16 pb-64 max-md:px-8">
                     <div
                         ref={mediaFrameRef}
-                        className="about__media-frame about__media-frame--studio"
+                        className="about__media-frame about__media-frame--studio relative flex aspect-[21/9] w-full items-end justify-start overflow-hidden bg-surface bg-cover bg-center p-16 max-[900px]:aspect-video max-[900px]:p-8"
                         style={{ backgroundImage: `url(${STUDIO_ARCHIVE_IMG})` }}
                     >
-                        <span className="label about__media-label">Archive — Studio Vortessa 2026</span>
+                        <span className="label about__media-label relative z-[2] text-text/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+                            Archive — Studio Vortessa 2026
+                        </span>
+                        <span
+                            className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,6,8,0.65)_100%)]"
+                            aria-hidden
+                        />
                     </div>
                 </div>
             </div>
