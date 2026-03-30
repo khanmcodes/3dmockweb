@@ -59,6 +59,16 @@
     }
 }
 
+@keyframes voidStarTwinkle {
+    0%,
+    100% {
+        opacity: 0.15;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
 @keyframes heroFloatDrift {
     0%,
     100% {

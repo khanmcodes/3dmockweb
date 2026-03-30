@@ -69,6 +69,16 @@ function ScrollRestorationWithLenis() {
         });
     }, [pathname, lenisRef]);
 
+    useEffect(() => {
+        const lenis = lenisRef.current;
+        if (!lenis) return;
+        if (pathname === '/') {
+            lenis.stop();
+        } else {
+            lenis.start();
+        }
+    }, [pathname, lenisRef]);
+
     return null;
 }
 

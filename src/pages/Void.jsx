@@ -1,21 +1,8 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion as Motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition';
-import { catalogImagePath } from '../data/products';
-
-const Scene3D = lazy(() => import('../components/Scene3D'));
-
-const MOSAIC = [
-    catalogImagePath('diningtable.webp'),
-    catalogImagePath('chair.webp'),
-    catalogImagePath('coffeetable.webp'),
-    catalogImagePath('sidetable.webp'),
-    catalogImagePath('loungebed.webp'),
-    catalogImagePath('workdesk.webp'),
-];
-
-const VIDEO_SRC = encodeURI('/VORTESSAWEB Material/PICTURES.jpg/Untitled-design.mp4');
+import VoidStarfield from '../components/VoidStarfield';
 
 export default function Void() {
     const navigate = useNavigate();
@@ -30,62 +17,32 @@ export default function Void() {
     }, []);
 
     return (
-        <PageTransition className="relative min-h-dvh min-h-screen overflow-hidden bg-bg">
+        <PageTransition className="fixed inset-0 z-0 box-border overflow-hidden overscroll-none bg-bg">
             <div className="absolute inset-0 z-0" aria-hidden>
-                <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-0.5 saturate-[0.85] contrast-[1.05]">
-                    {MOSAIC.map((src, i) => (
-                        <div key={`void-mosaic-${i}`} className="overflow-hidden bg-surface">
-                            <img
-                                src={src}
-                                alt=""
-                                className="h-full w-full scale-[1.02] object-cover opacity-[0.88] motion-reduce:scale-100"
-                            />
-                        </div>
-                    ))}
-                </div>
-                {!reduceMotion ? (
-                    <video
-                        className="pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover opacity-[0.32] mix-blend-soft-light"
-                        src={VIDEO_SRC}
-                        muted
-                        playsInline
-                        autoPlay
-                        loop
-                        aria-hidden
-                    />
-                ) : null}
-                <div className="pointer-events-none absolute inset-0 z-[2] opacity-[0.07]" aria-hidden>
-                    <Suspense fallback={null}>
-                        <Scene3D variant="void" className="h-full w-full" />
-                    </Suspense>
-                </div>
+                <VoidStarfield reduceMotion={reduceMotion} />
                 <div
-                    className="pointer-events-none absolute inset-0 z-[3] bg-[linear-gradient(105deg,rgba(5,6,8,0.92)_0%,rgba(5,6,8,0.72)_38%,rgba(5,6,8,0.55)_55%,rgba(5,6,8,0.88)_100%)]"
+                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_120%_100%_at_50%_20%,transparent_0%,rgba(5,6,8,0.35)_50%,rgba(5,6,8,0.88)_100%)]"
                     aria-hidden
                 />
                 <div
-                    className="pointer-events-none absolute inset-0 z-[4] bg-[radial-gradient(ellipse_75%_65%_at_50%_50%,transparent_0%,rgba(5,6,8,0.25)_55%,rgba(5,6,8,0.9)_100%)]"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bg"
                     aria-hidden
                 />
             </div>
 
-            <div className="pointer-events-none absolute inset-0 z-[5]" aria-hidden>
-                <span className="absolute top-6 right-[8%] left-[8%] z-[5] h-px bg-[linear-gradient(90deg,transparent,rgba(197,202,211,0.45),transparent)] opacity-50" />
-                <span className="absolute top-[18%] bottom-[22%] left-6 z-[5] w-px max-[840px]:hidden bg-[linear-gradient(180deg,transparent,rgba(197,202,211,0.4),transparent)]" />
-            </div>
-
-            <div className="relative z-[6] mx-auto grid min-h-dvh min-h-screen max-w-7xl grid-cols-1 items-center gap-8 px-6 pb-8 pt-20 max-[840px]:content-center max-[840px]:gap-8 sm:px-8 md:grid-cols-2 md:gap-12 md:px-12 md:pt-24 lg:gap-16 lg:pb-12 lg:pt-28">
-                <div className="min-w-0">
+            <main className="relative z-10 flex h-full min-h-0 w-full flex-col items-center justify-center overscroll-none px-5 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] text-center sm:px-8">
+                <div className="flex min-h-0 w-full max-w-3xl flex-shrink-0 flex-col items-center justify-center gap-2 overflow-hidden sm:max-w-4xl sm:gap-3 md:max-w-4xl md:gap-4 lg:max-w-5xl lg:gap-5 [@media(max-height:700px)]:gap-1.5 [@media(max-height:700px)]:sm:gap-2">
                     <Motion.p
-                        className="mb-5 font-void-ui text-xs font-medium tracking-widest text-muted uppercase"
+                        className="font-void-ui shrink-0 text-xs font-medium tracking-widest text-muted uppercase"
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        stud10 vort3554
+                        Studio Vortessa
                     </Motion.p>
+
                     <Motion.h1
-                        className="font-void-display mb-8 text-5xl font-normal leading-none tracking-tight text-balance text-text sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
+                        className="font-void-display shrink-0 text-4xl font-normal leading-none tracking-tight text-balance text-text sm:text-5xl md:text-6xl md:leading-[0.95] lg:text-7xl xl:text-8xl [@media(max-height:700px)]:text-3xl [@media(max-height:700px)]:sm:text-4xl"
                         initial={{ opacity: 0, y: 28 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
@@ -94,23 +51,50 @@ export default function Void() {
                         <br />
                         Vortessa
                     </Motion.h1>
+
+                    <Motion.p
+                        className="font-void-ui line-clamp-3 max-w-lg shrink-0 text-balance text-sm font-normal leading-snug text-muted sm:line-clamp-none sm:text-base sm:leading-relaxed md:max-w-2xl md:text-lg [@media(max-height:700px)]:text-xs [@media(max-height:700px)]:leading-snug"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.9, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        Sculptural furniture and objects — graphite, silver, and deep black. Spaces that stay quiet
+                        and sharp.
+                    </Motion.p>
+
                     <Motion.div
-                        className="flex flex-wrap items-center gap-8"
+                        className="h-px w-32 max-w-full shrink-0 bg-[linear-gradient(90deg,transparent,var(--color-accent-gold),transparent)] sm:w-40 md:w-48"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        style={{ transformOrigin: 'center center' }}
+                        transition={{ duration: 1.1, delay: 0.7, ease: [0.65, 0, 0.35, 1] }}
+                    />
+
+                    <Motion.p
+                        className="font-void-ui shrink-0 text-xs font-medium tracking-widest text-dim uppercase [@media(max-height:700px)]:hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.85 }}
+                    >
+                        Steel · Stone · Upholstery
+                        <span className="text-accent"> · Bronze detail</span>
+                    </Motion.p>
+
+                    <Motion.div
+                        className="mt-1 flex shrink-0 flex-col items-center gap-4 sm:mt-0 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-8 md:gap-10 [@media(max-height:700px)]:gap-3"
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.75, delay: 0.95, ease: [0.16, 1, 0.3, 1] }}
                     >
                         <button
                             type="button"
-                            className="font-void-ui group relative inline-flex shrink-0 cursor-pointer items-center gap-3 rounded-full border border-white/14 bg-[rgba(236,238,242,0.08)] px-7 py-3.5 text-sm font-semibold tracking-wide text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_10px_40px_rgba(0,0,0,0.45),0_0_0_1px_rgba(212,163,115,0.08)] backdrop-blur-2xl transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:border-accent-gold/40 hover:bg-[rgba(236,238,242,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_16px_48px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,163,115,0.22),0_0_40px_rgba(212,163,115,0.12)] active:translate-y-0 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-accent max-[480px]:w-full max-[480px]:justify-center max-[480px]:px-6 max-[480px]:py-4"
+                            className="font-void-ui group inline-flex cursor-pointer items-center gap-3 rounded-full border border-white/14 bg-[rgba(236,238,242,0.08)] px-6 py-3 text-sm font-semibold tracking-wide text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_10px_40px_rgba(0,0,0,0.45),0_0_0_1px_rgba(212,163,115,0.08)] backdrop-blur-2xl transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:border-accent-gold/40 hover:bg-[rgba(236,238,242,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_16px_48px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,163,115,0.22),0_0_40px_rgba(212,163,115,0.12)] active:translate-y-0 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-accent [@media(max-height:700px)]:px-5 [@media(max-height:700px)]:py-2.5 [@media(max-height:700px)]:text-xs"
                             onClick={() => navigate('/catalog')}
                             aria-label="Enter the void — open catalog"
                         >
-                            <span className="text-balance">
-                                Enter the void
-                            </span>
+                            <span className="text-balance">Enter the void</span>
                             <span
-                                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs opacity-80 transition-[transform,opacity,background-color] duration-300 group-hover:translate-x-0.5 group-hover:bg-accent-gold/25 group-hover:opacity-100"
+                                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs opacity-80 transition-[transform,opacity,background-color] duration-300 group-hover:translate-x-0.5 group-hover:bg-accent-gold/25 group-hover:opacity-100 sm:h-7 sm:w-7"
                                 aria-hidden
                             >
                                 →
@@ -124,34 +108,7 @@ export default function Void() {
                         </Link>
                     </Motion.div>
                 </div>
-
-                <div className="min-w-0 pt-0 max-[840px]:order-first max-[840px]:pt-0 md:pt-2">
-                    <Motion.p
-                        className="font-void-ui mb-6 max-w-lg text-balance text-base font-normal leading-relaxed tracking-normal text-muted md:text-lg"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.9, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                        interdimensional altarware for cosmic beings.
-                    </Motion.p>
-                    <Motion.div
-                        className="mb-5 h-px max-w-48 origin-left bg-[linear-gradient(90deg,var(--color-accent-gold),transparent)]"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        style={{ transformOrigin: 'left center' }}
-                        transition={{ duration: 1.1, delay: 0.7, ease: [0.65, 0, 0.35, 1] }}
-                    />
-                    <Motion.p
-                        className="font-void-ui m-0 text-xs font-medium tracking-widest text-dim uppercase"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.85 }}
-                    >
-                        Steel. Stone. Upholstery.
-                        <span className="text-accent"> Bronze detail.</span>
-                    </Motion.p>
-                </div>
-            </div>
+            </main>
         </PageTransition>
     );
 }
