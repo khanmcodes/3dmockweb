@@ -1,18 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
     products,
     getProductPath,
     getDefaultVariant,
-    catalogImagePath,
 } from '../data/products';
 import PageTransition from '../components/PageTransition';
 import Hero from '../sections/Hero';
 import Gallery from '../sections/Gallery';
 import Closing from '../sections/Closing';
 
-const CATALOG_HERO_CHAIR_SRC = catalogImagePath('chair.webp');
+gsap.registerPlugin(ScrollTrigger);
+
+function picPath(filename) {
+    const normalized = filename.startsWith('(') ? ` ${filename}` : filename;
+    return encodeURI(`/VORTESSAWEB Material/PICTURES.jpg/${normalized}`);
+}
+
+const LOOKBOOK_IMAGES = [
+    { src: picPath('(1).webp'), alt: 'Studio showroom — full collection', span: 'col-span-2', aspect: 'aspect-[21/9]' },
+    { src: picPath('(2).webp'), alt: 'Silver chair with neon portal', span: 'col-span-1 row-span-2', aspect: 'aspect-auto h-full' },
+    { src: picPath('(3).webp'), alt: 'Metallic loveseat', span: 'col-span-1', aspect: 'aspect-[4/3]' },
+    { src: picPath('(6).webp'), alt: 'Futuristic staircase sculpture', span: 'col-span-1', aspect: 'aspect-[4/3]' },
+    { src: picPath('(8).webp'), alt: 'Chrome spheres study', span: 'col-span-2', aspect: 'aspect-[21/9]' },
+];
 
 function CatalogCard({ product }) {
     const initial = getDefaultVariant(product);
@@ -86,8 +99,53 @@ function CatalogCard({ product }) {
 
 export default function Catalog() {
     const gridRef = useRef(null);
+    const lookbookRef = useRef(null);
 
     useEffect(() => {
+        // Lookbook scroll reveals
+        if (lookbookRef.current) {
+            const cells = lookbookRef.current.querySelectorAll('.lookbook-cell');
+            cells.forEach((cell, i) => {
+                gsap.fromTo(
+                    cell,
+                    {
+                        clipPath: 'inset(8% 8% 8% 8%)',
+                        scale: 0.95,
+                        opacity: 0,
+                    },
+                    {
+                        clipPath: 'inset(0% 0% 0% 0%)',
+                        scale: 1,
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: cell,
+                            start: 'top 85%',
+                            toggleActions: 'play none none reverse',
+                        },
+                        delay: i * 0.08,
+                    }
+                );
+
+                // Parallax on each image
+                const img = cell.querySelector('img');
+                if (img) {
+                    gsap.to(img, {
+                        yPercent: -8,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: cell,
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 1,
+                        },
+                    });
+                }
+            });
+        }
+
+        // Product card parallax
         const cards = gridRef.current?.querySelectorAll('.catalog-card');
         if (!cards) return;
 
@@ -100,10 +158,8 @@ export default function Catalog() {
                 const rect = wrapper.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-
                 const distX = (x - centerX) / centerX;
                 const distY = (y - centerY) / centerY;
 
@@ -142,25 +198,67 @@ export default function Catalog() {
     return (
         <PageTransition className="catalog page relative min-h-screen bg-bg p-0">
             <Hero />
-            {/* Page-level focal cutout: sits on the first-viewport / gallery seam, not part of Hero */}
-            <div
-                className="pointer-events-none absolute z-20 w-[min(92vw,880px)] max-w-[920px] right-2 -translate-y-1/2 max-md:w-[min(94vw,540px)] will-change-transform select-none"
-                style={{ top: '100dvh' }}
-                aria-hidden
-            >
-                <div className="hero-float-drift">
-                    <img
-                        src={CATALOG_HERO_CHAIR_SRC}
-                        alt=""
-                        width={900}
-                        height={900}
-                        fetchPriority="high"
-                        className="mx-auto h-auto w-full object-contain opacity-100 saturate-[1.02] contrast-[1.08] drop-shadow-[0_48px_110px_rgba(0,0,0,0.75)]"
-                        decoding="async"
-                    />
-                </div>
-            </div>
             <Gallery />
+
+            {/* ━━━━━━━━━━ Lookbook — Editorial Bento Grid ━━━━━━━━━━ */}
+            <section className="lookbook relative z-0 border-t border-[rgba(236,238,242,0.06)] bg-bg">
+                <div className="mx-auto max-w-screen-2xl px-6 py-24 sm:px-8 md:px-16 md:py-36">
+                    {/* Section header */}
+                    <div className="relative mb-16 text-center md:mb-24">
+                        <span className="label mb-4 block text-accent-gold/70">Visual Diary</span>
+                        <h2 className="font-serif text-4xl font-light tracking-tight text-text md:text-5xl lg:text-6xl">
+                            The Atelier
+                        </h2>
+                        <div className="mx-auto mt-6 h-px w-[80px] bg-[linear-gradient(90deg,transparent,var(--color-accent-gold),transparent)]" />
+                        <p className="mx-auto mt-6 max-w-lg font-sans text-base font-light leading-relaxed text-muted">
+                            A glimpse into the world of Studio Vortessa — materials, forms, and the spaces they inhabit.
+                        </p>
+                    </div>
+
+                    {/* Bento grid */}
+                    <div
+                        ref={lookbookRef}
+                        className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3"
+                    >
+                        {LOOKBOOK_IMAGES.map((img, i) => (
+                            <div
+                                key={i}
+                                className={`lookbook-cell group relative overflow-hidden rounded-[2px] bg-surface ring-1 ring-[rgba(236,238,242,0.06)] will-change-[clip-path] ${
+                                    i === 0 ? 'md:col-span-2 lg:col-span-2' :
+                                    i === 1 ? 'md:row-span-2' :
+                                    i === 4 ? 'md:col-span-2 lg:col-span-2' :
+                                    ''
+                                }`}
+                            >
+                                <div className={`relative w-full overflow-hidden ${
+                                    i === 0 ? 'aspect-[21/9]' :
+                                    i === 1 ? 'aspect-auto h-full min-h-[400px]' :
+                                    i === 4 ? 'aspect-[21/9]' :
+                                    'aspect-[4/3]'
+                                }`}>
+                                    <img
+                                        src={img.src}
+                                        alt={img.alt}
+                                        className="h-full w-full object-cover brightness-[0.85] contrast-[1.08] saturate-[0.92] transition-[transform,filter] duration-[1.4s] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform group-hover:scale-[1.04] group-hover:brightness-[1]"
+                                        loading="lazy"
+                                    />
+                                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(5,6,8,0.4)] via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-30" />
+                                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100 bg-[linear-gradient(135deg,rgba(212,163,115,0.06)_0%,transparent_50%)]" />
+                                </div>
+
+                                {/* Floating label on hover */}
+                                <div className="absolute bottom-4 left-5 z-[2] translate-y-3 opacity-0 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0 group-hover:opacity-100">
+                                    <span className="label text-text/70 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
+                                        {img.alt}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ━━━━━━━━━━ Product Collection ━━━━━━━━━━ */}
             <section className="catalog__collection texture-noise relative z-0 border-t border-[rgba(236,238,242,0.06)]">
             <div className="catalog__container mx-auto max-w-screen-2xl px-16 pb-64 pt-64">
                 <div className="catalog__header relative z-[2] mb-48 text-center">

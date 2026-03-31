@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
+function picPath(filename) {
+    const normalized = filename.startsWith('(') ? ` ${filename}` : filename;
+    return encodeURI(`/VORTESSAWEB Material/PICTURES.jpg/${normalized}`);
+}
+
+const FOOTER_BG_GIF = picPath('(4).GIF');
+
 export default function Closing() {
     const ref = useScrollAnimation((el, gsap) => {
         const tagline = el.querySelector('.closing__tagline');
@@ -35,6 +42,15 @@ export default function Closing() {
             id="closing"
             style={{ fontFamily: 'var(--font-mono)' }}
         >
+            <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden>
+                <img
+                    src={FOOTER_BG_GIF}
+                    alt=""
+                    className="h-full w-full object-cover opacity-[0.2] brightness-[0.35] contrast-[1.1] saturate-[0.75]"
+                    loading="lazy"
+                />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_45%,transparent_10%,rgba(10,11,13,0.55)_60%,rgba(10,11,13,0.9)_100%)]" />
+            </div>
             <div className="closing__inner relative z-[2] mx-auto flex min-h-[inherit] max-w-[1400px] flex-col">
                 <p className="closing__tagline mx-auto max-w-4xl text-center text-[0.65rem] font-normal leading-relaxed tracking-[0.28em] uppercase md:text-xs">
                     A new dimension of living — where furniture becomes art and spaces become sanctuaries.
