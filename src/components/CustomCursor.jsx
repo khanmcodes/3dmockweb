@@ -111,7 +111,7 @@ export default function CustomCursor() {
                 });
             });
 
-            document.querySelectorAll('.catalog-card, .gallery-card').forEach((el) => {
+            document.querySelectorAll('.catalog-card, .atlas-card, .gallery-card').forEach((el) => {
                 el.addEventListener('mouseenter', () => {
                     isHoveringView = true;
                     cursor.style.mixBlendMode = 'normal';
@@ -170,7 +170,7 @@ export default function CustomCursor() {
             </div>
             <div
                 ref={dotRef}
-                className="absolute top-0 left-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e8e6e3] will-change-[transform,width,height,border-radius]"
+                className="absolute top-0 left-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-metallic will-change-[transform,width,height,border-radius]"
             />
         </div>
     );

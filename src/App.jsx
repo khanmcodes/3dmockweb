@@ -38,6 +38,7 @@ function AppRoutes() {
                 <Route index element={<Landing />} />
                 <Route path="shop" element={<Navigate to="/catalog" replace />} />
                 <Route path="catalog" element={<Catalog />} />
+                <Route path="catalog2" element={<Navigate to="/catalog" replace />} />
                 <Route path="product/:slug" element={<ProductRoute />} />
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />

@@ -361,7 +361,7 @@ export default function About() {
                             aria-hidden
                         />
                     </div>
-                    <div className="pointer-events-none absolute inset-0 z-[2] bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,transparent_0%,rgba(5,6,8,0.4)_55%,rgba(5,6,8,0.92)_100%)]" aria-hidden />
+                    <div className="pointer-events-none absolute inset-0 z-[2] bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,transparent_0%,rgba(58,58,60,0.4)_55%,rgba(58,58,60,0.92)_100%)]" aria-hidden />
                     <div
                         ref={heroOverlayRef}
                         className="pointer-events-none absolute inset-0 z-[3] bg-bg opacity-0"
@@ -395,7 +395,7 @@ export default function About() {
 
                                     {/* Character-by-character title reveal */}
                                     <h1
-                                        className="font-serif text-6xl font-normal leading-[0.98] tracking-tight text-text [perspective:600px] sm:text-7xl md:text-8xl lg:text-9xl"
+                                        className="heading-serif text-6xl font-normal leading-[0.98] text-text [perspective:600px] sm:text-7xl md:text-8xl lg:text-9xl"
                                         aria-label={HERO_TITLE}
                                     >
                                         {HERO_TITLE.split('').map((char, i) => (
@@ -436,7 +436,7 @@ export default function About() {
                 >
                     <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_80%_20%,rgba(212,163,115,0.09),transparent_55%)]" />
-                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_5%_90%,rgba(184,190,200,0.05),transparent_48%)]" />
+                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_5%_90%,rgba(196,194,190,0.06),transparent_48%)]" />
                     </div>
 
                     <div className="relative z-[1] mx-auto max-w-7xl px-6 py-24 sm:px-8 md:px-12 md:py-32 lg:px-16 lg:py-40">
@@ -495,7 +495,7 @@ export default function About() {
                                         loading="lazy"
                                     />
                                     <span
-                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,6,8,0.4)_100%)]"
+                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(58,58,60,0.4)_100%)]"
                                         aria-hidden
                                     />
                                 </div>
@@ -535,7 +535,7 @@ export default function About() {
                                         loading="lazy"
                                     />
                                     <span
-                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(5,6,8,0.35)] to-transparent"
+                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(58,58,60,0.35)] to-transparent"
                                         aria-hidden
                                     />
                                     {/* 3D tilt effect on hover via CSS */}
@@ -549,7 +549,7 @@ export default function About() {
                         <header className="mb-10 md:mb-14">
                             <span className="label mb-5 block text-dim">Principles</span>
                             <div className="mb-5 h-px w-[60px] origin-left bg-accent" />
-                            <h2 className="font-serif text-3xl font-normal leading-tight tracking-tight text-text md:text-4xl">
+                            <h2 className="text-3xl font-normal leading-tight text-text md:text-4xl">
                                 Manifesto
                             </h2>
                             <div className="mt-5 h-px w-full bg-[linear-gradient(90deg,rgba(212,163,115,0.35),transparent_65%)]" />
@@ -594,7 +594,7 @@ export default function About() {
                                         />
                                     </div>
                                     <span
-                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(5,6,8,0.35)_100%)]"
+                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(58,58,60,0.35)_100%)]"
                                         aria-hidden
                                     />
                                 </figure>
@@ -602,9 +602,9 @@ export default function About() {
 
                             {/* Glassmorphism text panel — overlaps the image */}
                             <div className="founder-glass relative lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-[52%] lg:max-w-[520px]">
-                                <div className="relative rounded-[4px] border border-[rgba(236,238,242,0.08)] bg-[rgba(5,6,8,0.65)] px-8 py-10 shadow-[0_32px_80px_rgba(0,0,0,0.6)] backdrop-blur-[24px] md:px-12 md:py-14 lg:-ml-16">
+                                <div className="relative rounded-[4px] border border-[rgba(236,238,242,0.08)] bg-[rgba(58,58,60,0.65)] px-8 py-10 shadow-[0_32px_80px_rgba(0,0,0,0.6)] backdrop-blur-[24px] md:px-12 md:py-14 lg:-ml-16">
                                     <span className="label mb-3 block text-accent-gold">Profile</span>
-                                    <h2 className="font-serif text-3xl font-normal leading-tight tracking-tight text-text mb-8 md:text-4xl">
+                                    <h2 className="mb-8 text-3xl font-normal leading-tight text-text md:text-4xl">
                                         Founder
                                     </h2>
                                     <div className="mb-8 h-px w-full bg-[linear-gradient(90deg,rgba(212,163,115,0.35),transparent_65%)]" />
@@ -649,7 +649,7 @@ export default function About() {
                             className="h-full w-full object-cover brightness-[0.3] contrast-[1.2] saturate-[0.7]"
                         />
                     </div>
-                    <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_75%_60%_at_50%_50%,transparent_0%,rgba(5,6,8,0.55)_55%,rgba(5,6,8,0.94)_100%)]" aria-hidden />
+                    <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_75%_60%_at_50%_50%,transparent_0%,rgba(58,58,60,0.55)_55%,rgba(58,58,60,0.94)_100%)]" aria-hidden />
                     <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-bg/60 via-transparent to-bg/80" aria-hidden />
 
                     {/* Floating decorative orbs */}

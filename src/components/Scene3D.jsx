@@ -12,7 +12,7 @@ function useNoiseTexture() {
         const ctx = canvas.getContext('2d');
         const imageData = ctx.createImageData(size, size);
         for (let i = 0; i < imageData.data.length; i += 4) {
-            const n = 90 + (((i * 2654435761) >>> 0) % 166);
+            const n = 118 + (((i * 2654435761) >>> 0) % 92);
             imageData.data[i] = n;
             imageData.data[i + 1] = n;
             imageData.data[i + 2] = n;
@@ -43,13 +43,14 @@ function SculpturalObject() {
         <mesh ref={meshRef}>
             <torusKnotGeometry args={[1.2, 0.4, 128, 32, 2, 3]} />
             <meshPhysicalMaterial
-                color="#080808"
-                emissive="#000000"
-                roughness={0.15}
+                color="#b0aea8"
+                emissive="#8a8884"
+                emissiveIntensity={0.11}
+                roughness={0.12}
                 metalness={1.0}
                 clearcoat={1.0}
-                clearcoatRoughness={0.1}
-                envMapIntensity={2.5}
+                clearcoatRoughness={0.08}
+                envMapIntensity={2.8}
             />
         </mesh>
     );
@@ -73,17 +74,17 @@ function VoidSphere() {
         <mesh ref={meshRef}>
             <sphereGeometry args={[1.15, 96, 96]} />
             <meshPhysicalMaterial
-                color="#0c0b0a"
-                emissive="#030302"
-                emissiveIntensity={0.15}
-                roughness={0.42}
+                color="#9e9c98"
+                emissive="#c4c2be"
+                emissiveIntensity={0.07}
+                roughness={0.34}
                 roughnessMap={noiseTex}
                 bumpMap={noiseTex}
                 bumpScale={0.04}
-                metalness={0.88}
-                clearcoat={0.85}
-                clearcoatRoughness={0.35}
-                envMapIntensity={2.2}
+                metalness={0.95}
+                clearcoat={0.9}
+                clearcoatRoughness={0.28}
+                envMapIntensity={2.6}
             />
         </mesh>
     );
@@ -113,8 +114,8 @@ function OrbitingLights() {
 
     return (
         <>
-            <pointLight ref={light1Ref} color="#ffebc2" intensity={15} distance={12} decay={2} />
-            <pointLight ref={light2Ref} color="#a69477" intensity={10} distance={12} decay={2} />
+            <pointLight ref={light1Ref} color="#f2efe8" intensity={14} distance={12} decay={2} />
+            <pointLight ref={light2Ref} color="#d6d4d0" intensity={11} distance={12} decay={2} />
         </>
     );
 }
@@ -129,8 +130,8 @@ export default function Scene3D({ style, className, variant = 'default' }) {
                 dpr={[1, 1.5]}
                 gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
             >
-                <ambientLight intensity={0.5} color="#ffffff" />
-                <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" />
+                <ambientLight intensity={0.62} color="#ebeae8" />
+                <directionalLight position={[5, 10, 5]} intensity={1.65} color="#f7f6f4" />
 
                 <OrbitingLights />
 
@@ -144,13 +145,13 @@ export default function Scene3D({ style, className, variant = 'default' }) {
                     size={isVoid ? 1.2 : 1.5}
                     speed={0.35}
                     opacity={isVoid ? 0.22 : 0.3}
-                    color="#ffe8cc"
+                    color="#efeeec"
                 />
 
                 <Environment resolution={256} background={false}>
-                    <Lightformer form="rect" intensity={5} color="#ffebc2" position={[-5, 5, -5]} scale={[10, 5]} />
-                    <Lightformer form="rect" intensity={5} color="#a0907a" position={[5, -5, 5]} scale={[10, 5]} />
-                    <Lightformer form="circle" intensity={10} color="#ffffff" position={[0, 5, -9]} scale={10} />
+                    <Lightformer form="rect" intensity={5} color="#f4f2f0" position={[-5, 5, -5]} scale={[10, 5]} />
+                    <Lightformer form="rect" intensity={5} color="#9d9b98" position={[5, -5, 5]} scale={[10, 5]} />
+                    <Lightformer form="circle" intensity={12} color="#ffffff" position={[0, 5, -9]} scale={10} />
                 </Environment>
             </Canvas>
         </div>

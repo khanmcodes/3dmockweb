@@ -1,22 +1,24 @@
 @import 'tailwindcss';
 
 @theme {
-    /* Colors — same names as legacy :root for GSAP (var(--color-*)) */
-    --color-bg: #050608;
-    --color-bg-elevated: #0c0e11;
-    --color-surface: #14161a;
-    --color-border: #2a2d34;
-    --color-text: #eceef2;
-    --color-text-muted: #8e939c;
-    --color-text-dim: #5c6068;
-    --color-accent: #d4a373;
-    --color-accent-gold: #e6c287;
-    --color-metallic: #b8bec8;
-    --color-silver: #c5cad3;
-    --color-highlight: rgba(196, 200, 210, 0.12);
+    /* Colors — night sky + starlight (neutral charcoal, warm silver / gold stars) */
+    --color-bg: #2a2a2d;
+    --color-bg-elevated: #363639;
+    --color-surface: #454548;
+    --color-border: #636366;
+    --color-text: #f5f4f1;
+    --color-text-muted: #a9a7a3;
+    --color-text-dim: #7a7874;
+    --color-accent: #c9a86a;
+    --color-accent-gold: #e6c98a;
+    --color-metallic: #d4d2ce;
+    --color-silver: #ebe9e4;
+    --color-highlight: rgba(230, 210, 175, 0.14);
+    --color-nebula: #8a8680;
+    --color-aurora: #c4b89a;
     /* Shorter names for text-muted / text-dim utilities */
-    --color-muted: #8e939c;
-    --color-dim: #5c6068;
+    --color-muted: #a9a7a3;
+    --color-dim: #7a7874;
 
     --font-serif: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
     --font-sans: 'Outfit', 'Inter', -apple-system, sans-serif;
@@ -155,7 +157,7 @@
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(197, 202, 211, 0.52),
+            rgba(205, 203, 200, 0.55),
             transparent
         );
     }
@@ -164,7 +166,7 @@
         background: linear-gradient(
             180deg,
             transparent,
-            rgba(197, 202, 211, 0.48),
+            rgba(205, 203, 200, 0.5),
             transparent
         );
     }
@@ -211,6 +213,15 @@
         mix-blend-mode: normal;
         opacity: 0.055;
     }
+
+    /** Opt out of mono display headings (hero wordmarks, product names on cards) */
+    .heading-serif {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        text-transform: none;
+        letter-spacing: var(--tracking-tight);
+        font-variant-numeric: normal;
+    }
 }
 
 @layer base {
@@ -218,6 +229,17 @@
     *::before,
     *::after {
         box-sizing: border-box;
+    }
+
+    /** Default display headings: mono, uppercase, numeric-friendly (site-wide) */
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-sans);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-variant-numeric: tabular-nums slashed-zero;
     }
 
     html {
@@ -229,8 +251,8 @@
     body {
         margin: 0;
         overflow-x: hidden;
-        background-color: #0a0a0a;
-        color: #e8e6e3;
+        background-color: var(--color-bg);
+        color: var(--color-text);
         font-family: var(--font-sans);
         font-weight: 300;
         line-height: 1.6;
@@ -264,7 +286,7 @@
     }
 
     ::selection {
-        background: rgba(180, 170, 155, 0.3);
-        color: #fff;
+        background: rgba(230, 200, 150, 0.38);
+        color: var(--color-bg);
     }
 }

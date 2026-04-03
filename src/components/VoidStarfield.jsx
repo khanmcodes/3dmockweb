@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 /** Deterministic star positions (no Math.random) for Void entrance backdrop */
-export default function VoidStarfield({ reduceMotion = false }) {
+export default function VoidStarfield({ reduceMotion = false, hideBaseFill = false }) {
     const stars = useMemo(() => {
         const out = [];
         for (let i = 0; i < 200; i++) {
@@ -24,14 +24,22 @@ export default function VoidStarfield({ reduceMotion = false }) {
             preserveAspectRatio="xMidYMid slice"
             aria-hidden
         >
-            <rect width="100%" height="100%" className="fill-bg" />
+            <rect width="100%" height="100%" className={hideBaseFill ? 'fill-transparent' : 'fill-bg'} />
             {stars.map((s, i) => (
                 <circle
                     key={i}
                     cx={`${s.x}%`}
                     cy={`${s.y}%`}
                     r={s.r}
-                    fill="#e8eaf0"
+                    fill={
+                        i % 11 === 0
+                            ? '#e6c98a'
+                            : i % 7 === 0
+                              ? '#f0ebe3'
+                              : i % 5 === 0
+                                ? '#d8d4cc'
+                                : '#eceae6'
+                    }
                     opacity={s.twinkle && !reduceMotion ? undefined : s.baseOpacity}
                     style={
                         s.twinkle && !reduceMotion

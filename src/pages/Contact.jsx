@@ -94,7 +94,7 @@ export default function Contact() {
                     {/* Heading */}
                     <div className="contact-heading mb-16">
                         <span className="label mb-4 block text-accent-gold">Get in Touch</span>
-                        <h1 className="font-serif text-5xl font-normal leading-tight tracking-tight text-text sm:text-6xl md:text-7xl">
+                        <h1 className="text-5xl font-normal leading-tight text-text sm:text-6xl md:text-7xl">
                             Contact
                         </h1>
                         <div className="mt-6 h-px w-[60px] bg-[linear-gradient(90deg,var(--color-accent),transparent)]" />
@@ -199,7 +199,7 @@ export default function Contact() {
                             className="h-full w-full object-cover brightness-[0.7] contrast-[1.1] saturate-[0.85]"
                         />
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-transparent to-transparent opacity-80" />
-                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(5,6,8,0.5)_100%)]" />
+                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(58,58,60,0.5)_100%)]" />
 
                         {/* Decorative text on image */}
                         <div className="absolute bottom-12 right-8 z-[2]">

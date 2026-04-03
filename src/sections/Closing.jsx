@@ -38,7 +38,7 @@ export default function Closing() {
     return (
         <footer
             ref={ref}
-            className="closing texture-noise texture-noise--footer relative z-40 isolate min-h-[min(92vh,880px)] w-full overflow-hidden bg-[#0a0b0d] px-6 py-16 text-[#d8dce6] md:px-12 md:py-20 lg:px-16"
+            className="closing texture-noise texture-noise--footer relative z-40 isolate min-h-[min(92vh,880px)] w-full overflow-hidden bg-bg-elevated px-6 py-16 text-text md:px-12 md:py-20 lg:px-16"
             id="closing"
             style={{ fontFamily: 'var(--font-mono)' }}
         >
@@ -46,10 +46,10 @@ export default function Closing() {
                 <img
                     src={FOOTER_BG_GIF}
                     alt=""
-                    className="h-full w-full object-cover opacity-[0.2] brightness-[0.35] contrast-[1.1] saturate-[0.75]"
+                    className="h-full w-full object-cover opacity-[0.28] brightness-[0.48] contrast-[1.08] saturate-[0.8]"
                     loading="lazy"
                 />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_45%,transparent_10%,rgba(10,11,13,0.55)_60%,rgba(10,11,13,0.9)_100%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_45%,transparent_10%,rgba(58,58,60,0.46)_60%,rgba(52,52,54,0.82)_100%)]" />
             </div>
             <div className="closing__inner relative z-[2] mx-auto flex min-h-[inherit] max-w-[1400px] flex-col">
                 <p className="closing__tagline mx-auto max-w-4xl text-center text-[0.65rem] font-normal leading-relaxed tracking-[0.28em] uppercase md:text-xs">
@@ -59,19 +59,19 @@ export default function Closing() {
                 <div className="closing__mid relative mt-16 flex flex-1 flex-col gap-16 md:mt-24 md:flex-row md:justify-between md:gap-8">
                     <nav className="closing__nav flex flex-col gap-4 md:max-w-xs" aria-label="Footer">
                         <Link
-                            className="w-fit text-[0.7rem] font-medium tracking-[0.35em] uppercase text-[#eceef2] transition-colors duration-300 hover:text-[#d4a373]"
+                            className="w-fit text-[0.7rem] font-medium tracking-[0.35em] uppercase text-text transition-colors duration-300 hover:text-accent"
                             to="/catalog"
                         >
                             Catalogue
                         </Link>
                         <Link
-                            className="w-fit text-[0.7rem] font-medium tracking-[0.35em] uppercase text-[#eceef2] transition-colors duration-300 hover:text-[#d4a373]"
+                            className="w-fit text-[0.7rem] font-medium tracking-[0.35em] uppercase text-text transition-colors duration-300 hover:text-accent"
                             to="/about"
                         >
                             About
                         </Link>
                         <Link
-                            className="w-fit text-[0.7rem] font-medium tracking-[0.35em] uppercase text-[#eceef2] transition-colors duration-300 hover:text-[#d4a373]"
+                            className="w-fit text-[0.7rem] font-medium tracking-[0.35em] uppercase text-text transition-colors duration-300 hover:text-accent"
                             to="/contact"
                         >
                             Contact us
@@ -79,13 +79,13 @@ export default function Closing() {
                     </nav>
 
                     <div
-                        className="closing__decor pointer-events-none absolute left-1/2 top-1/2 hidden h-[min(52vmin,420px)] w-[min(52vmin,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(236,238,242,0.06)] md:block"
+                        className="closing__decor pointer-events-none absolute left-1/2 top-1/2 hidden h-[min(52vmin,420px)] w-[min(52vmin,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(236,238,242,0.12)] md:block"
                         aria-hidden
                     />
                 </div>
 
                 <div className="closing__bottom mt-auto flex flex-col justify-between gap-10 pt-20 md:flex-row md:items-end md:gap-6 md:pt-28">
-                    <p className="closing__newsletter max-w-sm text-[0.65rem] font-medium tracking-[0.28em] uppercase text-[#8e939c]">
+                    <p className="closing__newsletter max-w-sm text-[0.65rem] font-medium tracking-[0.28em] uppercase text-muted">
                         Sign up for our newsletter
                     </p>
 
@@ -94,24 +94,24 @@ export default function Closing() {
                             href="https://instagram.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[0.65rem] font-medium tracking-[0.32em] uppercase text-[#c8ccd4] transition-colors hover:text-[#d4a373]"
+                            className="text-[0.65rem] font-medium tracking-[0.32em] uppercase text-metallic transition-colors hover:text-accent"
                         >
                             Instagram
                         </a>
                         <Link
                             to="/catalog"
-                            className="text-[0.65rem] font-medium tracking-[0.32em] uppercase text-[#c8ccd4] transition-colors hover:text-[#d4a373]"
+                            className="text-[0.65rem] font-medium tracking-[0.32em] uppercase text-metallic transition-colors hover:text-accent"
                         >
                             Terms + conditions
                         </Link>
                         <Link
                             to="/contact"
-                            className="text-[0.65rem] font-medium tracking-[0.32em] uppercase text-[#c8ccd4] transition-colors hover:text-[#d4a373]"
+                            className="text-[0.65rem] font-medium tracking-[0.32em] uppercase text-metallic transition-colors hover:text-accent"
                             aria-label="Privacy policy"
                         >
                             Pr1vacy p0l1cy
                         </Link>
-                        <span className="mt-2 text-[0.6rem] font-normal tracking-[0.22em] text-[#8e939c]">
+                        <span className="mt-2 text-[0.6rem] font-normal tracking-[0.22em] text-muted">
                             &copy; {new Date().getFullYear()} Studio Vortessa Inc. All rights reserved
                         </span>
                     </div>

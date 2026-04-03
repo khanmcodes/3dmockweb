@@ -125,7 +125,7 @@ function GalleryCard({ item, index }) {
                     <span className="gallery-card__category label block text-[0.65rem] font-medium tracking-[0.2em] text-dim uppercase">
                         {item.category}
                     </span>
-                    <h3 className="gallery-card__name font-serif text-3xl font-normal leading-tight tracking-normal text-text [text-shadow:0_0_60px_rgba(230,194,135,0.15)] md:text-4xl lg:text-5xl">
+                    <h3 className="gallery-card__name heading-serif text-3xl font-normal leading-tight tracking-normal text-text [text-shadow:0_0_60px_rgba(230,194,135,0.15)] md:text-4xl lg:text-5xl">
                         {item.name}
                     </h3>
                     <p className="gallery-card__description mt-1 max-w-md font-sans text-sm font-light leading-relaxed tracking-normal text-muted">
@@ -172,7 +172,7 @@ export default function Gallery() {
                         Collect10n
                     </span>
                     <div className="gallery__line mb-8 h-px w-[60px] origin-left bg-accent [transform-origin:left_center]" />
-                    <h2 className="gallery__title font-serif text-4xl font-normal tracking-tight text-text [text-shadow:0_0_60px_rgba(230,194,135,0.15)] will-change-[transform,opacity,filter] md:text-5xl lg:text-6xl">
+                    <h2 className="gallery__title text-4xl font-normal tracking-tight text-text [text-shadow:0_0_60px_rgba(230,194,135,0.15)] will-change-[transform,opacity,filter] md:text-5xl lg:text-6xl">
                         Objects
                     </h2>
                 </div>

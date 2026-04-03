@@ -75,7 +75,7 @@ export default function Product() {
     if (!product) {
         return (
             <PageTransition className="product page flex min-h-screen flex-col items-center justify-center bg-bg">
-                <h1 className="font-serif">Object not found.</h1>
+                <h1>Object not found.</h1>
                 <Link to="/catalog" className="label mt-8">
                     Return to catalog
                 </Link>
@@ -125,7 +125,7 @@ export default function Product() {
                             </Link>
 
                             <header className="product__header mb-32">
-                                <h1 className="product__title font-serif mb-8 text-5xl font-normal leading-tight tracking-tight text-text [text-shadow:0_0_80px_rgba(255,255,255,0.05)] sm:text-6xl md:text-7xl lg:text-8xl">
+                                <h1 className="product__title mb-8 text-5xl font-normal leading-tight text-text [text-shadow:0_0_80px_rgba(255,255,255,0.05)] sm:text-6xl md:text-7xl lg:text-8xl">
                                     {product.name}
                                 </h1>
                                 <div className="product__meta flex items-start justify-between border-b border-border pb-8">
@@ -216,7 +216,7 @@ export default function Product() {
 
                 <section className="product__related border-t border-border bg-bg-elevated px-32 py-64 max-[1024px]:px-16" aria-labelledby="related-heading">
                     <div className="product__related-inner mx-auto max-w-7xl">
-                        <h2 id="related-heading" className="product__related-title font-serif mb-32 text-3xl font-light tracking-tight text-text md:text-4xl lg:text-5xl">
+                        <h2 id="related-heading" className="product__related-title mb-32 text-3xl font-light tracking-tight text-text md:text-4xl lg:text-5xl">
                             More in the collection
                         </h2>
                         <ul className="product__related-grid m-0 grid list-none grid-cols-1 gap-8 p-0 max-[600px]:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
