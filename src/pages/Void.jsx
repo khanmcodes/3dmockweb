@@ -17,7 +17,7 @@ export default function Void() {
     }, []);
 
     return (
-        <PageTransition className="fixed inset-0 z-0 box-border overflow-hidden overscroll-none bg-black">
+        <PageTransition className="fixed inset-0 z-0 box-border overflow-hidden overscroll-none bg-bg">
             <div className="absolute inset-0 z-0" aria-hidden>
                 <img
                     src="/voidbg.jpg"
@@ -26,14 +26,14 @@ export default function Void() {
                     draggable={false}
                 />
                 <div
-                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(24,24,26,0.5)_0%,rgba(8,8,10,0.72)_50%,rgba(4,4,6,0.86)_100%)]"
+                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(120,120,119,0.42)_0%,rgba(100,100,99,0.62)_50%,rgba(90,90,89,0.78)_100%)]"
                     aria-hidden
                 />
                 <VoidStarfield reduceMotion={reduceMotion} hideBaseFill />
                 <CosmicBackdrop className="z-[1]" />
                 {/* GIF reads as atmosphere: bleeds into starfield, not a discrete UI object */}
                 <div
-                    className="pointer-events-none absolute inset-0 z-1 mask-[radial-gradient(ellipse_58%_52%_at_50%_50%,#000_0%,rgba(0,0,0,0.5)_42%,transparent_70%)] [-webkit-mask-image:radial-gradient(ellipse_58%_52%_at_50%_50%,#000_0%,rgba(0,0,0,0.5)_42%,transparent_70%)]"
+                    className="pointer-events-none absolute inset-0 z-1 mask-[radial-gradient(ellipse_58%_52%_at_50%_50%,#4a4a49_0%,rgba(74,74,73,0.5)_42%,transparent_70%)] [-webkit-mask-image:radial-gradient(ellipse_58%_52%_at_50%_50%,#4a4a49_0%,rgba(74,74,73,0.5)_42%,transparent_70%)]"
                     aria-hidden
                 >
                     <img
@@ -44,11 +44,11 @@ export default function Void() {
                     />
                 </div>
                 <div
-                    className="pointer-events-none absolute inset-0 z-2 bg-[radial-gradient(ellipse_120%_100%_at_50%_18%,transparent_0%,rgba(18,18,20,0.58)_48%,rgba(2,2,4,0.94)_100%)]"
+                    className="pointer-events-none absolute inset-0 z-2 bg-[radial-gradient(ellipse_120%_100%_at_50%_18%,transparent_0%,rgba(120,120,119,0.48)_48%,rgba(100,100,99,0.88)_100%)]"
                     aria-hidden
                 />
                 <div
-                    className="pointer-events-none absolute inset-0 z-2 bg-linear-to-b from-transparent via-[rgba(230,200,150,0.04)] to-black"
+                    className="pointer-events-none absolute inset-0 z-2 bg-linear-to-b from-transparent via-[rgba(230,200,150,0.06)] to-[#a5a5a4]"
                     aria-hidden
                 />
             </div>
@@ -62,7 +62,7 @@ export default function Void() {
                 >
                     <Link
                         to="/catalog"
-                        className="group flex aspect-square w-[min(19rem,86vw)] max-w-[300px] flex-col items-center justify-center rounded-full border border-white/6 bg-[rgba(12,12,14,0.4)] px-7 py-8 text-center no-underline shadow-none backdrop-blur-[10px] backdrop-saturate-100 outline-none transition-[border-color,background-color,transform] duration-300 ease-out hover:border-[rgba(230,200,150,0.2)] hover:bg-[rgba(22,22,26,0.48)] focus-visible:ring-1 focus-visible:ring-[rgba(230,200,150,0.35)] focus-visible:ring-offset-0 active:scale-[0.99] sm:w-82 sm:max-w-[328px] sm:px-8"
+                        className="group flex aspect-square w-[min(19rem,86vw)] max-w-[300px] flex-col items-center justify-center rounded-full border border-[rgba(46,46,46,0.12)] bg-[rgba(219,219,219,0.42)] px-7 py-8 text-center no-underline shadow-none backdrop-blur-[10px] backdrop-saturate-100 outline-none transition-[border-color,background-color,transform] duration-300 ease-out hover:border-[rgba(184,146,74,0.35)] hover:bg-[rgba(165,165,164,0.38)] focus-visible:ring-1 focus-visible:ring-[rgba(184,146,74,0.4)] focus-visible:ring-offset-0 active:scale-[0.99] sm:w-82 sm:max-w-[328px] sm:px-8"
                         aria-label="Enter the void — open catalog"
                     >
                         <h1 className="text-balance text-[0.62rem] leading-snug tracking-tight font-medium text-text sm:text-[0.7rem] md:text-xl">

@@ -125,7 +125,7 @@ export default function Product() {
                             </Link>
 
                             <header className="product__header mb-32">
-                                <h1 className="product__title mb-8 text-5xl font-normal leading-tight text-text [text-shadow:0_0_80px_rgba(255,255,255,0.05)] sm:text-6xl md:text-7xl lg:text-8xl">
+                                <h1 className="product__title mb-8 text-5xl font-normal leading-tight text-text [text-shadow:0_0_80px_rgba(184,146,74,0.08)] sm:text-6xl md:text-7xl lg:text-8xl">
                                     {product.name}
                                 </h1>
                                 <div className="product__meta flex items-start justify-between border-b border-border pb-8">
@@ -146,9 +146,9 @@ export default function Product() {
                                             <button
                                                 key={v.id}
                                                 type="button"
-                                                className={`product__swatch h-8 w-8 cursor-pointer rounded-full border border-[rgba(236,238,242,0.35)] p-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.28)] transition-[transform,box-shadow] duration-200 [transition-timing-function:var(--ease-out-expo)] hover:scale-[1.06] ${
+                                                className={`product__swatch h-8 w-8 cursor-pointer rounded-full border border-[rgba(46,46,46,0.28)] p-0 shadow-[inset_0_0_0_1px_rgba(90,90,89,0.24)] transition-[transform,box-shadow] duration-200 [transition-timing-function:var(--ease-out-expo)] hover:scale-[1.06] ${
                                                     variant?.id === v.id
-                                                        ? 'product__swatch--active shadow-[inset_0_0_0_1px_rgba(0,0,0,0.35),0_0_0_2px_var(--color-accent-gold)]'
+                                                        ? 'product__swatch--active shadow-[inset_0_0_0_1px_rgba(90,90,89,0.32),0_0_0_2px_var(--color-accent-gold)]'
                                                         : ''
                                                 }`}
                                                 style={{ backgroundColor: v.swatch }}

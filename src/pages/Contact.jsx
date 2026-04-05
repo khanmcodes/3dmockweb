@@ -199,11 +199,11 @@ export default function Contact() {
                             className="h-full w-full object-cover brightness-[0.7] contrast-[1.1] saturate-[0.85]"
                         />
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-transparent to-transparent opacity-80" />
-                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(58,58,60,0.5)_100%)]" />
+                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(165,165,164,0.45)_100%)]" />
 
                         {/* Decorative text on image */}
                         <div className="absolute bottom-12 right-8 z-[2]">
-                            <span className="label text-text/30 [text-shadow:0_1px_8px_rgba(0,0,0,0.4)]">
+                            <span className="label text-text/30 [text-shadow:0_1px_8px_rgba(100,100,99,0.25)]">
                                 Studio Vortessa © 2024
                             </span>
                         </div>

@@ -17,15 +17,15 @@ export function CosmicBackdrop({ className = '' }) {
             >
                 <defs>
                     <radialGradient id={glow} cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stopColor="#f5f0e6" stopOpacity="0.35" />
-                        <stop offset="100%" stopColor="#2a2a2d" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#d4d4d3" stopOpacity="0.45" />
+                        <stop offset="100%" stopColor="#dbdbdb" stopOpacity="0" />
                     </radialGradient>
                 </defs>
                 <circle cx="72" cy="310" r="28" fill={`url(#${glow})`} />
                 <circle cx="340" cy="96" r="18" fill={`url(#${glow})`} opacity="0.7" />
                 <circle cx="280" cy="280" r="12" fill={`url(#${glow})`} opacity="0.5" />
 
-                <g fill="#f2efe8" opacity="0.9">
+                <g fill="#6a6a69" opacity="0.55">
                     <circle cx="40" cy="120" r="0.9" />
                     <circle cx="58" cy="108" r="0.5" />
                     <circle cx="88" cy="132" r="0.7" />
@@ -46,14 +46,14 @@ export function CosmicBackdrop({ className = '' }) {
                     <circle cx="92" cy="320" r="0.55" />
                     <circle cx="145" cy="355" r="0.4" />
                 </g>
-                <g fill="#dfc895" opacity="0.85">
+                <g fill="#a67c3d" opacity="0.5">
                     <circle cx="65" cy="145" r="0.65" />
                     <circle cx="200" cy="42" r="0.5" />
                     <circle cx="332" cy="128" r="0.7" />
                     <circle cx="285" cy="320" r="0.45" />
                     <circle cx="118" cy="288" r="0.55" />
                 </g>
-                <g stroke="rgba(230, 210, 175, 0.2)" strokeWidth="0.35" fill="none" opacity="0.9">
+                <g stroke="rgba(166, 124, 61, 0.22)" strokeWidth="0.35" fill="none" opacity="0.85">
                     <path d="M 58 108 L 88 132 L 120 96" />
                     <path d="M 300 48 L 332 128 L 320 200" />
                     <path d="M 130 255 L 175 290 L 210 318" />
@@ -97,7 +97,7 @@ export function CosmicHeroMarks({ className = '' }) {
                     cy="60"
                     r="48"
                     fill="none"
-                    stroke="rgba(235, 233, 228, 0.14)"
+                    stroke="rgba(80, 80, 79, 0.14)"
                     strokeWidth="0.4"
                 />
                 <circle cx="60" cy="60" r="2.2" fill="rgba(230, 201, 138, 0.65)" />
@@ -113,8 +113,8 @@ export function CosmicHeroMarks({ className = '' }) {
                 viewBox="0 0 80 80"
             >
                 <circle cx="40" cy="40" r="22" fill="none" stroke="rgba(230, 210, 175, 0.18)" strokeWidth="0.45" />
-                <circle cx="40" cy="40" r="5" fill="rgba(242, 239, 232, 0.2)" />
-                <circle cx="40" cy="40" r="1.2" fill="#f5f3ee" />
+                <circle cx="40" cy="40" r="5" fill="rgba(120, 120, 119, 0.22)" />
+                <circle cx="40" cy="40" r="1.2" fill="#8a8a89" />
             </svg>
         </div>
     );

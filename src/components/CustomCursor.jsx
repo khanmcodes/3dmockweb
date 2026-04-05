@@ -104,7 +104,7 @@ export default function CustomCursor() {
                     gsap.to(follower, {
                         width: 36,
                         height: 36,
-                        borderColor: 'rgba(232, 230, 227, 0.4)',
+                        borderColor: 'rgba(46, 46, 46, 0.32)',
                         duration: 0.3,
                     });
                     gsap.to(dot, { scale: 1, duration: 0.2 });
@@ -133,7 +133,7 @@ export default function CustomCursor() {
                         width: 36,
                         height: 36,
                         background: 'transparent',
-                        borderColor: 'rgba(232, 230, 227, 0.4)',
+                        borderColor: 'rgba(46, 46, 46, 0.32)',
                         duration: 0.3,
                     });
                     gsap.to(dot, { scale: 1, duration: 0.2 });
@@ -159,7 +159,7 @@ export default function CustomCursor() {
         >
             <div
                 ref={followerRef}
-                className="absolute top-0 left-0 flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(232,230,227,0.4)] will-change-[transform,width,height,border-radius]"
+                className="absolute top-0 left-0 flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(46,46,46,0.32)] will-change-[transform,width,height,border-radius]"
             >
                 <span
                     ref={labelRef}

@@ -49,7 +49,7 @@ export default function Closing() {
                     className="h-full w-full object-cover opacity-[0.28] brightness-[0.48] contrast-[1.08] saturate-[0.8]"
                     loading="lazy"
                 />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_45%,transparent_10%,rgba(58,58,60,0.46)_60%,rgba(52,52,54,0.82)_100%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_45%,transparent_10%,rgba(165,165,164,0.42)_60%,rgba(140,140,139,0.72)_100%)]" />
             </div>
             <div className="closing__inner relative z-[2] mx-auto flex min-h-[inherit] max-w-[1400px] flex-col">
                 <p className="closing__tagline mx-auto max-w-4xl text-center text-[0.65rem] font-normal leading-relaxed tracking-[0.28em] uppercase md:text-xs">
@@ -79,7 +79,7 @@ export default function Closing() {
                     </nav>
 
                     <div
-                        className="closing__decor pointer-events-none absolute left-1/2 top-1/2 hidden h-[min(52vmin,420px)] w-[min(52vmin,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(236,238,242,0.12)] md:block"
+                        className="closing__decor pointer-events-none absolute left-1/2 top-1/2 hidden h-[min(52vmin,420px)] w-[min(52vmin,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(46,46,46,0.12)] md:block"
                         aria-hidden
                     />
                 </div>

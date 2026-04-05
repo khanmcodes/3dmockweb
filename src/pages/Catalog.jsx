@@ -7,8 +7,9 @@ import {
     getProductPath,
     getDefaultVariant,
 } from '../data/products';
+import { ArrowDownRight } from 'lucide-react';
+import HeroLiveNoise from '../components/HeroLiveNoise';
 import PageTransition from '../components/PageTransition';
-import { CosmicHeroMarks } from '../components/CosmicDecor';
 import Closing from '../sections/Closing';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,10 +27,54 @@ const EDITORIAL = {
     spheres: { src: picPath('(8).webp'), alt: 'Chrome spheres study' },
 };
 
-const SHOWCASE_CHUNKS = [products.slice(0, 4), products.slice(4, 8), products.slice(8, 12)];
-const SHOWCASE_FEATURED = SHOWCASE_CHUNKS.map((chunk) => chunk[0]).filter(Boolean);
+/** Materials — `layout` maps to bento grid slots on md+ */
+const MATERIALS = [
+    {
+        id: 'chrome',
+        title: 'Chrome',
+        blurb: 'Liquid reflections and mirror-finished profiles.',
+        visual: EDITORIAL.spheres,
+        layout: 'hero',
+    },
+    {
+        id: 'stainless-steel',
+        title: 'Stainless steel',
+        blurb: 'Surgical precision, softened for living spaces.',
+        visual: EDITORIAL.chair,
+        layout: 'stack-top',
+    },
+    {
+        id: 'marble',
+        title: 'Marble',
+        blurb: 'Veined mass, weight, and quiet ceremony.',
+        visual: EDITORIAL.stairs,
+        layout: 'stack-bottom',
+    },
+    {
+        id: 'gem-stones',
+        title: 'Gem Stones',
+        blurb: 'Faceted depth, prismatic accents, rare cuts.',
+        visual: EDITORIAL.loveseat,
+        layout: 'wide',
+    },
+];
 
-function AtlasCard({ product, index, featured = false }) {
+function materialsBentoClass(layout) {
+    switch (layout) {
+        case 'hero':
+            return 'md:col-span-8 md:row-span-2 min-h-[min(52vh,520px)] max-md:min-h-[min(52vh,380px)]';
+        case 'stack-top':
+            return 'md:col-span-4 md:col-start-9 md:row-start-1 min-h-[min(26vh,240px)]';
+        case 'stack-bottom':
+            return 'md:col-span-4 md:col-start-9 md:row-start-2 min-h-[min(26vh,240px)]';
+        case 'wide':
+            return 'md:col-span-12 md:row-start-3 max-md:min-h-[320px] md:min-h-[min(30vh,320px)]';
+        default:
+            return '';
+    }
+}
+
+function AtlasCard({ product, index }) {
     const initial = getDefaultVariant(product);
     const [variant, setVariant] = useState(initial);
     const rootRef = useRef(null);
@@ -39,37 +84,26 @@ function AtlasCard({ product, index, featured = false }) {
     const inquiryHref = `/contact?piece=${encodeURIComponent(product.name)}`;
 
     return (
-        <div
-            ref={rootRef}
-            className={`atlas-card group relative z-0 ${featured ? 'h-full min-h-0 w-full' : ''}`}
-        >
+        <div ref={rootRef} className="atlas-card group relative z-0">
             <Link
                 to={productPath}
-                className="absolute inset-0 z-[1] rounded-[22px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-gold"
+                className="absolute inset-0 z-[1] rounded-[24px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-gold"
                 aria-label={`View ${product.name}`}
             />
-            <div
-                className={`pointer-events-none relative z-[2] overflow-hidden rounded-[22px] bg-surface/80 shadow-[0_24px_80px_rgba(0,0,0,0.55)] ring-1 ring-[rgba(236,238,242,0.08)] backdrop-blur-xl transition-shadow duration-500 group-hover:shadow-[0_32px_100px_rgba(0,0,0,0.62)] ${featured ? 'flex h-full min-h-0 flex-col' : ''}`}
-            >
-                <div className="pointer-events-none absolute left-5 top-5 z-[2] flex items-center gap-2">
-                    <span className="rounded-full bg-[rgba(58,58,60,0.45)] px-2.5 py-1 font-mono text-[0.6rem] font-medium tracking-[0.2em] text-accent-gold/90 backdrop-blur-md">
+            <div className="pointer-events-none relative z-[2] overflow-hidden rounded-[24px] bg-[linear-gradient(165deg,rgba(255,255,255,0.52)_0%,rgba(255,255,255,0.22)_48%,rgba(165,165,164,0.35)_100%)] shadow-[0_8px_40px_rgba(100,100,99,0.12),0_1px_0_rgba(255,255,255,0.65)_inset] ring-1 ring-[rgba(46,46,46,0.06)] backdrop-blur-xl transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover:-translate-y-1 group-hover:shadow-[0_20px_56px_rgba(100,100,99,0.18),0_1px_0_rgba(255,255,255,0.7)_inset]">
+                <div className="pointer-events-none absolute left-4 top-4 z-[2] md:left-5 md:top-5">
+                    <span className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.55)] bg-[rgba(255,255,255,0.4)] px-2.5 py-1 font-mono text-[0.58rem] font-medium tracking-[0.28em] text-text/80 shadow-sm backdrop-blur-sm">
                         {num}
                     </span>
                 </div>
-                <div
-                    className={`catalog-card__image-wrapper relative w-full overflow-hidden bg-[#141416] ${
-                        featured
-                            ? 'min-h-[min(42vh,440px)] flex-1 p-2.5 md:min-h-[min(52vh,580px)] md:p-3'
-                            : 'aspect-[3/4] p-2 md:p-2.5'
-                    }`}
-                >
+                <div className="catalog-card__image-wrapper relative aspect-[3/4] w-full overflow-hidden p-2.5 md:p-3">
                     <div
-                        className="catalog-card__visual relative flex h-full min-h-0 w-full items-center justify-center overflow-hidden rounded-[14px] bg-black/45 ring-1 ring-black/35"
+                        className="catalog-card__visual relative flex h-full min-h-0 w-full items-center justify-center overflow-hidden rounded-[18px] bg-[rgba(120,120,119,0.2)] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-[rgba(46,46,46,0.06)]"
                         style={
                             variant?.image
                                 ? undefined
                                 : {
-                                      background: `radial-gradient(circle at center, ${product.colorTone}22, transparent 72%)`,
+                                      background: `radial-gradient(circle at 40% 35%, ${product.colorTone}33, transparent 70%)`,
                                   }
                         }
                     >
@@ -78,23 +112,23 @@ function AtlasCard({ product, index, featured = false }) {
                                 src={variant.image}
                                 alt=""
                                 loading="lazy"
-                                className="block h-full w-full object-cover brightness-[0.9] contrast-[1.05] saturate-[0.95] transition-[filter] duration-[1s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:brightness-[0.98]"
+                                className="block h-full w-full object-cover brightness-[0.94] contrast-[1.03] saturate-[0.96] transition-[transform,filter] duration-[1.1s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] group-hover:brightness-[1.02]"
                             />
                         ) : (
-                            <div className="flex h-full w-full items-center justify-center font-sans text-xs font-light tracking-widest text-dim uppercase">
+                            <div className="flex h-full w-full items-center justify-center font-sans text-[0.65rem] font-medium tracking-wide text-dim">
                                 Visual pending
                             </div>
                         )}
                     </div>
                     {product.variants?.length > 1 ? (
-                        <div className="pointer-events-auto absolute bottom-6 left-6 z-[3] flex gap-1.5 isolate md:bottom-7 md:left-7">
+                        <div className="pointer-events-auto absolute bottom-5 left-5 z-[3] flex gap-2 md:bottom-6 md:left-6">
                             {product.variants.map((v) => (
                                 <button
                                     key={v.id}
                                     type="button"
-                                    className={`h-4 w-4 cursor-pointer rounded-full border border-[rgba(236,238,242,0.35)] p-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.25)] transition-transform duration-200 [transition-timing-function:var(--ease-out-expo)] hover:scale-[1.08] ${
+                                    className={`h-[18px] w-[18px] cursor-pointer rounded-full border border-[rgba(255,255,255,0.55)] shadow-[0_1px_3px_rgba(100,100,99,0.2),inset_0_0_0_1px_rgba(46,46,46,0.12)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-110 hover:shadow-[0_2px_8px_rgba(100,100,99,0.22)] ${
                                         v.id === variant?.id
-                                            ? 'shadow-[inset_0_0_0_1px_rgba(0,0,0,0.3),0_0_0_2px_var(--color-accent-gold)]'
+                                            ? 'shadow-[0_0_0_2px_var(--color-accent-gold),0_2px_8px_rgba(184,146,74,0.25)]'
                                             : ''
                                     }`}
                                     style={{ backgroundColor: v.swatch }}
@@ -110,28 +144,22 @@ function AtlasCard({ product, index, featured = false }) {
                         </div>
                     ) : null}
                 </div>
-                <div
-                    className={`flex shrink-0 items-end justify-between gap-4 px-5 pb-5 pt-4 ${featured ? 'md:px-7 md:pb-6 md:pt-5' : ''}`}
-                >
-                    <div className="min-w-0 flex-1">
-                        <h2
-                            className={`font-normal tracking-tight text-text transition-colors duration-300 group-hover:text-accent-gold ${
-                                featured ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'
-                            }`}
-                        >
+                <div className="flex shrink-0 items-end justify-between gap-4 border-t border-[rgba(46,46,46,0.05)] px-5 pb-5 pt-4 md:px-6 md:pb-6">
+                    <div className="min-w-0 flex-1 pr-2">
+                        <h2 className="font-sans text-lg font-medium tracking-tight text-text transition-colors duration-300 ease-out group-hover:text-accent-gold md:text-[1.125rem]">
                             {product.name}
                         </h2>
-                        <p className="mt-1 font-sans text-[0.65rem] font-medium tracking-wider text-muted uppercase">
+                        <p className="mt-1.5 line-clamp-2 font-sans text-[0.7rem] font-normal leading-snug tracking-tight text-muted md:text-xs">
                             {product.material}
                         </p>
                     </div>
-                    <div className="pointer-events-auto flex shrink-0 flex-col items-end gap-2">
-                        <span className="rounded-full border border-[rgba(236,238,242,0.12)] bg-[rgba(236,238,242,0.04)] px-3 py-1.5 font-sans text-xs font-medium tracking-wide text-text">
+                    <div className="pointer-events-auto flex shrink-0 flex-col items-end gap-2.5">
+                        <span className="rounded-full bg-[rgba(255,255,255,0.55)] px-3 py-1.5 font-sans text-xs font-medium tabular-nums tracking-tight text-text ring-1 ring-[rgba(46,46,46,0.06)] backdrop-blur-sm">
                             {product.price}
                         </span>
                         <Link
                             to={inquiryHref}
-                            className="rounded-full border border-white/14 bg-[rgba(236,238,242,0.08)] px-3 py-1.5 font-sans text-xs font-medium tracking-wide text-text no-underline transition-[background-color,border-color,color] duration-300 hover:border-accent-gold/45 hover:bg-accent-gold/12 hover:text-accent-gold"
+                            className="rounded-full bg-[rgba(255,255,255,0.35)] px-3.5 py-1.5 font-sans text-xs font-medium tracking-tight text-text no-underline ring-1 ring-[rgba(46,46,46,0.08)] transition-[background-color,box-shadow,color] duration-300 hover:bg-[rgba(255,255,255,0.65)] hover:ring-accent-gold/35 hover:text-accent-gold"
                             onClick={(e) => e.stopPropagation()}
                         >
                             Inquiry
@@ -143,337 +171,140 @@ function AtlasCard({ product, index, featured = false }) {
     );
 }
 
-function HeroTitle({ text }) {
-    return (
-        <span className="inline-flex flex-wrap justify-center gap-x-[0.04em] gap-y-0">
-            {text.split('').map((ch, i) => (
-                <span key={`${ch}-${i}`} className="catalog2-hero__char inline-block font-medium -tracking-[0.6rem]">
-                    {ch === ' ' ? '\u00a0' : ch}
-                </span>
-            ))}
-        </span>
-    );
-}
-
 export default function Catalog() {
     const rootRef = useRef(null);
     const heroRef = useRef(null);
-    const marqueeRef = useRef(null);
-    const marqueeInnerRef = useRef(null);
-    const showcaseRef = useRef(null);
-    const trackRef = useRef(null);
-    const splitRef = useRef(null);
     const gridRef = useRef(null);
-    const immersionRef = useRef(null);
-    const lineRef = useRef(null);
-    const scrollHintRef = useRef(null);
+    const materialsRef = useRef(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             if (heroRef.current) {
-                const chars = heroRef.current.querySelectorAll('.catalog2-hero__char');
                 const sub = heroRef.current.querySelector('.catalog2-hero__sub');
-                const desc = heroRef.current.querySelector('.catalog2-hero__desc');
+                const headline = heroRef.current.querySelector('.catalog2-hero__headline');
+                const cta = heroRef.current.querySelector('.catalog2-hero__cta');
 
-                gsap.set(chars, {
-                    yPercent: 120,
-                    rotateX: -95,
-                    opacity: 0,
-                    filter: 'blur(14px)',
-                    transformOrigin: '50% 100% -40px',
-                });
-                if (lineRef.current) gsap.set(lineRef.current, { scaleX: 0, opacity: 0 });
-                if (sub) gsap.set(sub, { y: 22, opacity: 0, filter: 'blur(8px)' });
-                if (desc) gsap.set(desc, { y: 26, opacity: 0, filter: 'blur(6px)' });
-                if (scrollHintRef.current) gsap.set(scrollHintRef.current, { opacity: 0, y: 14 });
+                if (sub) gsap.set(sub, { y: 18, opacity: 0, filter: 'blur(6px)' });
+                if (headline) gsap.set(headline, { y: 28, opacity: 0, filter: 'blur(8px)' });
+                if (cta) gsap.set(cta, { y: 16, opacity: 0, filter: 'blur(4px)' });
 
-                const tl = gsap.timeline({ delay: 0.15, defaults: { ease: 'power4.out' } });
-                tl.to(chars, {
-                    yPercent: 0,
-                    rotateX: 0,
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    duration: 1.35,
-                    stagger: { amount: 0.45, from: 'center' },
-                })
-                    .to(
-                        lineRef.current,
-                        { scaleX: 1, opacity: 1, duration: 1.05, ease: 'expo.inOut' },
-                        '-=0.85'
-                    )
-                    .to(sub, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.75 }, '-=0.55')
-                    .to(desc, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85 }, '-=0.5')
-                    .to(scrollHintRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.35');
+                const tl = gsap.timeline({ delay: 0.12, defaults: { ease: 'power3.out' } });
+                if (sub) tl.to(sub, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85 });
+                if (headline)
+                    tl.to(headline, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1 }, sub ? '-=0.5' : undefined);
+                if (cta) tl.to(cta, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.65, ease: 'power2.out' }, '-=0.55');
 
                 const heroImg = heroRef.current.querySelector('.catalog2-hero__bg');
-                const veil = heroRef.current.querySelector('.catalog2-hero__veil');
-
-                gsap.to(heroImg, {
-                    scale: 1.08,
-                    yPercent: -8,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: heroRef.current,
-                        start: 'top top',
-                        end: 'bottom top',
-                        scrub: 1,
-                    },
-                });
-
-                if (veil) {
-                    gsap.to(veil, {
-                        opacity: 0.92,
+                if (heroImg) {
+                    gsap.to(heroImg, {
+                        scale: 1.05,
+                        yPercent: -5,
                         ease: 'none',
                         scrollTrigger: {
                             trigger: heroRef.current,
-                            start: '35% top',
+                            start: 'top top',
                             end: 'bottom top',
                             scrub: 1,
                         },
                     });
                 }
 
-                const titleBlock = heroRef.current.querySelector('.catalog2-hero__title');
-                if (titleBlock) {
+                if (headline) {
                     gsap.fromTo(
-                        titleBlock,
+                        headline,
                         { opacity: 1, filter: 'blur(0px)' },
                         {
-                            opacity: 0.22,
-                            filter: 'blur(8px)',
+                            opacity: 0.35,
+                            filter: 'blur(6px)',
                             ease: 'none',
                             scrollTrigger: {
                                 trigger: heroRef.current,
                                 start: 'center top',
                                 end: 'bottom top',
-                                scrub: 0.6,
+                                scrub: 0.65,
                             },
                         },
                     );
                 }
-
-                gsap.to(scrollHintRef.current, {
-                    opacity: 0,
-                    y: -10,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: heroRef.current,
-                        start: '8% top',
-                        end: '25% top',
-                        scrub: true,
-                    },
-                });
-            }
-
-            if (marqueeInnerRef.current && marqueeRef.current) {
-                gsap.to(marqueeInnerRef.current, {
-                    xPercent: -50,
-                    ease: 'none',
-                    duration: 22,
-                    repeat: -1,
-                });
-            }
-
-            if (trackRef.current && showcaseRef.current) {
-                const track = trackRef.current;
-                gsap.to(track, {
-                    x: () => -(track.scrollWidth - window.innerWidth + 64),
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: showcaseRef.current,
-                        start: 'top top',
-                        end: () => `+=${Math.max(track.scrollWidth, window.innerWidth * 1.2)}`,
-                        pin: true,
-                        scrub: 1,
-                        invalidateOnRefresh: true,
-                    },
-                });
-            }
-
-            if (splitRef.current) {
-                const left = splitRef.current.querySelector('.catalog2-split__left');
-                const right = splitRef.current.querySelector('.catalog2-split__right');
-                const copy = splitRef.current.querySelectorAll('.catalog2-split__copy');
-                const bar = splitRef.current.querySelector('.catalog2-split__bar');
-
-                if (left) {
+                if (sub) {
                     gsap.fromTo(
-                        left,
-                        { clipPath: 'inset(100% 0% 0% 0%)' },
+                        sub,
+                        { opacity: 1 },
                         {
-                            clipPath: 'inset(0% 0% 0% 0%)',
-                            duration: 1.25,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: splitRef.current,
-                                start: 'top 78%',
-                                toggleActions: 'play none none reverse',
-                            },
-                        }
-                    );
-                    const li = left.querySelector('img');
-                    if (li) {
-                        gsap.to(li, {
-                            yPercent: -14,
+                            opacity: 0.25,
                             ease: 'none',
                             scrollTrigger: {
-                                trigger: left,
-                                start: 'top bottom',
+                                trigger: heroRef.current,
+                                start: 'center top',
                                 end: 'bottom top',
-                                scrub: 1,
+                                scrub: 0.65,
                             },
-                        });
-                    }
-                }
-
-                if (right) {
-                    gsap.fromTo(
-                        right,
-                        { clipPath: 'inset(0% 0% 100% 0%)' },
-                        {
-                            clipPath: 'inset(0% 0% 0% 0%)',
-                            duration: 1.25,
-                            ease: 'power3.out',
-                            delay: 0.12,
-                            scrollTrigger: {
-                                trigger: splitRef.current,
-                                start: 'top 78%',
-                                toggleActions: 'play none none reverse',
-                            },
-                        }
+                        },
                     );
-                    const ri = right.querySelector('img');
-                    if (ri) {
-                        gsap.to(ri, {
-                            yPercent: -10,
+                }
+                if (cta) {
+                    gsap.fromTo(
+                        cta,
+                        { opacity: 1 },
+                        {
+                            opacity: 0.2,
                             ease: 'none',
                             scrollTrigger: {
-                                trigger: right,
-                                start: 'top bottom',
+                                trigger: heroRef.current,
+                                start: 'center top',
                                 end: 'bottom top',
-                                scrub: 1,
+                                scrub: 0.65,
                             },
-                        });
-                    }
-                }
-
-                if (bar) {
-                    gsap.fromTo(
-                        bar,
-                        { scaleY: 0 },
-                        {
-                            scaleY: 1,
-                            duration: 0.9,
-                            ease: 'power3.inOut',
-                            scrollTrigger: {
-                                trigger: splitRef.current,
-                                start: 'top 72%',
-                                toggleActions: 'play none none reverse',
-                            },
-                        }
-                    );
-                }
-
-                if (copy.length) {
-                    gsap.fromTo(
-                        copy,
-                        { y: 36, opacity: 0, filter: 'blur(8px)' },
-                        {
-                            y: 0,
-                            opacity: 1,
-                            filter: 'blur(0px)',
-                            duration: 0.75,
-                            stagger: 0.1,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: splitRef.current,
-                                start: 'top 62%',
-                                toggleActions: 'play none none reverse',
-                            },
-                        }
+                        },
                     );
                 }
             }
 
             if (gridRef.current) {
                 const cards = gridRef.current.querySelectorAll('.atlas-card');
+                gsap.set(cards, { transformOrigin: '50% 92%' });
                 gsap.fromTo(
                     cards,
-                    { y: 72, opacity: 0, filter: 'blur(10px)', rotateX: 12 },
+                    {
+                        y: 40,
+                        opacity: 0,
+                        scale: 0.965,
+                    },
                     {
                         y: 0,
                         opacity: 1,
-                        filter: 'blur(0px)',
-                        rotateX: 0,
-                        duration: 0.85,
-                        ease: 'power3.out',
-                        stagger: 0.08,
+                        scale: 1,
+                        duration: 1,
+                        ease: 'power2.out',
+                        stagger: { each: 0.05, from: 'start' },
                         scrollTrigger: {
                             trigger: gridRef.current,
-                            start: 'top 84%',
+                            start: 'top 89%',
                             toggleActions: 'play none none reverse',
                         },
                     }
                 );
             }
 
-            if (immersionRef.current) {
-                const p1 = immersionRef.current.querySelector('.catalog2-immerse__a');
-                const p2 = immersionRef.current.querySelector('.catalog2-immerse__b');
-                const cap = immersionRef.current.querySelectorAll('.catalog2-immerse__cap');
-
-                [p1, p2].forEach((panel, i) => {
-                    if (!panel) return;
-                    const img = panel.querySelector('img');
-                    gsap.fromTo(
-                        panel,
-                        { clipPath: 'inset(6% 6% 6% 6%)', scale: 0.96 },
-                        {
-                            clipPath: 'inset(0% 0% 0% 0%)',
-                            scale: 1,
-                            duration: 1.15,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: panel,
-                                start: 'top 85%',
-                                toggleActions: 'play none none reverse',
-                            },
-                            delay: i * 0.06,
-                        }
-                    );
-                    if (img) {
-                        gsap.to(img, {
-                            scale: 1.12,
-                            yPercent: i % 2 === 0 ? -10 : -6,
-                            ease: 'none',
-                            scrollTrigger: {
-                                trigger: panel,
-                                start: 'top bottom',
-                                end: 'bottom top',
-                                scrub: 1,
-                            },
-                        });
+            if (materialsRef.current) {
+                const tiles = materialsRef.current.querySelectorAll('.catalog-materials__tile');
+                gsap.fromTo(
+                    tiles,
+                    { y: 48, opacity: 0, filter: 'blur(8px)' },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        stagger: 0.1,
+                        scrollTrigger: {
+                            trigger: materialsRef.current,
+                            start: 'top 82%',
+                            toggleActions: 'play none none reverse',
+                        },
                     }
-                });
-
-                if (cap.length) {
-                    gsap.fromTo(
-                        cap,
-                        { y: 28, opacity: 0 },
-                        {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.6,
-                            stagger: 0.08,
-                            ease: 'power2.out',
-                            scrollTrigger: {
-                                trigger: immersionRef.current,
-                                start: 'top 75%',
-                                toggleActions: 'play none none reverse',
-                            },
-                        }
-                    );
-                }
+                );
             }
         }, rootRef);
 
@@ -483,195 +314,177 @@ export default function Catalog() {
     return (
         <PageTransition className="catalog page relative min-h-screen bg-bg p-0">
             <div ref={rootRef} className="relative bg-bg">
-                {/* ━━━ Immersive hero ━━━ */}
+                {/* ━━━ 1 · Home banner ━━━ */}
                 <section
+                    id="home-banner"
                     ref={heroRef}
                     className="catalog2-hero relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pb-24 pt-28 md:px-12"
-                    aria-label="Catalog hero"
+                    aria-labelledby="catalog-home-banner-heading"
                 >
-                    <div className="pointer-events-none absolute inset-0 z-0">
+                    <div className="pointer-events-none absolute inset-0 z-0 min-h-[100dvh] w-full">
                         <img
                             src={EDITORIAL.showroom.src}
-                            alt=""
-                            className="catalog2-hero__bg absolute inset-0 h-[115%] w-full object-cover opacity-90"
+                            alt={EDITORIAL.showroom.alt}
+                            className="catalog2-hero__bg absolute inset-0 h-full min-h-[100dvh] w-full object-cover"
                             loading="eager"
                         />
-                        <div className="catalog2-hero__veil pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_40%,rgba(32,32,34,0.4)_0%,rgba(12,12,14,0.9)_72%)]" />
-                        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(230,200,150,0.07)_0%,transparent_36%,transparent_64%,rgba(18,18,20,0.78)_100%)]" />
+                    </div>
+                    {/* Own layer so grain isn’t clipped / blended inside the image stack */}
+                    <div
+                        className="pointer-events-none absolute inset-0 z-[1] min-h-[100dvh] w-full"
+                        aria-hidden
+                    >
+                        <HeroLiveNoise className="h-full min-h-[100dvh] w-full" />
                     </div>
 
-                    <CosmicHeroMarks className="z-[1]" />
-
-                    <div className="relative z-[2] mx-auto max-w-5xl text-center [perspective:1200px]">
-                        <p className="catalog2-hero__sub font-sans uppercase text-sm font-medium label mb-6 text-accent-gold/80">Welcome to a dimension where design transcends the ordinary.</p>
+                    <div className="relative z-[2] mx-auto flex max-w-3xl flex-col items-center text-center">
+                        <p className="text-white uppercase font-medium">
+                            Welcome to a dimension where design transcends the ordinary
+                        </p>
                         <h1
-                            className="catalog2-hero__title heading-serif text-[clamp(2.75rem,10vw,6.75rem)] font-light leading-[0.95] tracking-[-0.03em] text-text [text-shadow:0_0_88px_rgba(230,201,138,0.18)]"
-                            aria-label="Catalog"
+                            id="catalog-home-banner-heading"
+                            className="mt-6 font-light leading-[1.10] tracking-tight text-white normal-case md:mt-8 text-8xl"
                         >
-                            <HeroTitle text="CATALOG" />
+                            <span className="italic font-serif text-[7rem]">Creating for</span><br /> <span className="font-sans font-medium tracking-tight">Cosmic Beings</span>
                         </h1>
-                        <div
-                            ref={lineRef}
-                            className="catalog2-hero__line mx-auto mt-10 h-px w-[72px] origin-center bg-[linear-gradient(90deg,transparent,var(--color-accent-gold),transparent)]"
-                        />
-                        <p className="catalog2-hero__desc mx-auto mt-8 max-w-md font-sans text-sm font-medium leading-relaxed text-white/70 md:text-base">
-                            interdimensional altarware for cosmic beings.
+                        <a
+                            href="#collections"
+                            className="catalog2-hero__cta mt-15 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-medium tracking-tight text-black/70 transition-opacity hover:opacity-90"
+                        >
+                            View our work
+                            <ArrowDownRight className="size-4 shrink-0" aria-hidden strokeWidth={2} />
+                        </a>
+                    </div>
+                </section>
+
+                {/* ━━━ 2 · Collections ━━━ */}
+                <section id="collections" className="border-t border-[rgba(46,46,46,0.08)] bg-bg">
+                    <div className="mx-auto max-w-screen-2xl px-6 pb-10 pt-16 md:px-12 md:pb-12 md:pt-20">
+                        <span className="label text-dim">Collections</span>
+                        <h2 className="mt-3 text-3xl font-light tracking-tight text-text md:text-4xl lg:text-[2.75rem]">
+                            Full catalog
+                        </h2>
+                        <p className="mt-4 max-w-xl font-sans text-sm font-light leading-relaxed text-muted md:text-base">
+                            Browse every piece in the mosaic — tuned for large displays, still calm on phones.
                         </p>
                     </div>
 
-                    <div
-                        ref={scrollHintRef}
-                        className="catalog2-hero__scroll absolute bottom-12 left-1/2 z-[2] flex -translate-x-1/2 flex-col items-center gap-2"
-                    >
-                        <span className="label text-dim">Explore</span>
-                        <div className="h-12 w-px origin-top animate-scroll-pulse bg-[linear-gradient(to_bottom,var(--color-text-dim),transparent)]" />
-                    </div>
-
-                    <p
-                        className="pointer-events-none absolute bottom-10 right-5 z-[2] max-w-[min(100%,16rem)] text-right font-mono text-[0.6rem] font-medium leading-snug tracking-[0.18em] text-muted uppercase sm:bottom-12 sm:right-8 md:text-[0.65rem]"
-                        aria-hidden
-                    >
-                        STUD10
-                        <span className="font-bold text-text">VORT3554</span>
-                    </p>
-                </section>
-
-                {/* ━━━ Pinned horizontal showcase ━━━ */}
-                <section
-                    ref={showcaseRef}
-                    className="catalog2-showcase relative z-0 min-h-screen border-t border-[rgba(236,238,242,0.06)] bg-bg"
-                >
-                    <div className="pointer-events-none absolute left-6 top-8 z-[2] md:left-12 md:top-12">
-                        <span className="label text-dim">Featured</span>
-                    </div>
-                    <div className="flex h-screen items-center overflow-hidden pl-6 md:pl-12">
-                        <div
-                            ref={trackRef}
-                            className="flex h-[min(78vh,820px)] min-h-0 items-stretch gap-6 pr-24 md:gap-10 md:pr-32"
-                        >
-                            {SHOWCASE_FEATURED.map((p, si) => (
-                                <div
-                                    key={p.id}
-                                    className="flex h-full w-[min(96vw,1320px)] shrink-0 items-stretch gap-5 md:gap-8"
-                                >
-                                    <div className="relative flex w-14 shrink-0 flex-col items-center justify-center self-stretch border-l border-[rgba(236,238,242,0.08)] pl-3 md:w-16">
-                                        <span className="font-mono text-[0.6rem] tracking-[0.4em] text-muted [writing-mode:vertical-rl]">
-                                            {String(si + 1).padStart(2, '0')}
-                                        </span>
-                                    </div>
-                                    <div className="flex min-h-0 min-w-0 flex-1 self-stretch">
-                                        <AtlasCard product={p} index={si} featured />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ Split editorial ━━━ */}
-                <section
-                    ref={splitRef}
-                    className="relative z-0 border-t border-[rgba(236,238,242,0.06)] bg-bg px-6 py-24 md:px-12 md:py-32"
-                >
-                    <div className="mx-auto grid max-w-screen-2xl grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.05fr)] md:items-stretch md:gap-10 lg:gap-14">
-                        <div className="catalog2-split__left relative overflow-hidden rounded-[20px] bg-surface ring-1 ring-[rgba(236,238,242,0.08)] md:row-span-2 md:min-h-0">
-                            <div className="relative aspect-[4/5] w-full overflow-hidden md:aspect-auto md:h-full md:min-h-[min(72vh,640px)]">
-                                <img
-                                    src={EDITORIAL.chair.src}
-                                    alt={EDITORIAL.chair.alt}
-                                    className="h-[118%] w-full object-cover brightness-[0.82] contrast-[1.12] saturate-[0.9] md:h-full md:min-h-full"
-                                    loading="lazy"
-                                />
-                                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(58,58,60,0.45)] via-transparent to-transparent" />
-                            </div>
-                        </div>
-
-                        <div className="catalog2-split__bar mx-auto hidden w-px origin-top [transform-origin:top_center] bg-[linear-gradient(180deg,transparent,var(--color-accent-gold),transparent)] md:row-span-2 md:block md:min-h-[min(72vh,640px)]" />
-
-                        <div className="flex flex-col justify-center gap-10 md:gap-12">
-                            <div>
-                                <span className="catalog2-split__copy label text-accent-gold/75">Light & alloy</span>
-                                <h2 className="catalog2-split__copy mt-4 text-3xl font-light leading-tight text-text md:text-4xl lg:text-5xl">
-                                    Stillness that reads loud in a quiet room.
-                                </h2>
-                                <p className="catalog2-split__copy mt-4 max-w-md font-sans text-sm font-light leading-relaxed text-muted">
-                                    Reflections, portals, and machined edges — editorial photography woven into the sequence instead of stacked in a grid.
-                                </p>
-                            </div>
-                            <div className="catalog2-split__right relative overflow-hidden rounded-[20px] bg-surface ring-1 ring-[rgba(236,238,242,0.08)]">
-                                <div className="relative aspect-[16/11] w-full overflow-hidden md:aspect-[5/3]">
-                                    <img
-                                        src={EDITORIAL.loveseat.src}
-                                        alt={EDITORIAL.loveseat.alt}
-                                        className="h-[118%] w-full object-cover brightness-[0.82] contrast-[1.12] saturate-[0.9]"
-                                        loading="lazy"
-                                    />
-                                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(58,58,60,0.4)] via-transparent to-transparent" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ━━━ Staggered product mosaic ━━━ */}
-                <section className="texture-noise relative z-0 border-t border-[rgba(236,238,242,0.06)]">
-                    <div className="mx-auto max-w-screen-2xl px-6 py-24 md:px-12 md:py-32">
-                        <div className="mb-20 max-w-2xl">
-                            <span className="label text-dim">Full index</span>
-                            <h2 className="text-4xl font-light tracking-tight text-text md:text-5xl">
-                                Every piece, reframed
-                            </h2>
-                            <p className="mt-4 font-sans text-sm font-light text-muted md:text-base">
-                                A mosaic grid with depth tilt on hover — optimized for large displays, still gentle on phones.
-                            </p>
-                        </div>
+                    <div className="texture-noise relative z-0 border-t border-[rgba(46,46,46,0.08)]">
+                    <div className="mx-auto max-w-screen-2xl px-6 py-20 md:px-12 md:py-28">
                         <div
                             ref={gridRef}
-                            className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-14 [&_.atlas-card:nth-child(3n+2)]:lg:translate-y-12"
+                            className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-9 lg:grid-cols-3 lg:gap-10 xl:gap-11 [&_.atlas-card:nth-child(3n+2)]:lg:translate-y-10"
                         >
                             {products.map((p, i) => (
                                 <AtlasCard key={p.id} product={p} index={i} />
                             ))}
                         </div>
                     </div>
+                    </div>
                 </section>
 
-                {/* ━━━ Dual immersion ━━━ */}
+                {/* ━━━ 3 · Materials (bento) ━━━ */}
                 <section
-                    ref={immersionRef}
-                    className="relative z-0 border-t border-[rgba(236,238,242,0.06)] bg-bg px-6 py-24 md:px-12 md:py-32"
+                    id="materials"
+                    ref={materialsRef}
+                    className="relative z-0 overflow-hidden border-t border-[rgba(46,46,46,0.08)] bg-bg-elevated px-6 py-24 md:px-12 md:py-32"
+                    aria-labelledby="catalog-materials-heading"
                 >
-                    <div className="mx-auto max-w-screen-2xl">
-                        <div className="catalog2-immerse__cap mb-14 text-center">
-                            <span className="label text-accent-gold/75">Coda</span>
-                            <h2 className="mt-4 text-3xl font-light text-text md:text-4xl">
-                                The atelier, in two breaths
-                            </h2>
-                        </div>
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-                            <div className="catalog2-immerse__a group relative overflow-hidden rounded-[22px] bg-surface ring-1 ring-[rgba(236,238,242,0.08)] will-change-[clip-path]">
-                                <div className="relative aspect-[4/5] w-full overflow-hidden md:aspect-[3/4]">
-                                    <img
-                                        src={EDITORIAL.stairs.src}
-                                        alt={EDITORIAL.stairs.alt}
-                                        className="h-full w-full scale-110 object-cover brightness-[0.8] contrast-[1.1] saturate-[0.9] transition-[filter] duration-[1.2s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:brightness-[0.95]"
-                                        loading="lazy"
-                                    />
-                                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(212,163,115,0.08)_0%,transparent_55%)] opacity-70" />
-                                </div>
+                    <div
+                        className="pointer-events-none absolute -right-24 top-32 h-[22rem] w-[22rem] rounded-full border border-[rgba(184,146,74,0.07)] md:-right-16 md:top-24"
+                        aria-hidden
+                    />
+                    <div
+                        className="pointer-events-none absolute bottom-16 left-8 h-48 w-48 rounded-full border border-[rgba(46,46,46,0.07)] md:bottom-24 md:left-16"
+                        aria-hidden
+                    />
+
+                    <div className="relative mx-auto max-w-screen-2xl">
+                        <header className="mb-14 flex flex-col gap-8 md:mb-20 lg:mb-24 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+                            <div className="max-w-2xl">
+                                <span className="label text-dim">Materials</span>
+                                <h2
+                                    id="catalog-materials-heading"
+                                    className="mt-4 text-[clamp(2.1rem,4.8vw,3.5rem)] font-light leading-[1.06] tracking-tight text-text"
+                                >
+                                    Surfaces we{' '}
+                                    <span className="bg-linear-to-r from-accent-gold via-[#c9a66a] to-accent-gold/75 bg-clip-text text-transparent">
+                                        work in
+                                    </span>
+                                </h2>
                             </div>
-                            <div className="catalog2-immerse__b group relative overflow-hidden rounded-[22px] bg-surface ring-1 ring-[rgba(236,238,242,0.08)] will-change-[clip-path] md:translate-y-10">
-                                <div className="relative aspect-[4/5] w-full overflow-hidden md:aspect-[3/4]">
-                                    <img
-                                        src={EDITORIAL.spheres.src}
-                                        alt={EDITORIAL.spheres.alt}
-                                        className="h-full w-full scale-110 object-cover brightness-[0.8] contrast-[1.1] saturate-[0.9] transition-[filter] duration-[1.2s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:brightness-[0.95]"
-                                        loading="lazy"
-                                    />
-                                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(225deg,rgba(212,163,115,0.07)_0%,transparent_50%)] opacity-70" />
-                                </div>
-                            </div>
-                        </div>
+                            <p className="max-w-sm font-sans text-sm font-light leading-relaxed text-muted lg:max-w-xs lg:pb-1 lg:text-right lg:text-[0.9375rem]">
+                                Four families of finish — each with its own tempo, reflectance, and gravity in a room.
+                            </p>
+                        </header>
+
+                        <ul className="grid list-none grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
+                            {MATERIALS.map((m, mi) => {
+                                const num = String(mi + 1).padStart(2, '0');
+                                const isHero = m.layout === 'hero';
+                                const isWide = m.layout === 'wide';
+                                return (
+                                    <li
+                                        key={m.id}
+                                        className={`catalog-materials__tile min-w-0 ${materialsBentoClass(m.layout)}`}
+                                    >
+                                        <article
+                                            className={`group relative flex h-full min-h-0 overflow-hidden rounded-[28px] bg-surface shadow-[0_20px_70px_rgba(100,100,99,0.16)] ring-1 ring-[rgba(46,46,46,0.08)] transition-shadow duration-500 hover:shadow-[0_28px_90px_rgba(100,100,99,0.22)] ${
+                                                isWide ? 'max-md:flex-col md:flex-row' : 'flex-col'
+                                            }`}
+                                        >
+                                            <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center rounded-full border border-[rgba(255,255,255,0.45)] bg-[rgba(255,255,255,0.38)] px-3 py-1 font-mono text-[0.6rem] font-medium tracking-[0.35em] text-text shadow-sm backdrop-blur-md md:left-6 md:top-6">
+                                                {num}
+                                            </span>
+                                            <div
+                                                className={`relative min-h-0 overflow-hidden ${
+                                                    isWide
+                                                        ? 'aspect-[4/5] max-md:w-full md:aspect-auto md:h-auto md:w-[52%]'
+                                                        : 'min-h-[200px] flex-1'
+                                                }`}
+                                            >
+                                                <img
+                                                    src={m.visual.src}
+                                                    alt={m.visual.alt}
+                                                    className="h-full w-full object-cover brightness-[0.9] contrast-[1.06] saturate-[0.94] transition-[transform,filter] duration-[1.1s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.03] group-hover:brightness-[0.97]"
+                                                    loading="lazy"
+                                                />
+                                                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[rgba(90,90,89,0.55)] via-[rgba(60,60,59,0.08)] to-transparent md:via-transparent md:to-transparent" />
+                                                {!isWide ? (
+                                                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+                                                        <h3
+                                                            className={`font-sans font-medium tracking-tight text-white [text-shadow:0_2px_28px_rgba(46,46,46,0.45)] ${
+                                                                isHero
+                                                                    ? 'text-2xl md:text-3xl lg:text-4xl'
+                                                                    : 'text-xl md:text-2xl'
+                                                            }`}
+                                                        >
+                                                            {m.title}
+                                                        </h3>
+                                                        <p className="mt-2 max-w-md font-sans text-sm font-light leading-relaxed text-white/92 [text-shadow:0_1px_14px_rgba(46,46,46,0.4)]">
+                                                            {m.blurb}
+                                                        </p>
+                                                    </div>
+                                                ) : null}
+                                            </div>
+                                            {isWide ? (
+                                                <div className="flex flex-1 flex-col justify-center border-t border-[rgba(46,46,46,0.08)] bg-[rgba(219,219,219,0.55)] p-8 backdrop-blur-md md:border-t-0 md:border-l md:px-10 md:py-12">
+                                                    <h3 className="font-sans text-2xl font-medium tracking-tight text-text md:text-3xl">
+                                                        {m.title}
+                                                    </h3>
+                                                    <p className="mt-4 font-sans text-sm font-light leading-relaxed text-muted md:text-base">
+                                                        {m.blurb}
+                                                    </p>
+                                                    <span className="mt-6 inline-flex w-fit items-center gap-2 font-mono text-[0.6rem] tracking-[0.28em] text-accent-gold">
+                                                        PRISM / CUT
+                                                    </span>
+                                                </div>
+                                            ) : null}
+                                        </article>
+                                    </li>
+                                );
+                            })}
+                        </ul>
                     </div>
                 </section>
 

@@ -1,27 +1,27 @@
 @import 'tailwindcss';
 
 @theme {
-    /* Colors — night sky + starlight (neutral charcoal, warm silver / gold stars) */
-    --color-bg: #2a2a2d;
-    --color-bg-elevated: #363639;
-    --color-surface: #454548;
-    --color-border: #636366;
-    --color-text: #f5f4f1;
-    --color-text-muted: #a9a7a3;
-    --color-text-dim: #7a7874;
-    --color-accent: #c9a86a;
-    --color-accent-gold: #e6c98a;
-    --color-metallic: #d4d2ce;
-    --color-silver: #ebe9e4;
-    --color-highlight: rgba(230, 210, 175, 0.14);
-    --color-nebula: #8a8680;
-    --color-aurora: #c4b89a;
+    /* Client palette — silver & grey (no black): #DBDBDB + #A5A5A4 */
+    --color-bg: #dbdbdb;
+    --color-bg-elevated: #d4d4d4;
+    --color-surface: #a5a5a4;
+    --color-border: #949493;
+    --color-text: #2e2e2e;
+    --color-text-muted: #5c5c5c;
+    --color-text-dim: #6e6e6e;
+    --color-accent: #a67c3d;
+    --color-accent-gold: #b8924a;
+    --color-metallic: #c4c4c3;
+    --color-silver: #ececec;
+    --color-highlight: rgba(100, 100, 100, 0.1);
+    --color-nebula: #8f8f8e;
+    --color-aurora: #b5b5b4;
     /* Shorter names for text-muted / text-dim utilities */
-    --color-muted: #a9a7a3;
-    --color-dim: #7a7874;
+    --color-muted: #5c5c5c;
+    --color-dim: #6e6e6e;
 
-    --font-serif: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
-    --font-sans: 'Outfit', 'Inter', -apple-system, sans-serif;
+    --font-serif:  'Cormorant Garamond', 'Playfair Display', 'Georgia', serif;
+    --font-sans: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
     --font-void-display: 'Instrument Serif', 'Georgia', serif;
     --font-void-ui: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -286,7 +286,7 @@
     }
 
     ::selection {
-        background: rgba(230, 200, 150, 0.38);
-        color: var(--color-bg);
+        background: rgba(165, 165, 164, 0.55);
+        color: var(--color-text);
     }
 }

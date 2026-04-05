@@ -361,7 +361,7 @@ export default function About() {
                             aria-hidden
                         />
                     </div>
-                    <div className="pointer-events-none absolute inset-0 z-[2] bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,transparent_0%,rgba(58,58,60,0.4)_55%,rgba(58,58,60,0.92)_100%)]" aria-hidden />
+                    <div className="pointer-events-none absolute inset-0 z-[2] bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,transparent_0%,rgba(165,165,164,0.38)_55%,rgba(140,140,139,0.78)_100%)]" aria-hidden />
                     <div
                         ref={heroOverlayRef}
                         className="pointer-events-none absolute inset-0 z-[3] bg-bg opacity-0"
@@ -375,7 +375,7 @@ export default function About() {
                             style={{ animation: 'floatOrbit 20s linear infinite' }}
                         />
                         <div
-                            className="absolute left-[10%] bottom-[25%] h-[200px] w-[200px] rounded-full border border-[rgba(236,238,242,0.06)]"
+                            className="absolute left-[10%] bottom-[25%] h-[200px] w-[200px] rounded-full border border-[rgba(46,46,46,0.08)]"
                             style={{ animation: 'floatOrbitReverse 25s linear infinite' }}
                         />
                         <div
@@ -432,7 +432,7 @@ export default function About() {
                 {/* ━━━━━━━━━━ ZONE 2 — About Studio (Asymmetric + Stats) ━━━━━━━━━━ */}
                 <section
                     ref={studioSectionRef}
-                    className="about__studio relative overflow-hidden border-b border-[rgba(236,238,242,0.06)] bg-bg"
+                    className="about__studio relative overflow-hidden border-b border-[rgba(46,46,46,0.08)] bg-bg"
                 >
                     <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_80%_20%,rgba(212,163,115,0.09),transparent_55%)]" />
@@ -485,7 +485,7 @@ export default function About() {
                             <div className="relative min-w-0 max-md:order-first">
                                 <div
                                     ref={studioImageWrapRef}
-                                    className="group relative overflow-hidden rounded-[2px] bg-surface shadow-[0_24px_90px_rgba(0,0,0,0.5)] ring-1 ring-[rgba(236,238,242,0.06)] will-change-[clip-path]"
+                                    className="group relative overflow-hidden rounded-[2px] bg-surface shadow-[0_24px_90px_rgba(100,100,99,0.26)] ring-1 ring-[rgba(46,46,46,0.1)] will-change-[clip-path]"
                                 >
                                     <img
                                         ref={studioImageRef}
@@ -495,7 +495,7 @@ export default function About() {
                                         loading="lazy"
                                     />
                                     <span
-                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(58,58,60,0.4)_100%)]"
+                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(165,165,164,0.38)_100%)]"
                                         aria-hidden
                                     />
                                 </div>
@@ -511,7 +511,7 @@ export default function About() {
                 {/* ━━━━━━━━━━ ZONE 3 — Process Band + Manifesto (Parallax Depth) ━━━━━━━━━━ */}
                 <section
                     ref={stripSectionRef}
-                    className="about__process relative overflow-hidden border-b border-[rgba(236,238,242,0.06)] bg-bg py-24 md:py-36"
+                    className="about__process relative overflow-hidden border-b border-[rgba(46,46,46,0.08)] bg-bg py-24 md:py-36"
                 >
                     <div className="relative z-[1] mb-16 overflow-hidden md:mb-24">
                         <div
@@ -521,7 +521,7 @@ export default function About() {
                             {STRIP_IMAGES.map((img, i) => (
                                 <div
                                     key={i}
-                                    className="group relative flex-shrink-0 overflow-hidden rounded-[2px] bg-surface shadow-[0_16px_60px_rgba(0,0,0,0.45)] ring-1 ring-[rgba(236,238,242,0.05)] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] hover:z-10 hover:scale-[1.03]"
+                                    className="group relative flex-shrink-0 overflow-hidden rounded-[2px] bg-surface shadow-[0_16px_60px_rgba(100,100,99,0.24)] ring-1 ring-[rgba(46,46,46,0.08)] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] hover:z-10 hover:scale-[1.03]"
                                     style={{
                                         height: `${280 + (img.speed - 0.5) * 120}px`,
                                         width: `${220 + (img.speed - 0.5) * 80}px`,
@@ -535,11 +535,11 @@ export default function About() {
                                         loading="lazy"
                                     />
                                     <span
-                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(58,58,60,0.35)] to-transparent"
+                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(130,130,129,0.28)] to-transparent"
                                         aria-hidden
                                     />
                                     {/* 3D tilt effect on hover via CSS */}
-                                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,transparent_50%,rgba(0,0,0,0.06)_100%)]" />
+                                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[linear-gradient(135deg,rgba(255,255,255,0.5)_0%,transparent_50%,rgba(120,120,119,0.1)_100%)]" />
                                 </div>
                             ))}
                         </div>
@@ -560,7 +560,7 @@ export default function About() {
                                 <li>objects as artifacts.</li>
                                 <li>spaces as sanctuaries.</li>
                             </ul>
-                            <ul className="list-none space-y-4 border-l border-[rgba(236,238,242,0.12)] pl-6 font-sans text-base font-light lowercase leading-relaxed text-muted md:text-[1.0625rem]">
+                            <ul className="list-none space-y-4 border-l border-[rgba(46,46,46,0.12)] pl-6 font-sans text-base font-light lowercase leading-relaxed text-muted md:text-[1.0625rem]">
                                 <li>silence over excess.</li>
                                 <li>form over ornament.</li>
                                 <li>material over trend.</li>
@@ -572,7 +572,7 @@ export default function About() {
                 {/* ━━━━━━━━━━ ZONE 4 — Founder (Editorial Overlap + Glassmorphism) ━━━━━━━━━━ */}
                 <section
                     ref={founderSectionRef}
-                    className="about__founder relative overflow-hidden border-b border-[rgba(236,238,242,0.06)] bg-bg"
+                    className="about__founder relative overflow-hidden border-b border-[rgba(46,46,46,0.08)] bg-bg"
                 >
                     <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_85%_55%,rgba(212,163,115,0.06),transparent_50%)]" />
@@ -583,7 +583,7 @@ export default function About() {
                         <div className="relative grid grid-cols-1 gap-0 lg:grid-cols-[1.1fr_0.9fr] lg:gap-0">
                             {/* Image column — takes up ~60% */}
                             <div className="about-animate relative min-w-0">
-                                <figure className="group relative overflow-hidden rounded-[2px] bg-surface shadow-[0_28px_100px_rgba(0,0,0,0.55)] ring-1 ring-[rgba(236,238,242,0.06)]">
+                                <figure className="group relative overflow-hidden rounded-[2px] bg-surface shadow-[0_28px_100px_rgba(100,100,99,0.28)] ring-1 ring-[rgba(46,46,46,0.1)]">
                                     <div className="overflow-hidden">
                                         <img
                                             ref={founderImageRef}
@@ -594,7 +594,7 @@ export default function About() {
                                         />
                                     </div>
                                     <span
-                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(58,58,60,0.35)_100%)]"
+                                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(165,165,164,0.32)_100%)]"
                                         aria-hidden
                                     />
                                 </figure>
@@ -602,7 +602,7 @@ export default function About() {
 
                             {/* Glassmorphism text panel — overlaps the image */}
                             <div className="founder-glass relative lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-[52%] lg:max-w-[520px]">
-                                <div className="relative rounded-[4px] border border-[rgba(236,238,242,0.08)] bg-[rgba(58,58,60,0.65)] px-8 py-10 shadow-[0_32px_80px_rgba(0,0,0,0.6)] backdrop-blur-[24px] md:px-12 md:py-14 lg:-ml-16">
+                                <div className="relative rounded-[4px] border border-[rgba(46,46,46,0.12)] bg-[rgba(219,219,219,0.72)] px-8 py-10 shadow-[0_32px_80px_rgba(100,100,99,0.22)] backdrop-blur-[24px] md:px-12 md:py-14 lg:-ml-16">
                                     <span className="label mb-3 block text-accent-gold">Profile</span>
                                     <h2 className="mb-8 text-3xl font-normal leading-tight text-text md:text-4xl">
                                         Founder
@@ -649,7 +649,7 @@ export default function About() {
                             className="h-full w-full object-cover brightness-[0.3] contrast-[1.2] saturate-[0.7]"
                         />
                     </div>
-                    <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_75%_60%_at_50%_50%,transparent_0%,rgba(58,58,60,0.55)_55%,rgba(58,58,60,0.94)_100%)]" aria-hidden />
+                    <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_75%_60%_at_50%_50%,transparent_0%,rgba(165,165,164,0.42)_55%,rgba(140,140,139,0.8)_100%)]" aria-hidden />
                     <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-bg/60 via-transparent to-bg/80" aria-hidden />
 
                     {/* Floating decorative orbs */}

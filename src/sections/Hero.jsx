@@ -125,7 +125,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_75%_15%,rgba(230,200,150,0.12),transparent_58%)]" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_8%_85%,rgba(235,233,228,0.06),transparent_52%)]" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_100%,rgba(220,210,195,0.06),transparent_45%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(165deg,rgba(200,185,155,0.05)_0%,transparent_32%,transparent_68%,rgba(28,28,30,0.52)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(165deg,rgba(200,185,155,0.06)_0%,transparent_32%,transparent_68%,rgba(165,165,164,0.42)_100%)]" />
             </div>
 
             <div ref={sceneRef} className="hero__scene absolute inset-0 z-1 will-change-transform">
@@ -136,7 +136,7 @@ export default function Hero() {
 
             <div
                 ref={overlayRef}
-                className="hero__overlay pointer-events-none absolute inset-0 z-3 bg-[radial-gradient(ellipse_at_center,transparent_18%,rgba(48,48,50,0.38)_52%,rgba(20,20,22,0.82)_100%)]"
+                className="hero__overlay pointer-events-none absolute inset-0 z-3 bg-[radial-gradient(ellipse_at_center,transparent_18%,rgba(165,165,164,0.32)_52%,rgba(140,140,139,0.68)_100%)]"
             />
 
             <div

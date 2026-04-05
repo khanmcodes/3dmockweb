@@ -102,7 +102,7 @@ function GalleryCard({ item, index }) {
                 } focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-accent`}
             >
                 <div
-                    className={`gallery-card__image-wrapper group/image relative aspect-[4/5] cursor-pointer overflow-hidden rounded-[2px] bg-surface shadow-[0_20px_80px_rgba(0,0,0,0.5)] will-change-[clip-path] max-md:[direction:ltr] ${
+                    className={`gallery-card__image-wrapper group/image relative aspect-[4/5] cursor-pointer overflow-hidden rounded-[2px] bg-surface shadow-[0_20px_80px_rgba(100,100,99,0.26)] will-change-[clip-path] max-md:[direction:ltr] ${
                         isRight ? 'md:[direction:ltr]' : ''
                     }`}
                 >
@@ -163,7 +163,7 @@ export default function Gallery() {
 
     return (
         <section
-            className="gallery texture-noise relative z-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden border-b border-[rgba(236,238,242,0.06)] bg-bg px-16 py-44 max-md:px-8"
+            className="gallery texture-noise relative z-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden border-b border-[rgba(46,46,46,0.08)] bg-bg px-16 py-44 max-md:px-8"
             id="gallery"
         >
             <div className="gallery__container relative z-[1] mx-auto max-w-7xl">

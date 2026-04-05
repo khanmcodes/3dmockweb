@@ -33,12 +33,12 @@ export default function VoidStarfield({ reduceMotion = false, hideBaseFill = fal
                     r={s.r}
                     fill={
                         i % 11 === 0
-                            ? '#e6c98a'
+                            ? '#b8924a'
                             : i % 7 === 0
-                              ? '#f0ebe3'
+                              ? '#6e6e6d'
                               : i % 5 === 0
-                                ? '#d8d4cc'
-                                : '#eceae6'
+                                ? '#8a8a89'
+                                : '#a5a5a4'
                     }
                     opacity={s.twinkle && !reduceMotion ? undefined : s.baseOpacity}
                     style={

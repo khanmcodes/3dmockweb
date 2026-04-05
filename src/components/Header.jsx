@@ -16,19 +16,28 @@ export default function Header() {
                     <img
                         src="/logo.png"
                         alt="Studio Vortessa Logo"
-                        className="h-9 w-auto object-contain opacity-90 mix-blend-screen transition-opacity duration-300 [filter:drop-shadow(0_0_20px_rgba(230,200,150,0.28))] hover:opacity-100 md:h-12"
+                        className="h-9 w-auto object-contain opacity-95 transition-opacity duration-300 [filter:drop-shadow(0_0_16px_rgba(184,146,74,0.22))] hover:opacity-100 md:h-12"
                     />
                 </Link>
             </div>
 
-            <nav className="pointer-events-auto flex flex-wrap items-center justify-end gap-x-6 gap-y-2 md:gap-8">
-                <Link to="/catalog" className="label text-muted transition-[color,text-shadow] duration-300 hover:text-accent-gold hover:[text-shadow:0_0_16px_rgba(230,201,138,0.4)]">
+            <nav className="pointer-events-auto flex flex-wrap items-center justify-end gap-x-6 gap-y-2 mix-blend-difference md:gap-8">
+                <Link
+                    to="/catalog"
+                    className="font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl"
+                >
                     Catalog
                 </Link>
-                <Link to="/about" className="label text-muted transition-[color,text-shadow] duration-300 hover:text-accent-gold hover:[text-shadow:0_0_16px_rgba(230,201,138,0.4)]">
+                <Link
+                    to="/about"
+                    className="font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl"
+                >
                     About
                 </Link>
-                <Link to="/contact" className="label text-muted transition-[color,text-shadow] duration-300 hover:text-accent-gold hover:[text-shadow:0_0_16px_rgba(230,201,138,0.4)]">
+                <Link
+                    to="/contact"
+                    className="font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl"
+                >
                     Contact
                 </Link>
             </nav>
