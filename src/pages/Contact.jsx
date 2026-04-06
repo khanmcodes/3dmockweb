@@ -86,7 +86,7 @@ export default function Contact() {
     }, []);
 
     return (
-        <PageTransition className="contact page relative min-h-screen overflow-hidden bg-bg">
+        <PageTransition cinematic className="contact page relative min-h-screen overflow-hidden bg-bg">
             <div className="contact__container relative z-[2] mx-auto flex min-h-screen w-full max-w-screen-2xl">
 
                 {/* ─── Left: Form Side ─── */}

@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 const HERO_SELECTOR = '.catalog2-hero';
-const MAX_NOISE_WIDTH = 1680;
+/** Cap internal buffer size — keeps grain sharp without full-viewport per-pixel cost every frame */
+const MAX_NOISE_WIDTH = 1280;
 
 function u32(n) {
     return n >>> 0;
@@ -29,6 +30,7 @@ export default function HeroLiveNoise({ className = '' }) {
     const prevLumRef = useRef(null);
     const reducedRef = useRef(false);
     const frameRef = useRef(0);
+    const tickRef = useRef(0);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -53,7 +55,7 @@ export default function HeroLiveNoise({ className = '' }) {
             const rect = root.getBoundingClientRect();
             const cw = Math.max(32, Math.round(rect.width));
             const ch = Math.max(32, Math.round(rect.height));
-            const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
+            const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 1.5);
             let w = Math.floor(cw * dpr);
             let h = Math.floor(ch * dpr);
             if (w > MAX_NOISE_WIDTH) {
@@ -133,7 +135,11 @@ export default function HeroLiveNoise({ className = '' }) {
                 interval = window.setInterval(drawNoise, 1000 / 12);
             } else {
                 const tick = () => {
-                    drawNoise();
+                    tickRef.current += 1;
+                    // ~30fps grain updates — motion stays visible, halves CPU vs 60fps full redraw
+                    if (tickRef.current % 2 === 0) {
+                        drawNoise();
+                    }
                     raf = requestAnimationFrame(tick);
                 };
                 raf = requestAnimationFrame(tick);

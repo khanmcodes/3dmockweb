@@ -4,6 +4,7 @@ import { motion as Motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition';
 import VoidStarfield from '../components/VoidStarfield';
 import { CosmicBackdrop } from '../components/CosmicDecor';
+import { ArrowDownRight } from 'lucide-react';
 
 export default function Void() {
     const [reduceMotion, setReduceMotion] = useState(false);
@@ -60,20 +61,22 @@ export default function Void() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
                 >
+                    <img
+                        src="/logo.png"
+                        alt="Studio Vortessa"
+                        className="h-auto w-[min(24rem,82vw)] max-w-[160px] object-contain [filter:drop-shadow(0_10px_28px_rgba(46,46,46,0.26))]"
+                    />
+                    <p className="mt-6 max-w-xl text-balance font-sans text-xl font-normal leading-relaxed -tracking-[0.02rem] text-silver/92">
+                        A portal into sculptural interiors, reflective materials, and cosmic forms curated by Studio Vortessa.
+                    </p>
                     <Link
                         to="/catalog"
-                        className="group flex aspect-square w-[min(19rem,86vw)] max-w-[300px] flex-col items-center justify-center rounded-full border border-[rgba(46,46,46,0.12)] bg-[rgba(219,219,219,0.42)] px-7 py-8 text-center no-underline shadow-none backdrop-blur-[10px] backdrop-saturate-100 outline-none transition-[border-color,background-color,transform] duration-300 ease-out hover:border-[rgba(184,146,74,0.35)] hover:bg-[rgba(165,165,164,0.38)] focus-visible:ring-1 focus-visible:ring-[rgba(184,146,74,0.4)] focus-visible:ring-offset-0 active:scale-[0.99] sm:w-82 sm:max-w-[328px] sm:px-8"
+                        className="catalog2-hero__cta mt-15 inline-flex items-center text-lg gap-2 rounded-full bg-white px-6 py-2 font-medium tracking-tight text-black/70 transition-opacity hover:opacity-90"
                         aria-label="Enter the void — open catalog"
                     >
-                        <h1 className="text-balance text-[0.62rem] leading-snug tracking-tight font-medium text-text sm:text-[0.7rem] md:text-xl">
-                            ent3r the vo1d
-                        </h1>
-                        <p
-                            className="font-void-ui mt-0 max-h-0 overflow-hidden text-[0.65rem] font-medium tracking-wide text-silver/85 normal-case opacity-0 transition-[max-height,margin-top,opacity] duration-300 ease-out group-hover:mt-3 group-hover:max-h-14 group-hover:opacity-100 group-focus-visible:mt-3 group-focus-visible:max-h-14 group-focus-visible:opacity-100"
-                            aria-hidden
-                        >
-                            Click here to continue
-                        </p>
+                        Enter
+                        
+                        <ArrowDownRight className="size-5 shrink-0 -rotate-90" aria-hidden strokeWidth={2} />
                     </Link>
                 </Motion.div>
             </main>

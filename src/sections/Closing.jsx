@@ -8,7 +8,7 @@ function picPath(filename) {
 
 const FOOTER_BG_GIF = picPath('(4).GIF');
 
-export default function Closing() {
+export default function Closing({ className = '', catalogSnapSection = false }) {
     const ref = useScrollAnimation((el, gsap) => {
         const tagline = el.querySelector('.closing__tagline');
         const navLinks = el.querySelectorAll('.closing__nav a');
@@ -38,7 +38,8 @@ export default function Closing() {
     return (
         <footer
             ref={ref}
-            className="closing texture-noise texture-noise--footer relative z-40 isolate min-h-[min(92vh,880px)] w-full overflow-hidden bg-bg-elevated px-6 py-16 text-text md:px-12 md:py-20 lg:px-16"
+            className={`closing texture-noise texture-noise--footer relative z-40 isolate min-h-[min(92vh,880px)] w-full overflow-hidden bg-bg-elevated px-6 py-16 text-text md:px-12 md:py-20 lg:px-16 ${className}`}
+            {...(catalogSnapSection ? { 'data-catalog-snap': '' } : {})}
             id="closing"
             style={{ fontFamily: 'var(--font-mono)' }}
         >

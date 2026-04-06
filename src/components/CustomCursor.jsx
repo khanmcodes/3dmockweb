@@ -56,7 +56,11 @@ export default function CustomCursor() {
             }
         };
 
+        let rafId = 0;
+        let running = true;
+
         const renderLoop = () => {
+            if (!running) return;
             renderDotX += (mouseX - renderDotX) * 0.6;
             renderDotY += (mouseY - renderDotY) * 0.6;
             renderFollowerX += (mouseX - renderFollowerX) * 0.15;
@@ -73,15 +77,18 @@ export default function CustomCursor() {
                 setFollowerY(renderFollowerY);
             }
 
-            requestAnimationFrame(renderLoop);
+            rafId = requestAnimationFrame(renderLoop);
         };
 
-        const rafId = requestAnimationFrame(renderLoop);
-        window.addEventListener('mousemove', onMouseMove);
+        rafId = requestAnimationFrame(renderLoop);
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+        const unbinders = [];
 
         const bindElements = () => {
+            if (!alive) return;
             document.querySelectorAll('a:not(.catalog-card):not(.gallery-card), button').forEach((el) => {
-                el.addEventListener('mouseenter', () => {
+                const onMagEnter = () => {
                     isHoveringMagnetic = true;
                     activeMagneticTarget = el;
                     gsap.to(follower, {
@@ -91,8 +98,8 @@ export default function CustomCursor() {
                         duration: 0.3,
                     });
                     gsap.to(dot, { scale: 0, duration: 0.2 });
-                });
-                el.addEventListener('mouseleave', () => {
+                };
+                const onMagLeave = () => {
                     isHoveringMagnetic = false;
                     gsap.to(activeMagneticTarget, {
                         x: 0,
@@ -108,11 +115,17 @@ export default function CustomCursor() {
                         duration: 0.3,
                     });
                     gsap.to(dot, { scale: 1, duration: 0.2 });
+                };
+                el.addEventListener('mouseenter', onMagEnter);
+                el.addEventListener('mouseleave', onMagLeave);
+                unbinders.push(() => {
+                    el.removeEventListener('mouseenter', onMagEnter);
+                    el.removeEventListener('mouseleave', onMagLeave);
                 });
             });
 
             document.querySelectorAll('.catalog-card, .atlas-card, .gallery-card').forEach((el) => {
-                el.addEventListener('mouseenter', () => {
+                const onViewEnter = () => {
                     isHoveringView = true;
                     cursor.style.mixBlendMode = 'normal';
                     gsap.to(follower, {
@@ -125,8 +138,8 @@ export default function CustomCursor() {
                     });
                     gsap.to(dot, { scale: 0, duration: 0.2 });
                     gsap.to(label, { opacity: 1, scale: 1, duration: 0.3, delay: 0.1 });
-                });
-                el.addEventListener('mouseleave', () => {
+                };
+                const onViewLeave = () => {
                     isHoveringView = false;
                     cursor.style.mixBlendMode = 'difference';
                     gsap.to(follower, {
@@ -138,16 +151,29 @@ export default function CustomCursor() {
                     });
                     gsap.to(dot, { scale: 1, duration: 0.2 });
                     gsap.to(label, { opacity: 0, scale: 0.5, duration: 0.2 });
+                };
+                el.addEventListener('mouseenter', onViewEnter);
+                el.addEventListener('mouseleave', onViewLeave);
+                unbinders.push(() => {
+                    el.removeEventListener('mouseenter', onViewEnter);
+                    el.removeEventListener('mouseleave', onViewLeave);
                 });
             });
         };
 
-        const timeout = setTimeout(bindElements, 500);
+        let alive = true;
+        const timeout = setTimeout(() => {
+            if (!alive) return;
+            bindElements();
+        }, 500);
 
         return () => {
+            alive = false;
+            running = false;
             window.removeEventListener('mousemove', onMouseMove);
             cancelAnimationFrame(rafId);
             clearTimeout(timeout);
+            unbinders.forEach((fn) => fn());
         };
     }, [location.pathname]);
 

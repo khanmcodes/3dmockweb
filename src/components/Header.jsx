@@ -1,6 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import { CosmicMark } from './CosmicDecor';
 
+const linkClass =
+    'font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl';
+
 export default function Header() {
     const { pathname } = useLocation();
 
@@ -12,7 +15,7 @@ export default function Header() {
         <header className="pointer-events-none fixed top-0 left-0 z-[100] flex w-full items-center justify-between px-4 py-8 md:px-16">
             <div className="pointer-events-auto flex items-center gap-3 md:gap-4">
                 <CosmicMark className="text-accent-gold/50 shrink-0" />
-                <Link to="/catalog" className="flex items-center">
+                <Link to="/catalog#home-banner" className="flex items-center">
                     <img
                         src="/logo.png"
                         alt="Studio Vortessa Logo"
@@ -21,23 +24,20 @@ export default function Header() {
                 </Link>
             </div>
 
-            <nav className="pointer-events-auto flex flex-wrap items-center justify-end gap-x-6 gap-y-2 mix-blend-difference md:gap-8">
-                <Link
-                    to="/catalog"
-                    className="font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl"
-                >
+            <nav className="pointer-events-auto flex flex-wrap items-center justify-end gap-x-5 gap-y-2 mix-blend-difference md:gap-x-8">
+                <Link to="/catalog#home-banner" className={linkClass}>
+                    Index
+                </Link>
+                <Link to="/catalog#collections" className={linkClass}>
                     Catalog
                 </Link>
-                <Link
-                    to="/about"
-                    className="font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl"
-                >
+                <Link to="/catalog#materials" className={linkClass}>
+                    Material
+                </Link>
+                <Link to="/about" className={linkClass}>
                     About
                 </Link>
-                <Link
-                    to="/contact"
-                    className="font-sans text-sm font-normal tracking-tight text-white transition-opacity duration-300 hover:opacity-70 md:text-xl"
-                >
+                <Link to="/contact" className={linkClass}>
                     Contact
                 </Link>
             </nav>

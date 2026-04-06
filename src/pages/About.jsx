@@ -340,7 +340,7 @@ export default function About() {
     }, []);
 
     return (
-        <PageTransition className="about page bg-bg">
+        <PageTransition cinematic className="about page bg-bg">
             <div ref={rootRef} className="texture-noise texture-noise--footer relative min-h-screen">
 
                 {/* ━━━━━━━━━━ ZONE 1 — Cinematic Hero with Character Reveal ━━━━━━━━━━ */}

@@ -5,6 +5,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/** Shared ref so pages (e.g. Catalog) can attach Lenis plugins like `lenis/snap` */
+export const appLenisRef = { current: null };
+
 export function useLenis() {
   const lenisRef = useRef(null);
 
@@ -17,6 +20,7 @@ export function useLenis() {
     });
 
     lenisRef.current = lenis;
+    appLenisRef.current = lenis;
 
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
@@ -25,10 +29,12 @@ export function useLenis() {
       lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
+    ScrollTrigger.config({ limitCallbacks: true });
 
     return () => {
       lenis.destroy();
       lenisRef.current = null;
+      appLenisRef.current = null;
     };
   }, []);
 

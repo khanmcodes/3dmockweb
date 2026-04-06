@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 export default function VoidStarfield({ reduceMotion = false, hideBaseFill = false }) {
     const stars = useMemo(() => {
         const out = [];
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 130; i++) {
             const x = ((i * 137.508) % 10000) / 100;
             const y = ((i * 211.337 + 29.17) % 10000) / 100;
             const r = 0.35 + ((i * 17) % 10) * 0.12;
