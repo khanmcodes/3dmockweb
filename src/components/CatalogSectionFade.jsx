@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { appLenisRef } from '../hooks/useLenis';
 
-const FADE_SECTION_IDS = new Set(['collections', 'materials']);
+const FADE_SECTION_IDS = new Set(['collections']);
 
 function sectionScrollOffset() {
     return -Math.min(112, Math.max(72, window.innerHeight * 0.08));
@@ -24,7 +24,7 @@ function scrollToSectionImmediate(id) {
 }
 
 /**
- * /catalog#collections and /catalog#materials: opaque fade + instant jump (no long scroll).
+ * /catalog#collections: opaque fade + instant jump (no long scroll).
  */
 export default function CatalogSectionFade() {
     const { pathname, hash } = useLocation();

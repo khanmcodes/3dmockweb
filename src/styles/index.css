@@ -254,6 +254,7 @@
         letter-spacing: var(--tracking-tight);
         font-variant-numeric: normal;
     }
+    
 }
 
 @layer base {

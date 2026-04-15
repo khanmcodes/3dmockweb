@@ -14,11 +14,12 @@ export function useScrollAnimation(animationFn, deps = []) {
     const ref = useRef(null);
 
     useEffect(() => {
-        if (!ref.current) return;
+        const element = ref.current;
+        if (!element) return;
 
         const ctx = gsap.context(() => {
-            animationFn(ref.current, gsap, ScrollTrigger);
-        }, ref);
+            animationFn(element, gsap, ScrollTrigger);
+        }, element);
 
         return () => ctx.revert();
     }, deps);

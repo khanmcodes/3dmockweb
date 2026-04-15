@@ -132,9 +132,6 @@ export default function Product() {
                                     <span className="product__material font-sans text-sm font-medium tracking-widest text-accent-gold uppercase">
                                         {product.material}
                                     </span>
-                                    <span className="product__price font-sans text-base tracking-wide text-text md:text-lg">
-                                        {product.price}
-                                    </span>
                                 </div>
                             </header>
 

@@ -180,7 +180,7 @@ export default function HeroLiveNoise({ className = '' }) {
     return (
         <canvas
             ref={canvasRef}
-            className={`block h-full w-full max-h-none max-w-none opacity-[0.35] mix-blend-normal ${className}`}
+            className={`block h-full w-full max-h-none max-w-none opacity-[0.30] mix-blend-normal ${className}`}
             aria-hidden
         />
     );

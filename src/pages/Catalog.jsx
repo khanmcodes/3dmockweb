@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Snap from 'lenis/snap';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { appLenisRef } from '../hooks/useLenis';
 import {
     products,
     getProductPath,
@@ -12,7 +10,6 @@ import {
 import { ArrowDownRight } from 'lucide-react';
 import HeroLiveNoise from '../components/HeroLiveNoise';
 import PageTransition from '../components/PageTransition';
-import Closing from '../sections/Closing';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,66 +26,41 @@ const EDITORIAL = {
     spheres: { src: picPath('(8).webp'), alt: 'Chrome spheres study' },
 };
 
-/** Materials — `layout` maps to bento grid slots on md+ */
-const MATERIALS = [
-    {
-        id: 'chrome',
-        title: 'Chrome',
-        blurb: 'Liquid reflections and mirror-finished profiles.',
-        visual: EDITORIAL.spheres,
-        layout: 'hero',
-    },
-    {
-        id: 'stainless-steel',
-        title: 'Stainless steel',
-        blurb: 'Surgical precision, softened for living spaces.',
-        visual: EDITORIAL.chair,
-        layout: 'stack-top',
-    },
-    {
-        id: 'marble',
-        title: 'Marble',
-        blurb: 'Veined mass, weight, and quiet ceremony.',
-        visual: EDITORIAL.stairs,
-        layout: 'stack-bottom',
-    },
-    {
-        id: 'gem-stones',
-        title: 'Gem Stones',
-        blurb: 'Faceted depth, prismatic accents, rare cuts.',
-        visual: EDITORIAL.loveseat,
-        layout: 'wide',
-    },
-];
-
-function docTopWithLenis(el, lenis) {
-    return el.getBoundingClientRect().top + lenis.scroll;
+/** Split catalogue into left / right columns (first half vs remainder). */
+function splitCatalogColumns(list) {
+    const mid = Math.ceil(list.length / 2);
+    return {
+        leftColumn: list.slice(0, mid),
+        rightColumn: list.slice(mid),
+    };
 }
 
-function catalogSnapHeaderOffset() {
-    const md = window.matchMedia('(min-width: 768px)').matches;
-    if (md) {
-        return Math.max(5.5 * 16, Math.min(window.innerHeight * 0.18, 10.5 * 16));
-    }
-    return Math.max(4.5 * 16, Math.min(window.innerHeight * 0.14, 8.5 * 16));
-}
-
-function AtlasCard({ product }) {
+function AtlasCard({ product, pairSide }) {
     const initial = getDefaultVariant(product);
     const [variant, setVariant] = useState(initial);
 
     const productPath = getProductPath(product);
     const inquiryHref = `/contact?piece=${encodeURIComponent(product.name)}`;
 
+    const isLeft = pairSide === 'left';
+    const isRight = pairSide === 'right';
+
     return (
         <article
-            className="catalog-product-reveal group relative mx-auto flex min-h-[78vh] w-full max-w-6xl items-center py-10 md:min-h-[86vh] md:py-14"
-            data-catalog-snap=""
+            className={`catalog-product-reveal group relative flex h-auto min-h-0 w-full flex-col py-10 md:h-full md:min-h-[min(76vh,860px)] md:py-10 ${
+                isLeft ? 'items-start md:justify-self-start' : ''
+            } ${isRight ? 'items-start md:items-end md:justify-self-end' : ''}`}
         >
-            <div className="grid w-full grid-cols-1 items-center gap-8 md:grid-cols-[1.1fr_0.9fr] md:gap-14">
+            <div
+                className={`relative flex w-full flex-col md:absolute md:bottom-[100px] md:space-y-[-40px] ${
+                    isLeft ? 'items-start' : 'items-start md:items-end md:text-right'
+                }`}
+            >
                 <Link
                     to={productPath}
-                    className="catalog-product-reveal__image relative block w-full max-w-[34rem] aspect-[4/5] overflow-hidden rounded-[30px] border border-[rgba(46,46,46,0.08)] bg-[rgba(219,219,219,0.68)] shadow-[0_24px_80px_rgba(100,100,99,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-gold md:justify-self-center"
+                    className={`catalog-product-reveal__image relative z-[10] block w-full max-w-[32rem] overflow-hidden ${
+                        isRight ? 'md:ml-auto' : ''
+                    }`}
                     aria-label={`View ${product.name}`}
                 >
                     <div
@@ -114,8 +86,24 @@ function AtlasCard({ product }) {
                             </div>
                         )}
                     </div>
-                    {product.variants?.length > 1 ? (
-                        <div className="pointer-events-auto absolute bottom-5 left-5 z-[3] flex gap-2 md:bottom-6 md:left-6">
+                </Link>
+                <div
+                    className={`catalog-product-reveal__content relative max-w-[32rem] p-2 ${
+                        isRight ? 'md:ml-auto' : ''
+                    }`}
+                >
+                    <h2 className="font-sans text-3xl font-medium tracking-tight text-text md:text-[2.2rem]">
+                        {product.name}
+                    </h2>
+                    <p className="mt-3 font-sans text-sm font-light leading-relaxed text-muted md:text-base">
+                        {product.description}
+                    </p>
+                    <div className="flex justify-between mt-8 border-t border-[rgba(46,46,46,0.08)] pt-5">
+                        
+                        <div>
+                            <p className="font-sans text-[0.72rem] uppercase tracking-[0.14em] text-dim">Variant</p>
+                        {product.variants?.length > 1 ? (
+                        <div className="pointer-events-auto z-[3] flex gap-2 mt-1">
                             {product.variants.map((v) => (
                                 <button
                                     key={v.id}
@@ -137,16 +125,8 @@ function AtlasCard({ product }) {
                             ))}
                         </div>
                     ) : null}
-                </Link>
-                <div className="catalog-product-reveal__content relative p-2 md:p-4">
-                    <h2 className="font-sans text-3xl font-medium tracking-tight text-text md:text-[2.2rem]">
-                        {product.name}
-                    </h2>
-                    <p className="mt-3 font-sans text-sm font-light leading-relaxed text-muted md:text-base">
-                        {product.description}
-                    </p>
-                    <div className="mt-8 border-t border-[rgba(46,46,46,0.08)] pt-5">
-                        <div>
+                    </div>
+                    <div>
                             <p className="font-sans text-[0.72rem] uppercase tracking-[0.14em] text-dim">
                                 Material
                             </p>
@@ -155,10 +135,16 @@ function AtlasCard({ product }) {
                             </p>
                         </div>
                     </div>
-                    <div className="mt-8 flex flex-wrap items-center gap-3">
+                    
+                    
+                    <div
+                        className={`mt-8 flex flex-wrap items-center gap-3 ${
+                            isRight ? 'md:justify-end' : ''
+                        }`}
+                    >
                         <Link
                             to={productPath}
-                            className="inline-flex items-center rounded-full bg-[rgba(255,255,255,0.52)] px-4 py-2 font-sans text-sm font-medium tracking-tight text-text no-underline ring-1 ring-[rgba(46,46,46,0.09)] transition-[background-color,color,box-shadow] duration-300 hover:bg-[rgba(255,255,255,0.78)] hover:text-accent-gold"
+                            className="inline-flex items-center rounded-full bg-white px-4 py-2 font-sans text-sm font-medium tracking-tight text-text no-underline  transition-[background-color,color,box-shadow] duration-300 hover:bg-[rgba(255,255,255,0.78)] hover:text-accent-gold"
                         >
                             View details
                         </Link>
@@ -179,7 +165,6 @@ export default function Catalog() {
     const rootRef = useRef(null);
     const heroRef = useRef(null);
     const gridRef = useRef(null);
-    const materialsRef = useRef(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -355,140 +340,12 @@ export default function Catalog() {
                     );
                 });
             }
-
-            if (materialsRef.current) {
-                const rows = materialsRef.current.querySelectorAll('.catalog-materials-reveal');
-                rows.forEach((row) => {
-                    const photo = row.querySelector('.catalog-materials-reveal__photo');
-                    const content = row.querySelector('.catalog-materials-reveal__content');
-                    if (!photo || !content) return;
-
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: row,
-                            start: 'top 82%',
-                            end: 'bottom 56%',
-                            toggleActions: 'play none none reverse',
-                        },
-                    });
-
-                    gsap.set([photo, content], { willChange: 'transform, opacity' });
-                    tl.fromTo(
-                        photo,
-                        { y: 22, autoAlpha: 0, scale: 0.97, force3D: true },
-                        { y: 0, autoAlpha: 1, scale: 1, duration: 1.02, ease: 'power3.out', force3D: true }
-                    ).fromTo(
-                        content,
-                        { y: 18, x: 10, autoAlpha: 0, force3D: true },
-                        {
-                            y: 0,
-                            x: 0,
-                            autoAlpha: 1,
-                            duration: 0.84,
-                            ease: 'power3.out',
-                            force3D: true,
-                            clearProps: 'willChange',
-                        },
-                        '-=0.5'
-                    );
-                });
-            }
         }, rootRef);
 
         return () => ctx.revert();
     }, []);
 
-    /** Smooth section snap via Lenis (not CSS scroll-snap — that fights Lenis and feels abrupt). */
-    useEffect(() => {
-        let alive = true;
-        let snap = null;
-        let unsubscribeAdds = [];
-        let ro = null;
-        let debounceId = 0;
-
-        const refreshSnapPositions = (lenis) => {
-            const root = rootRef.current;
-            if (!snap || !root || !lenis) return;
-            unsubscribeAdds.forEach((u) => u());
-            unsubscribeAdds = [];
-            const targets = [...root.querySelectorAll('[data-catalog-snap]')];
-            const headerOff = catalogSnapHeaderOffset();
-            targets.forEach((el) => {
-                const off = el.dataset.catalogSnap === 'hero' ? 0 : headerOff;
-                const y = Math.ceil(docTopWithLenis(el, lenis) - off);
-                if (y >= -1) unsubscribeAdds.push(snap.add(y));
-            });
-        };
-
-        const start = () => {
-            const lenis = appLenisRef.current;
-            const root = rootRef.current;
-            if (!alive || !lenis || !root) {
-                return () => {};
-            }
-
-            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            snap = new Snap(lenis, {
-                type: 'proximity',
-                duration: reduced ? 0.42 : 1.18,
-                easing: (t) => 1 - (1 - t) ** 3,
-                debounce: reduced ? 200 : 100,
-                distanceThreshold: reduced ? '55%' : '32%',
-            });
-
-            refreshSnapPositions(lenis);
-
-            const scheduleRefresh = () => {
-                clearTimeout(debounceId);
-                debounceId = window.setTimeout(() => {
-                    if (!alive) return;
-                    requestAnimationFrame(() => {
-                        const l = appLenisRef.current;
-                        if (l) {
-                            refreshSnapPositions(l);
-                            ScrollTrigger.refresh();
-                        }
-                    });
-                }, 160);
-            };
-
-            ro = new ResizeObserver(scheduleRefresh);
-            ro.observe(root);
-
-            const onRefresh = () => scheduleRefresh();
-            window.addEventListener('orientationchange', onRefresh);
-
-            return () => {
-                window.removeEventListener('orientationchange', onRefresh);
-                clearTimeout(debounceId);
-                ro?.disconnect();
-                unsubscribeAdds.forEach((u) => u());
-                unsubscribeAdds = [];
-                snap?.destroy();
-                snap = null;
-            };
-        };
-
-        let cleanup = () => {};
-        let raf = 0;
-        const waitLenis = () => {
-            if (!alive) return;
-            const lenis = appLenisRef.current;
-            if (lenis && rootRef.current) {
-                cleanup = start();
-                return;
-            }
-            raf = requestAnimationFrame(waitLenis);
-        };
-        waitLenis();
-
-        return () => {
-            alive = false;
-            cancelAnimationFrame(raf);
-            cleanup();
-        };
-    }, []);
+    const { leftColumn, rightColumn } = splitCatalogColumns(products);
 
     return (
         <PageTransition className="catalog page relative min-h-screen bg-bg p-0">
@@ -498,7 +355,6 @@ export default function Catalog() {
                     id="home-banner"
                     ref={heroRef}
                     className="catalog2-hero relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pb-24 pt-28 md:px-12"
-                    data-catalog-snap="hero"
                     aria-labelledby="catalog-home-banner-heading"
                 >
                     <div className="pointer-events-none absolute inset-0 z-0 min-h-[100dvh] w-full">
@@ -511,23 +367,23 @@ export default function Catalog() {
                     </div>
                     {/* Own layer so grain isn’t clipped / blended inside the image stack */}
                     <div
-                        className="pointer-events-none absolute inset-0 z-[1] min-h-[100dvh] w-full"
+                        className="pointer-events-none bg-gradient-to-b from-transparent to-black/70 absolute inset-0 z-[1] min-h-[100dvh] w-full"
                         aria-hidden
                     >
                         <HeroLiveNoise className="h-full min-h-[100dvh] w-full" />
                     </div>
-                    <div
-                        className="catalog2-hero__veil pointer-events-none absolute inset-0 z-[2] min-h-[100dvh] w-full bg-[linear-gradient(180deg,rgba(219,219,219,0.97)_0%,rgba(165,165,164,0.92)_45%,rgba(130,130,129,0.88)_100%)]"
-                        aria-hidden
-                    />
+                    
 
+                    <p
+                        className="text-xl absolute max-w-xl bottom-8 left-6 z-[3] text-left text-white font-normal tracking-normal md:bottom-10 md:left-12"
+                    >
+                        Welcome to a dimension where design transcends the ordinary. Where gravity feels optional and form bends to imagination. Where every curve, edge, and surface exists with intention—refined, minimal, and undeniably otherworldly.
+                    </p>
+                    <p className="text-xl absolute bottom-8 right-6 z-[3] text-right uppercase leading-tight text-white font-medium tracking-normal md:bottom-10 md:right-12">stud10<br />vort3554</p>
                     <div className="relative z-[3] mx-auto flex max-w-3xl flex-col items-center text-center [perspective:1200px]">
-                        <p className="catalog2-hero__sub text-balance text-white uppercase font-medium tracking-wide">
-                            Welcome to a dimension where design transcends the ordinary
-                        </p>
                         <h1
                             id="catalog-home-banner-heading"
-                            className="catalog2-hero__headline mt-6 font-light leading-[1.10] tracking-tight text-white normal-case md:mt-8 text-8xl [transform-style:preserve-3d]"
+                            className="catalog2-hero__headline font-light leading-[1.10] tracking-tight text-white normal-case text-8xl [transform-style:preserve-3d]"
                         >
                             <span className="catalog2-hero__headline-line block italic font-serif text-[7rem]">
                                 Creating for
@@ -538,121 +394,96 @@ export default function Catalog() {
                         </h1>
                         <a
                             href="#collections"
-                            className="catalog2-hero__cta mt-15 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-medium tracking-tight text-black/70 transition-opacity hover:opacity-90"
+                            className="catalog2-hero__cta mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-3 font-medium text-black transition-opacity hover:opacity-90"
                         >
                             View our work
-                            <ArrowDownRight className="size-4 shrink-0" aria-hidden strokeWidth={2} />
+                            <ArrowDownRight className="size-5" aria-hidden strokeWidth={2} />
                         </a>
                     </div>
                 </section>
 
                 {/* ━━━ 2 · Collections ━━━ */}
                 <section id="collections" className="relative border-t border-[rgba(46,46,46,0.08)] bg-bg">
-                    <div className="sticky top-0 z-30 border-b border-[rgba(46,46,46,0.08)] bg-[rgba(219,219,219,0.88)] backdrop-blur-md">
-                        <div className="catalog-section-heading relative mx-auto flex max-w-screen-2xl flex-col items-center px-6 pb-8 pt-16 text-center md:px-12 md:pb-0 md:pt-10">
-                            <span className="catalog-section-heading__label font-sans text-[1rem] font-medium uppercase text-black/50">
-                                Catalog
-                            </span>
-                            <span className="catalog-section-heading__title font-sans text-[2.9rem] font-medium tracking-tight text-text md:text-[4.1rem]">
-                                Crafted with Love
-                            </span>
-                            <div
-                                className="catalog-section-heading__rule mt-7 h-px w-[min(14rem,42vw)] bg-linear-to-r from-transparent via-accent-gold/55 to-transparent"
-                                aria-hidden
-                            />
-                            <div
-                                className="pointer-events-none absolute inset-x-0 -bottom-14 h-14 bg-linear-to-b from-[rgba(219,219,219,0.9)] via-[rgba(219,219,219,0.62)] to-transparent backdrop-blur-[2px]"
-                                aria-hidden
-                            />
-                        </div>
+                    <div className="catalog-section-heading relative z-0 mx-auto flex max-w-screen-2xl flex-col items-center px-6 pt-16 text-center md:px-12 md:pt-0">
+                        <div
+                            className="catalog-section-heading__rule h-px w-[min(14rem,42vw)] bg-linear-to-r from-transparent via-accent-gold/55 to-transparent"
+                            aria-hidden
+                        />
+                        <div
+                            className="pointer-events-none absolute inset-x-0 -bottom-14 h-14"
+                            aria-hidden
+                        />
                     </div>
 
                     <div className="relative z-0 border-t border-[rgba(46,46,46,0.08)]">
-                        <div className="mx-auto max-w-screen-2xl px-6 py-10 md:px-12 md:py-14">
-                            <div ref={gridRef} className="flex flex-col gap-2">
-                                {products.map((p) => (
-                                    <AtlasCard key={p.id} product={p} />
-                                ))}
+                        <div className="mx-auto max-w-screen-2xl px-6 py-10 md:px-20 md:py-44">
+                            <div
+                                ref={gridRef}
+                                className="grid grid-cols-1 gap-14 md:grid-cols-2 md:items-start md:gap-x-10 md:gap-y-0 lg:gap-x-14"
+                            >
+                                <div className="catalog-products-grid-left grid min-w-0 grid-cols-1 gap-14 md:gap-16">
+                                    {leftColumn.map((p) => (
+                                        <AtlasCard key={p.id} product={p} pairSide="left" />
+                                    ))}
+                                </div>
+                                <div className="catalog-products-grid-right grid min-w-0 grid-cols-1 gap-14 md:gap-16 mt-100">
+                                    {rightColumn.map((p) => (
+                                        <AtlasCard key={p.id} product={p} pairSide="right" />
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="mt-16 border-t border-[rgba(46,46,46,0.08)] pt-14 pb-6 md:mt-24 md:pt-20 md:pb-10">
+                                <article
+                                    className="catalog-materials-cta relative overflow-hidden rounded-[28px] border border-[rgba(46,46,46,0.1)] shadow-[0_24px_80px_rgba(100,100,99,0.16)] md:rounded-[32px]"
+                                    aria-labelledby="catalog-materials-cta-heading"
+                                >
+                                    <div className="absolute inset-0 z-0">
+                                        <img
+                                            src={EDITORIAL.stairs.src}
+                                            alt=""
+                                            className="h-full min-h-[280px] w-full object-cover object-center brightness-[0.88] contrast-[1.06] saturate-[0.95] md:min-h-[320px]"
+                                            loading="lazy"
+                                        />
+                                        <div
+                                            className="absolute inset-0 bg-[linear-gradient(105deg,rgba(46,46,46,0.82)_0%,rgba(46,46,46,0.45)_42%,rgba(46,46,46,0.2)_100%)]"
+                                            aria-hidden
+                                        />
+                                        <div
+                                            className="absolute inset-0 bg-[linear-gradient(to_top,rgba(46,46,46,0.55)_0%,transparent_55%)]"
+                                            aria-hidden
+                                        />
+                                    </div>
+
+                                    <div className="relative z-[1] flex min-h-[280px] flex-col justify-end px-6 py-10 sm:px-10 md:min-h-[320px] md:px-14 md:py-12 lg:max-w-[min(100%,34rem)] lg:py-14">
+                                        <span className="font-sans text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/65">
+                                            Finishes
+                                        </span>
+                                        <h2
+                                            id="catalog-materials-cta-heading"
+                                            className="mt-3 font-sans text-[1.85rem] font-medium leading-[1.12] tracking-tight text-white md:text-[2.25rem]"
+                                        >
+                                            Discover our materials
+                                        </h2>
+                                        <p className="mt-4 max-w-md font-sans text-sm font-light leading-relaxed text-white/88 md:text-[0.9375rem] md:leading-relaxed">
+                                            Chrome, steel, marble, and more — how we treat surface, reflectance, and mass.
+                                            Explore the full palette on About.
+                                        </p>
+                                        <div className="mt-8">
+                                            <Link
+                                                to="/about#materials"
+                                                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-sans text-sm font-medium tracking-tight text-text shadow-[0_4px_24px_rgba(0,0,0,0.18)] transition-[background-color,color,transform,box-shadow] duration-300 ease-out hover:bg-[rgba(255,255,255,0.92)] hover:text-accent-gold hover:shadow-[0_8px_32px_rgba(0,0,0,0.22)] md:px-6 md:py-3 md:text-base"
+                                            >
+                                                Discover Our Materials
+                                                <ArrowDownRight className="size-4 shrink-0" aria-hidden strokeWidth={2} />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </article>
                             </div>
                         </div>
                     </div>
                 </section>
-
-                {/* ━━━ 3 · Materials ━━━ */}
-                <section
-                    id="materials"
-                    ref={materialsRef}
-                    className="relative z-0 border-t border-[rgba(46,46,46,0.08)] bg-bg-elevated"
-                    aria-labelledby="catalog-materials-heading"
-                >
-                    <div className="sticky top-0 z-30 border-b border-[rgba(46,46,46,0.08)] bg-[rgba(219,219,219,0.88)] backdrop-blur-md">
-                        <div className="catalog-section-heading relative mx-auto flex max-w-screen-2xl flex-col items-center px-6 pb-8 pt-8 text-center md:px-12 md:pb-6">
-                            <h2
-                                id="catalog-materials-heading"
-                                className="mt-4 leading-[1.02] tracking-tight text-text"
-                            >
-                                <span className="catalog-section-heading__title block font-sans text-[2.9rem] font-medium tracking-tight md:text-[4.1rem]">
-                                    Materials
-                                </span>
-                            </h2>
-                            <div
-                                className="catalog-section-heading__rule mt-6 h-px w-[min(14rem,42vw)] bg-linear-to-r from-transparent via-accent-gold/55 to-transparent"
-                                aria-hidden
-                            />
-                            <p className="catalog-section-heading__desc mt-5 max-w-xl font-sans text-sm font-light leading-relaxed text-muted md:text-base">
-                                Four families of finish — each with its own tempo, reflectance, and gravity in a room.
-                            </p>
-                            <div
-                                className="pointer-events-none absolute inset-x-0 -bottom-14 h-14 bg-linear-to-b from-[rgba(219,219,219,0.9)] via-[rgba(219,219,219,0.62)] to-transparent backdrop-blur-[2px]"
-                                aria-hidden
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mx-auto max-w-screen-2xl px-6 py-10 md:px-12 md:py-14">
-                        <ul className="flex list-none flex-col gap-2">
-                            {MATERIALS.map((m) => (
-                                <li
-                                    key={m.id}
-                                    className="catalog-materials-reveal mx-auto flex min-h-[min(72vh,840px)] w-full max-w-6xl items-center py-8 md:min-h-[min(78vh,900px)] md:py-12"
-                                    data-catalog-snap=""
-                                >
-                                    <article className="group relative w-full overflow-hidden rounded-[30px] border border-[rgba(46,46,46,0.08)] bg-[rgba(219,219,219,0.35)] shadow-[0_20px_72px_rgba(100,100,99,0.13),0_1px_0_rgba(255,255,255,0.66)_inset] backdrop-blur-sm transition-[transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[rgba(184,146,74,0.22)] hover:shadow-[0_28px_86px_rgba(100,100,99,0.18),0_1px_0_rgba(255,255,255,0.72)_inset]">
-                                        <div className="catalog-materials-reveal__image relative w-full overflow-hidden rounded-[24px]">
-                                            <div className="catalog-materials-reveal__photo relative overflow-hidden rounded-[24px]">
-                                                <div className="aspect-[16/9] w-full overflow-hidden md:aspect-[2.2/1]">
-                                                    <img
-                                                        src={m.visual.src}
-                                                        alt={m.visual.alt}
-                                                        className="h-full w-full object-cover brightness-[0.9] contrast-[1.06] saturate-[0.95] transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover:scale-[1.05]"
-                                                        loading="lazy"
-                                                    />
-                                                </div>
-                                                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[rgba(46,46,46,0.72)] via-[rgba(46,46,46,0.18)] to-transparent" />
-                                            </div>
-                                            <div className="catalog-materials-reveal__content absolute inset-x-0 bottom-0 z-10 p-6 md:p-10">
-                                                <span className="mb-2 inline-flex w-fit rounded-full border border-white/35 bg-white/15 px-2.5 py-1 font-mono text-[0.55rem] tracking-[0.28em] text-white/90 backdrop-blur-sm">
-                                                    MATERIAL
-                                                </span>
-                                                <h3 className="font-sans text-2xl font-medium tracking-tight text-white [text-shadow:0_2px_28px_rgba(46,46,46,0.45)] md:text-3xl lg:text-4xl">
-                                                    {m.title}
-                                                </h3>
-                                                <p className="mt-2 max-w-xl font-sans text-sm font-light leading-relaxed text-white/92 [text-shadow:0_1px_14px_rgba(46,46,46,0.4)] md:text-base">
-                                                    {m.blurb}
-                                                </p>
-                                                <span className="mt-5 inline-flex w-fit items-center gap-2 font-mono text-[0.6rem] tracking-[0.26em] text-accent-gold [text-shadow:0_1px_12px_rgba(46,46,46,0.35)]">
-                                                    PRISM / CUT
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </section>
-
-                <Closing catalogSnapSection />
             </div>
         </PageTransition>
     );

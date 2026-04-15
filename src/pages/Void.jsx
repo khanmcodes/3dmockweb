@@ -71,12 +71,10 @@ export default function Void() {
                     </p>
                     <Link
                         to="/catalog"
-                        className="catalog2-hero__cta mt-15 inline-flex items-center text-lg gap-2 rounded-full bg-white px-6 py-2 font-medium tracking-tight text-black/70 transition-opacity hover:opacity-90"
+                        className="catalog2-hero__cta mt-5 inline-flex items-center text-lg gap-2 rounded-xl bg-white px-6 py-2 font-medium tracking-tight text-black/70 transition-opacity hover:opacity-90"
                         aria-label="Enter the void — open catalog"
                     >
-                        Enter
-                        
-                        <ArrowDownRight className="size-5 shrink-0 -rotate-90" aria-hidden strokeWidth={2} />
+                        ENT3R THE V01D
                     </Link>
                 </Motion.div>
             </main>
