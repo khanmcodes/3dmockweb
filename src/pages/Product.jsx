@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
     getProductBySlugOrId,
     getProductNeighbors,
@@ -11,14 +10,15 @@ import {
 } from '../data/products';
 import PageTransition from '../components/PageTransition';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Product() {
     const { slug } = useParams();
     const product = getProductBySlugOrId(slug);
     const containerRef = useRef(null);
     const imageRef = useRef(null);
     const contextRef = useRef(null);
+    const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] });
+    const heroParallaxY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+    const heroParallaxScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
     const [variant, setVariant] = useState(() =>
         product ? getDefaultVariant(product) : null
     );
@@ -33,44 +33,6 @@ export default function Product() {
             document.title = 'Studio Vortessa';
         };
     }, [product]);
-
-    useEffect(() => {
-        if (!product || !containerRef.current) return;
-
-        const ctx = gsap.context(() => {
-            const elements = contextRef.current?.children;
-            const tl = gsap.timeline({ delay: 0.3 });
-
-            tl.fromTo(
-                imageRef.current,
-                { scale: 1.08, opacity: 0, filter: 'blur(10px)' },
-                { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.5, ease: 'power3.out' }
-            );
-
-            if (elements?.length) {
-                tl.fromTo(
-                    elements,
-                    { y: 40, opacity: 0 },
-                    { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out', stagger: 0.1 },
-                    '-=1.0'
-                );
-            }
-
-            gsap.to(imageRef.current, {
-                y: 150,
-                scale: 1.04,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: true,
-                },
-            });
-        }, containerRef);
-
-        return () => ctx.revert();
-    }, [product, variant?.id]);
 
     if (!product) {
         return (
@@ -94,29 +56,43 @@ export default function Product() {
                     className="product__layout grid min-h-screen grid-cols-1 grid-rows-[auto_1fr] max-[1024px]:grid-rows-[auto_1fr] lg:grid-cols-[1.2fr_1fr]"
                 >
                     <div className="product__visuals sticky top-0 h-screen overflow-hidden bg-surface max-[1024px]:relative max-[1024px]:h-[60vh]">
-                        <div
+                        <motion.div
                             ref={imageRef}
                             className="product__hero-image relative flex h-full w-full items-center justify-center overflow-hidden"
                             key={variant?.id || 'default'}
-                            style={
-                                heroImage
-                                    ? undefined
-                                    : {
-                                          background: `radial-gradient(circle at center, ${product.colorTone}22, transparent 80%)`,
-                                      }
-                            }
+                            style={{ y: heroParallaxY, scale: heroParallaxScale }}
                         >
-                            {heroImage ? (
-                                <img className="product__hero-img block h-full w-full object-cover" src={heroImage} alt="" />
-                            ) : null}
-                            <span className="product__hero-label label absolute bottom-16 left-16 opacity-50">
-                                Studio Vortessa
-                            </span>
-                        </div>
+                            <motion.div
+                                className="relative flex h-full w-full items-center justify-center overflow-hidden"
+                                style={
+                                    heroImage
+                                        ? undefined
+                                        : {
+                                              background: `radial-gradient(circle at center, ${product.colorTone}22, transparent 80%)`,
+                                          }
+                                }
+                                initial={{ scale: 1.08, opacity: 0, filter: 'blur(10px)' }}
+                                animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
+                                transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                            >
+                                {heroImage ? (
+                                    <img className="product__hero-img block h-full w-full object-cover" src={heroImage} alt="" />
+                                ) : null}
+                                <span className="product__hero-label label absolute bottom-16 left-16 opacity-50">
+                                    Studio Vortessa
+                                </span>
+                            </motion.div>
+                        </motion.div>
                     </div>
 
                     <div className="product__context flex flex-col px-32 py-64 max-[1024px]:px-16 max-[1024px]:py-32">
-                        <div ref={contextRef} className="product__context-inner mx-auto w-full max-w-2xl">
+                        <motion.div
+                            ref={contextRef}
+                            className="product__context-inner mx-auto w-full max-w-2xl"
+                            initial={{ y: 40, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                        >
                             <Link
                                 to="/catalog"
                                 className="product__back label mb-32 inline-block transition-colors duration-300 hover:text-text"
@@ -207,7 +183,7 @@ export default function Product() {
                                     </span>
                                 )}
                             </nav>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
 

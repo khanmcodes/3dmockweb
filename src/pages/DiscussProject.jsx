@@ -2,7 +2,7 @@ import PageTransition from '../components/PageTransition';
 
 export default function DiscussProject() {
     return (
-        <PageTransition cinematic className="page bg-bg">
+        <PageTransition className="page bg-bg">
             <section className="relative border-b border-black/[0.06] bg-[#ecebe8]">
                 <div className="mx-auto max-w-4xl px-6 py-28 sm:px-10 md:py-36">
                     <p className="font-mono text-[0.65rem] font-medium uppercase tracking-[0.28em] text-text/45">

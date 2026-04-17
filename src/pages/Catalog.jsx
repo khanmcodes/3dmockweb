@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { animate, motion, useMotionValue, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import {
     products,
     getProductPath,
@@ -10,8 +9,6 @@ import {
 import { ArrowDownRight } from 'lucide-react';
 import HeroLiveNoise from '../components/HeroLiveNoise';
 import PageTransition from '../components/PageTransition';
-
-gsap.registerPlugin(ScrollTrigger);
 
 function picPath(filename) {
     const normalized = filename.startsWith('(') ? ` ${filename}` : filename;
@@ -46,7 +43,11 @@ function AtlasCard({ product, pairSide }) {
     const isRight = pairSide === 'right';
 
     return (
-        <article
+        <motion.article
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
             className={`catalog-product-reveal group relative flex h-auto min-h-0 w-full flex-col py-10 md:h-full md:min-h-[min(76vh,860px)] md:py-10 ${
                 isLeft ? 'items-start md:justify-self-start' : ''
             } ${isRight ? 'items-start md:items-end md:justify-self-end' : ''}`}
@@ -157,193 +158,30 @@ function AtlasCard({ product, pairSide }) {
                     </div>
                 </div>
             </div>
-        </article>
+        </motion.article>
     );
 }
 
 export default function Catalog() {
     const rootRef = useRef(null);
     const heroRef = useRef(null);
-    const gridRef = useRef(null);
+    const prefersReducedMotion = useReducedMotion();
+    const heroImgScale = useMotionValue(prefersReducedMotion ? 1 : 1.12);
+    const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+    const heroImgScrollBoost = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+    const heroImgScaleCombined = useTransform([heroImgScale, heroImgScrollBoost], ([a, b]) => a * b);
+    const heroImgY = useTransform(scrollYProgress, [0, 1], ['0%', '-5%']);
+    const heroTypeOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.55, 0.25]);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            if (heroRef.current) {
-                const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                const sub = heroRef.current.querySelector('.catalog2-hero__sub');
-                const headlineLines = heroRef.current.querySelectorAll('.catalog2-hero__headline-line');
-                const headline = heroRef.current.querySelector('.catalog2-hero__headline');
-                const cta = heroRef.current.querySelector('.catalog2-hero__cta');
-                const heroVeil = heroRef.current.querySelector('.catalog2-hero__veil');
-                const heroImg = heroRef.current.querySelector('.catalog2-hero__bg');
-
-                if (heroImg) {
-                    gsap.set(heroImg, { scale: 1.12, filter: reduced ? 'none' : 'brightness(0.72) contrast(1.05)' });
-                }
-                if (heroVeil) {
-                    gsap.set(heroVeil, { scaleY: 1, transformOrigin: '50% 0%' });
-                }
-                if (sub) gsap.set(sub, { y: 28, autoAlpha: 0 });
-                headlineLines.forEach((line) => {
-                    gsap.set(line, { y: 36, autoAlpha: 0, rotateX: reduced ? 0 : -6, transformPerspective: 900 });
-                });
-                if (cta) gsap.set(cta, { y: 20, autoAlpha: 0, scale: 0.96 });
-
-                const intro = gsap.timeline({ delay: 0.08, defaults: { ease: 'power3.out' } });
-
-                if (heroImg) {
-                    intro.to(
-                        heroImg,
-                        {
-                            scale: 1,
-                            filter: reduced ? 'none' : 'brightness(1) contrast(1.02)',
-                            duration: reduced ? 0.35 : 1.45,
-                            ease: 'power2.out',
-                        },
-                        0,
-                    );
-                }
-                if (heroVeil && !reduced) {
-                    intro.to(heroVeil, { scaleY: 0, duration: 1.25, ease: 'power3.inOut' }, 0.05);
-                } else if (heroVeil) {
-                    gsap.set(heroVeil, { autoAlpha: 0 });
-                }
-
-                if (sub) {
-                    intro.to(sub, { y: 0, autoAlpha: 1, duration: reduced ? 0.35 : 0.88 }, reduced ? 0 : 0.35);
-                }
-                if (headlineLines.length) {
-                    intro.to(
-                        headlineLines,
-                        { y: 0, autoAlpha: 1, rotateX: 0, duration: reduced ? 0.3 : 1.05, stagger: reduced ? 0 : 0.14 },
-                        reduced ? 0 : 0.5,
-                    );
-                }
-                if (cta) {
-                    intro.to(
-                        cta,
-                        { y: 0, autoAlpha: 1, scale: 1, duration: 0.75, ease: 'power2.out' },
-                        reduced ? 0 : '-=0.45',
-                    );
-                }
-
-                if (heroImg) {
-                    gsap.to(heroImg, {
-                        scale: 1.05,
-                        yPercent: -5,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: heroRef.current,
-                            start: 'top top',
-                            end: 'bottom top',
-                            scrub: 1,
-                        },
-                    });
-                }
-
-                const scrubFade = [headline, sub, cta].filter(Boolean);
-                if (scrubFade.length) {
-                    gsap.fromTo(
-                        scrubFade,
-                        { autoAlpha: 1 },
-                        {
-                            autoAlpha: 0.25,
-                            ease: 'none',
-                            scrollTrigger: {
-                                trigger: heroRef.current,
-                                start: 'center top',
-                                end: 'bottom top',
-                                scrub: 0.65,
-                            },
-                        },
-                    );
-                }
-            }
-
-            const sectionHeadings = rootRef.current?.querySelectorAll('.catalog-section-heading');
-            if (sectionHeadings?.length) {
-                sectionHeadings.forEach((block) => {
-                    const label = block.querySelector('.catalog-section-heading__label');
-                    const title = block.querySelector('.catalog-section-heading__title');
-                    const rule = block.querySelector('.catalog-section-heading__rule');
-                    const desc = block.querySelector('.catalog-section-heading__desc');
-                    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-                    const parts = [label, title, desc].filter(Boolean);
-                    if (parts.length) {
-                        gsap.set(parts, { y: 32, autoAlpha: 0 });
-                    }
-                    if (rule) gsap.set(rule, { scaleX: 0, transformOrigin: '50% 50%', autoAlpha: 0 });
-
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: block,
-                            start: 'top 88%',
-                            toggleActions: 'play none none reverse',
-                        },
-                        defaults: { ease: 'power3.out' },
-                    });
-
-                    if (label) {
-                        tl.to(label, { y: 0, autoAlpha: 1, duration: reduced ? 0.35 : 0.8 });
-                    }
-                    if (title) {
-                        tl.to(title, { y: 0, autoAlpha: 1, duration: reduced ? 0.35 : 0.95 }, label ? '-=0.5' : 0);
-                    }
-                    if (rule) {
-                        tl.to(
-                            rule,
-                            { scaleX: 1, autoAlpha: 1, duration: reduced ? 0.25 : 1.1, ease: 'expo.out' },
-                            '-=0.55',
-                        );
-                    }
-                    if (desc) {
-                        tl.to(desc, { y: 0, autoAlpha: 1, duration: reduced ? 0.3 : 0.75 }, '-=0.6');
-                    }
-                });
-            }
-
-            if (gridRef.current) {
-                const rows = gridRef.current.querySelectorAll('.catalog-product-reveal');
-                rows.forEach((row) => {
-                    const image = row.querySelector('.catalog-product-reveal__image');
-                    const content = row.querySelector('.catalog-product-reveal__content');
-                    if (!image || !content) return;
-
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: row,
-                            start: 'top 82%',
-                            end: 'bottom 56%',
-                            toggleActions: 'play none none reverse',
-                        },
-                    });
-
-                    gsap.set([image, content], { willChange: 'transform, opacity' });
-                    tl.fromTo(
-                        image,
-                        { y: 24, autoAlpha: 0, scale: 0.972, force3D: true },
-                        { y: 0, autoAlpha: 1, scale: 1, duration: 0.98, ease: 'power3.out', force3D: true }
-                    ).fromTo(
-                        content,
-                        { y: 18, x: 10, autoAlpha: 0, force3D: true },
-                        {
-                            y: 0,
-                            x: 0,
-                            autoAlpha: 1,
-                            duration: 0.82,
-                            ease: 'power3.out',
-                            force3D: true,
-                            clearProps: 'willChange',
-                        },
-                        '-=0.48'
-                    );
-                });
-            }
-        }, rootRef);
-
-        return () => ctx.revert();
-    }, []);
+        if (prefersReducedMotion) return;
+        const ctrl = animate(heroImgScale, 1, {
+            duration: 1.45,
+            ease: [0.33, 0.11, 0.02, 1],
+            delay: 0.08,
+        });
+        return () => ctrl.stop();
+    }, [heroImgScale, prefersReducedMotion]);
 
     const { leftColumn, rightColumn } = splitCatalogColumns(products);
 
@@ -358,11 +196,15 @@ export default function Catalog() {
                     aria-labelledby="catalog-home-banner-heading"
                 >
                     <div className="pointer-events-none absolute inset-0 z-0 min-h-[100dvh] w-full">
-                        <img
+                        <motion.img
                             src={EDITORIAL.showroom.src}
                             alt={EDITORIAL.showroom.alt}
                             className="catalog2-hero__bg absolute inset-0 h-full min-h-[100dvh] w-full object-cover"
                             loading="eager"
+                            style={{
+                                scale: heroImgScaleCombined,
+                                y: heroImgY,
+                            }}
                         />
                     </div>
                     {/* Own layer so grain isn’t clipped / blended inside the image stack */}
@@ -380,26 +222,50 @@ export default function Catalog() {
                         Welcome to a dimension where design transcends the ordinary. Where gravity feels optional and form bends to imagination. Where every curve, edge, and surface exists with intention—refined, minimal, and undeniably otherworldly.
                     </p>
                     <p className="text-xl absolute bottom-8 right-6 z-[3] text-right uppercase leading-tight text-white font-medium tracking-normal md:bottom-10 md:right-12">stud10<br />vort3554</p>
-                    <div className="relative z-[3] mx-auto flex max-w-3xl flex-col items-center text-center [perspective:1200px]">
+                    <motion.div
+                        className="relative z-[3] mx-auto flex max-w-3xl flex-col items-center text-center [perspective:1200px]"
+                        style={{ opacity: heroTypeOpacity }}
+                    >
                         <h1
                             id="catalog-home-banner-heading"
                             className="catalog2-hero__headline font-light leading-[1.10] tracking-tight text-white normal-case text-8xl [transform-style:preserve-3d]"
                         >
-                            <span className="catalog2-hero__headline-line block italic font-serif text-[7rem]">
+                            <motion.span
+                                className="catalog2-hero__headline-line block italic font-serif text-[7rem]"
+                                initial={{ y: 36, opacity: 0, rotateX: prefersReducedMotion ? 0 : -6 }}
+                                animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                                transition={{
+                                    duration: prefersReducedMotion ? 0.3 : 1.05,
+                                    delay: prefersReducedMotion ? 0 : 0.5,
+                                    ease: [0.22, 1, 0.36, 1],
+                                }}
+                            >
                                 Creating for
-                            </span>
-                            <span className="catalog2-hero__headline-line mt-1 block font-sans font-medium tracking-tight">
+                            </motion.span>
+                            <motion.span
+                                className="catalog2-hero__headline-line mt-1 block font-sans font-medium tracking-tight"
+                                initial={{ y: 36, opacity: 0, rotateX: prefersReducedMotion ? 0 : -6 }}
+                                animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                                transition={{
+                                    duration: prefersReducedMotion ? 0.3 : 1.05,
+                                    delay: prefersReducedMotion ? 0 : 0.64,
+                                    ease: [0.22, 1, 0.36, 1],
+                                }}
+                            >
                                 Cosmic Beings
-                            </span>
+                            </motion.span>
                         </h1>
-                        <a
+                        <motion.a
                             href="#collections"
                             className="catalog2-hero__cta mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-3 font-medium text-black transition-opacity hover:opacity-90"
+                            initial={{ y: 20, opacity: 0, scale: 0.96 }}
+                            animate={{ y: 0, opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.75, ease: [0.33, 0.11, 0.02, 1], delay: prefersReducedMotion ? 0 : 0.85 }}
                         >
                             View our work
                             <ArrowDownRight className="size-5" aria-hidden strokeWidth={2} />
-                        </a>
-                    </div>
+                        </motion.a>
+                    </motion.div>
                 </section>
 
                 {/* ━━━ 2 · Collections ━━━ */}
@@ -417,10 +283,7 @@ export default function Catalog() {
 
                     <div className="relative z-0 border-t border-[rgba(46,46,46,0.08)]">
                         <div className="mx-auto max-w-screen-2xl px-6 py-10 md:px-20 md:py-44">
-                            <div
-                                ref={gridRef}
-                                className="grid grid-cols-1 gap-14 md:grid-cols-2 md:items-start md:gap-x-10 md:gap-y-0 lg:gap-x-14"
-                            >
+                            <div className="grid grid-cols-1 gap-14 md:grid-cols-2 md:items-start md:gap-x-10 md:gap-y-0 lg:gap-x-14">
                                 <div className="catalog-products-grid-left grid min-w-0 grid-cols-1 gap-14 md:gap-16">
                                     {leftColumn.map((p) => (
                                         <AtlasCard key={p.id} product={p} pairSide="left" />

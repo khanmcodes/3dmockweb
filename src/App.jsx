@@ -8,7 +8,7 @@ import {
     useParams,
 } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { AnimatePresence, motion as Motion, useReducedMotion } from 'framer-motion';
 import { useLenis } from './hooks/useLenis';
 import CustomCursor from './components/CustomCursor';
 import GrainOverlay from './components/GrainOverlay';
@@ -29,15 +29,40 @@ function ProductRoute() {
     return <Product key={slug} />;
 }
 
-/** Plain outlet — no Framer route wrapper */
-function RootLayout() {
-    return <Outlet />;
+const routeCrossfadeEase = [0.14, 1, 0.28, 1];
+
+/**
+ * Overlapping opacity crossfade between routes (popLayout keeps exiting page from
+ * stretching document height during the blend).
+ */
+function AnimatedRoutesLayout() {
+    const location = useLocation();
+    const prefersReducedMotion = useReducedMotion();
+    const routeKey = `${location.pathname}${location.search}`;
+    const transition = prefersReducedMotion
+        ? { duration: 0.14, ease: 'easeOut' }
+        : { duration: 1.32, ease: routeCrossfadeEase };
+
+    return (
+        <AnimatePresence mode="popLayout" initial={false}>
+            <Motion.div
+                key={routeKey}
+                initial={prefersReducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+                transition={transition}
+                className="w-full min-h-0 will-change-[opacity]"
+            >
+                <Outlet />
+            </Motion.div>
+        </AnimatePresence>
+    );
 }
 
 function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<RootLayout />}>
+            <Route path="/" element={<AnimatedRoutesLayout />}>
                 <Route index element={<Landing />} />
                 <Route path="shop" element={<Navigate to="/catalog" replace />} />
                 <Route path="catalog" element={<Catalog />} />
@@ -91,7 +116,6 @@ function ScrollRestorationWithLenis() {
                     lenis.scrollTo(0, { immediate: true, force: true });
                 }
                 if (useFadeTransition) {
-                    requestAnimationFrame(() => ScrollTrigger.refresh());
                     return;
                 }
                 const delay = routePathChanged ? 100 : 48;
@@ -102,11 +126,9 @@ function ScrollRestorationWithLenis() {
                     } else if (routePathChanged) {
                         lenis.scrollTo(0, { immediate: true, force: true });
                     }
-                    ScrollTrigger.refresh();
                 }, delay);
                 return () => clearTimeout(t);
             }
-            requestAnimationFrame(() => ScrollTrigger.refresh());
             return;
         }
 
@@ -129,21 +151,15 @@ function ScrollRestorationWithLenis() {
                     } else if (routePathChanged) {
                         lenis.scrollTo(0, { immediate: true, force: true });
                     }
-                    ScrollTrigger.refresh();
                 }, delay);
                 return () => clearTimeout(t);
             }
-            requestAnimationFrame(() => ScrollTrigger.refresh());
             return;
         }
 
         if (lenis) {
             lenis.scrollTo(0, { immediate: true, force: true });
         }
-
-        requestAnimationFrame(() => {
-            ScrollTrigger.refresh();
-        });
     }, [pathname, hash, lenisRef]);
 
     useEffect(() => {
@@ -171,7 +187,7 @@ function AppShell() {
             <GrainOverlay />
             <Header />
 
-            <main className="block min-h-0">
+            <main className="relative isolate block min-h-0 w-full overflow-x-clip">
                 <AppRoutes />
             </main>
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { animate } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
 export default function CustomCursor() {
@@ -25,16 +25,16 @@ export default function CustomCursor() {
 
         let isHoveringMagnetic = false;
         let isHoveringView = false;
-        let activeMagneticTarget = null;
-
-        const setDotX = gsap.quickSetter(dot, 'x', 'px');
-        const setDotY = gsap.quickSetter(dot, 'y', 'px');
-        const setFollowerX = gsap.quickSetter(follower, 'x', 'px');
-        const setFollowerY = gsap.quickSetter(follower, 'y', 'px');
+        /** Element receiving magnetic translate; cleared after smooth return to origin */
+        let magneticEl = null;
+        let magneticTx = 0;
+        let magneticTy = 0;
+        let magneticCx = 0;
+        let magneticCy = 0;
 
         const onMouseMove = (e) => {
-            if (isHoveringMagnetic && activeMagneticTarget) {
-                const rect = activeMagneticTarget.getBoundingClientRect();
+            if (isHoveringMagnetic && magneticEl) {
+                const rect = magneticEl.getBoundingClientRect();
                 const targetCenterX = rect.left + rect.width / 2;
                 const targetCenterY = rect.top + rect.height / 2;
 
@@ -44,12 +44,8 @@ export default function CustomCursor() {
                 mouseX = targetCenterX + pullX;
                 mouseY = targetCenterY + pullY;
 
-                gsap.to(activeMagneticTarget, {
-                    x: pullX * 0.4,
-                    y: pullY * 0.4,
-                    duration: 0.6,
-                    ease: 'power3.out',
-                });
+                magneticTx = pullX * 0.16;
+                magneticTy = pullY * 0.16;
             } else {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
@@ -66,15 +62,28 @@ export default function CustomCursor() {
             renderFollowerX += (mouseX - renderFollowerX) * 0.15;
             renderFollowerY += (mouseY - renderFollowerY) * 0.15;
 
-            setDotX(renderDotX);
-            setDotY(renderDotY);
-
+            dot.style.transform = `translate3d(${renderDotX}px, ${renderDotY}px, 0) translate(-50%, -50%)`;
             if (isHoveringView || isHoveringMagnetic) {
-                setFollowerX(renderDotX);
-                setFollowerY(renderDotY);
+                follower.style.transform = `translate3d(${renderDotX}px, ${renderDotY}px, 0) translate(-50%, -50%)`;
             } else {
-                setFollowerX(renderFollowerX);
-                setFollowerY(renderFollowerY);
+                follower.style.transform = `translate3d(${renderFollowerX}px, ${renderFollowerY}px, 0) translate(-50%, -50%)`;
+            }
+
+            if (magneticEl) {
+                const tx = isHoveringMagnetic ? magneticTx : 0;
+                const ty = isHoveringMagnetic ? magneticTy : 0;
+                magneticCx += (tx - magneticCx) * 0.22;
+                magneticCy += (ty - magneticCy) * 0.22;
+                if (!isHoveringMagnetic && Math.abs(magneticCx) < 0.02 && Math.abs(magneticCy) < 0.02) {
+                    magneticEl.style.transform = '';
+                    magneticEl = null;
+                    magneticCx = 0;
+                    magneticCy = 0;
+                    magneticTx = 0;
+                    magneticTy = 0;
+                } else {
+                    magneticEl.style.transform = `translate3d(${magneticCx}px, ${magneticCy}px, 0)`;
+                }
             }
 
             rafId = requestAnimationFrame(renderLoop);
@@ -87,70 +96,69 @@ export default function CustomCursor() {
 
         const bindElements = () => {
             if (!alive) return;
-            document.querySelectorAll('a:not(.catalog-card):not(.gallery-card), button').forEach((el) => {
-                const onMagEnter = () => {
-                    isHoveringMagnetic = true;
-                    activeMagneticTarget = el;
-                    gsap.to(follower, {
-                        width: 50,
-                        height: 50,
-                        borderColor: 'var(--color-accent-gold)',
-                        duration: 0.3,
+            document
+                .querySelectorAll('a:not(.catalog-card):not(.gallery-card), button:not(.no-cursor-magnetic)')
+                .forEach((el) => {
+                    const onMagEnter = () => {
+                        if (magneticEl && magneticEl !== el) {
+                            magneticEl.style.transform = '';
+                        }
+                        isHoveringMagnetic = true;
+                        magneticEl = el;
+                        magneticTx = 0;
+                        magneticTy = 0;
+                        magneticCx = 0;
+                        magneticCy = 0;
+                        animate(follower, { width: 50, height: 50, borderColor: 'var(--color-accent-gold)' }, { duration: 0.3 });
+                        animate(dot, { scale: 0 }, { duration: 0.2 });
+                    };
+                    const onMagLeave = () => {
+                        isHoveringMagnetic = false;
+                        magneticTx = 0;
+                        magneticTy = 0;
+                        animate(follower, { width: 36, height: 36, borderColor: 'rgba(46, 46, 46, 0.32)' }, { duration: 0.3 });
+                        animate(dot, { scale: 1 }, { duration: 0.2 });
+                    };
+                    el.addEventListener('mouseenter', onMagEnter);
+                    el.addEventListener('mouseleave', onMagLeave);
+                    unbinders.push(() => {
+                        el.removeEventListener('mouseenter', onMagEnter);
+                        el.removeEventListener('mouseleave', onMagLeave);
                     });
-                    gsap.to(dot, { scale: 0, duration: 0.2 });
-                };
-                const onMagLeave = () => {
-                    isHoveringMagnetic = false;
-                    gsap.to(activeMagneticTarget, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.6,
-                        ease: 'elastic.out(1, 0.5)',
-                    });
-                    activeMagneticTarget = null;
-                    gsap.to(follower, {
-                        width: 36,
-                        height: 36,
-                        borderColor: 'rgba(46, 46, 46, 0.32)',
-                        duration: 0.3,
-                    });
-                    gsap.to(dot, { scale: 1, duration: 0.2 });
-                };
-                el.addEventListener('mouseenter', onMagEnter);
-                el.addEventListener('mouseleave', onMagLeave);
-                unbinders.push(() => {
-                    el.removeEventListener('mouseenter', onMagEnter);
-                    el.removeEventListener('mouseleave', onMagLeave);
                 });
-            });
 
             document.querySelectorAll('.catalog-card, .atlas-card, .gallery-card').forEach((el) => {
                 const onViewEnter = () => {
                     isHoveringView = true;
                     cursor.style.mixBlendMode = 'normal';
-                    gsap.to(follower, {
-                        width: 100,
-                        height: 100,
-                        background: 'var(--color-text)',
-                        borderColor: 'transparent',
-                        duration: 0.4,
-                        ease: 'back.out(1.5)',
-                    });
-                    gsap.to(dot, { scale: 0, duration: 0.2 });
-                    gsap.to(label, { opacity: 1, scale: 1, duration: 0.3, delay: 0.1 });
+                    animate(
+                        follower,
+                        {
+                            width: 100,
+                            height: 100,
+                            background: 'var(--color-text)',
+                            borderColor: 'transparent',
+                        },
+                        { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
+                    );
+                    animate(dot, { scale: 0 }, { duration: 0.2 });
+                    animate(label, { opacity: 1, scale: 1 }, { duration: 0.3, delay: 0.1 });
                 };
                 const onViewLeave = () => {
                     isHoveringView = false;
                     cursor.style.mixBlendMode = 'difference';
-                    gsap.to(follower, {
-                        width: 36,
-                        height: 36,
-                        background: 'transparent',
-                        borderColor: 'rgba(46, 46, 46, 0.32)',
-                        duration: 0.3,
-                    });
-                    gsap.to(dot, { scale: 1, duration: 0.2 });
-                    gsap.to(label, { opacity: 0, scale: 0.5, duration: 0.2 });
+                    animate(
+                        follower,
+                        {
+                            width: 36,
+                            height: 36,
+                            background: 'transparent',
+                            borderColor: 'rgba(46, 46, 46, 0.32)',
+                        },
+                        { duration: 0.3 },
+                    );
+                    animate(dot, { scale: 1 }, { duration: 0.2 });
+                    animate(label, { opacity: 0, scale: 0.5 }, { duration: 0.2 });
                 };
                 el.addEventListener('mouseenter', onViewEnter);
                 el.addEventListener('mouseleave', onViewLeave);
@@ -170,6 +178,9 @@ export default function CustomCursor() {
         return () => {
             alive = false;
             running = false;
+            if (magneticEl) {
+                magneticEl.style.transform = '';
+            }
             window.removeEventListener('mousemove', onMouseMove);
             cancelAnimationFrame(rafId);
             clearTimeout(timeout);

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { appLenisRef } from '../hooks/useLenis';
 
 const FADE_SECTION_IDS = new Set(['collections']);
@@ -20,7 +19,6 @@ function scrollToSectionImmediate(id) {
         immediate: true,
         force: true,
     });
-    ScrollTrigger.refresh();
 }
 
 /**
