@@ -45,7 +45,6 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                 </div>
             </div>
             <div className="relative z-[2]">
-                <div className="closing-stage__photo h-[min(82vh,740px)] w-full" aria-hidden />
 
                 <Motion.footer
                     className="closing__footer texture-noise texture-noise--footer w-full border-t border-white/15 bg-white/14 backdrop-blur-2xl"
@@ -54,9 +53,12 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                     viewport={view}
                     transition={{ duration: 0.55, ease }}
                 >
-                    <div className="mx-auto flex max-w-[1400px] flex-col px-6 py-8 font-sans tracking-[0.09em] text-white/90 md:px-12 lg:px-16">
+                    <div
+                        className="mx-auto flex max-w-[1400px] flex-col px-6 py-4 tracking-[0.09em] text-white/90 md:px-12 lg:px-16"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
                         <Motion.p
-                            className="closing__tagline max-w-4xl text-left text-sm font-normal tracking-[0.09em] font-sans uppercase"
+                            className="closing__tagline max-w-4xl text-left text-sm font-normal tracking-[0.09em] leading-relaxed uppercase"
                             initial={{ y: 18, opacity: 0 }}
                             whileInView={{ y: 0, opacity: 1 }}
                             viewport={view}
@@ -65,9 +67,9 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                             A new dimension of living where furniture becomes art and spaces become sanctuaries.
                         </Motion.p>
 
-                        <div className="closing__mid relative mt-7 flex flex-col gap-10 md:mt-8 md:flex-row md:items-start md:justify-between md:gap-8">
+                        <div className="closing__mid relative mt-4 flex flex-col gap-5 md:mt-5 md:flex-row md:items-start md:justify-between md:gap-6">
                             <Motion.nav
-                                className="closing__nav flex flex-col gap-4 md:max-w-xs"
+                                className="closing__nav flex flex-col gap-2.5 md:max-w-xs"
                                 aria-label="Footer"
                                 initial={{ y: 14, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
@@ -75,19 +77,19 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                                 transition={{ duration: 0.42, ease, delay: 0.08 }}
                             >
                                 <Link
-                                    className="w-fit text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
+                                    className="w-fit py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
                                     to="/catalog"
                                 >
                                     Catalogue
                                 </Link>
                                 <Link
-                                    className="w-fit text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
+                                    className="w-fit py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
                                     to="/about"
                                 >
                                     About
                                 </Link>
                                 <Link
-                                    className="w-fit text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
+                                    className="w-fit py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
                                     to="/contact"
                                 >
                                     Contact us
@@ -95,9 +97,9 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                             </Motion.nav>
                         </div>
 
-                        <div className="closing__bottom mt-10 flex flex-col justify-between gap-8 border-t border-white/15 pt-8 md:mt-12 md:flex-row md:items-end md:gap-6">
+                        <div className="closing__bottom mt-5 flex flex-col justify-between gap-4 border-t border-white/15 pt-4 sm:flex-row sm:items-end md:mt-6 md:gap-5">
                             <Motion.p
-                                className="closing__newsletter max-w-sm text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/90"
+                                className="closing__newsletter max-w-sm text-sm font-normal tracking-[0.09em] uppercase text-white/90"
                                 initial={{ y: 18, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={view}
@@ -107,7 +109,7 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                             </Motion.p>
 
                             <Motion.div
-                                className="closing__legal flex flex-col items-start gap-3 md:items-end"
+                                className="closing__legal flex flex-col items-start gap-2 sm:items-end"
                                 initial={{ y: 18, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={view}
@@ -117,24 +119,24 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                                     href="https://instagram.com"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/70 transition-colors hover:text-accent-gold"
+                                    className="py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/70 transition-colors hover:text-accent-gold"
                                 >
                                     Instagram
                                 </a>
                                 <Link
                                     to="/catalog"
-                                    className="text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/70 transition-colors hover:text-accent-gold"
+                                    className="py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/70 transition-colors hover:text-accent-gold"
                                 >
                                     Terms + conditions
                                 </Link>
                                 <Link
                                     to="/contact"
-                                    className="text-sm font-normal tracking-[0.09em] font-sans uppercase text-white/70 transition-colors hover:text-accent-gold"
+                                    className="py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/70 transition-colors hover:text-accent-gold"
                                     aria-label="Privacy policy"
                                 >
                                     Pr1vacy p0l1cy
                                 </Link>
-                                <span className="mt-2 text-sm font-normal uppercase tracking-[0.09em] font-sans text-white/60">
+                                <span className="mt-1 text-sm font-normal uppercase tracking-[0.09em] text-white/60">
                                     &copy; {new Date().getFullYear()} Studio Vortessa Inc. All rights reserved
                                 </span>
                             </Motion.div>

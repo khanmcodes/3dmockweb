@@ -71,7 +71,7 @@ export default function Header() {
                     className={`flex items-center -space-x-2 transition-[background-color,box-shadow,border-color,backdrop-filter] duration-300 px-3 py-1.5 backdrop-blur-sm md:px-4 md:py-1.5 rounded-xl ease-out text-white ${brandPill || 'py-0'}`}
                     aria-label="Studio Vortessa — Index"
                 >
-                    <span className="font-serif text-2xl font-medium tracking-tight">
+                    <span className="font-sans italic text-2xl font-medium tracking-tight">
                         Studio
                     </span>
                     <img
@@ -80,7 +80,7 @@ export default function Header() {
                         className="h-6 w-auto object-contain opacity-95 transition-opacity duration-300 [filter:drop-shadow(0_0_14px_rgba(184,146,74,0.2))] hover:opacity-100 md:h-8"
                         aria-hidden
                     />
-                    <span className="font-serif text-2xl font-medium tracking-tight">
+                    <span className="font-sans italic text-2xl font-medium tracking-tight">
                         Vortessa
                     </span>
                 </Link>

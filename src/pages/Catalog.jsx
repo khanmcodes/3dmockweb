@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { animate, motion, useMotionValue, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -9,6 +9,8 @@ import {
 import { ArrowDownRight } from 'lucide-react';
 import HeroLiveNoise from '../components/HeroLiveNoise';
 import PageTransition from '../components/PageTransition';
+
+const MorphingBlobs = lazy(() => import('../components/MorphingBlobs'));
 
 function picPath(filename) {
     const normalized = filename.startsWith('(') ? ` ${filename}` : filename;
@@ -269,7 +271,15 @@ export default function Catalog() {
                 </section>
 
                 {/* ━━━ 2 · Collections ━━━ */}
-                <section id="collections" className="relative border-t border-[rgba(46,46,46,0.08)] bg-bg">
+                <section id="collections" className="relative overflow-hidden border-t border-[rgba(46,46,46,0.08)] bg-bg">
+                    <div className="pointer-events-none absolute inset-0 z-[2]" aria-hidden>
+                        <Suspense fallback={null}>
+                            <MorphingBlobs
+                                reduceMotion={false}
+                                className="absolute inset-0 opacity-[0.9] [mask-image:linear-gradient(to_right,rgba(0,0,0,0.95)_0%,rgba(0,0,0,0.95)_20%,rgba(0,0,0,0.15)_36%,transparent_48%,transparent_52%,rgba(0,0,0,0.15)_64%,rgba(0,0,0,0.95)_80%,rgba(0,0,0,0.95)_100%)] [-webkit-mask-image:linear-gradient(to_right,rgba(0,0,0,0.95)_0%,rgba(0,0,0,0.95)_20%,rgba(0,0,0,0.15)_36%,transparent_48%,transparent_52%,rgba(0,0,0,0.15)_64%,rgba(0,0,0,0.95)_80%,rgba(0,0,0,0.95)_100%)]"
+                            />
+                        </Suspense>
+                    </div>
                     <div className="catalog-section-heading relative z-0 mx-auto flex max-w-screen-2xl flex-col items-center px-6 pt-16 text-center md:px-12 md:pt-0">
                         <div
                             className="catalog-section-heading__rule h-px w-[min(14rem,42vw)] bg-linear-to-r from-transparent via-accent-gold/55 to-transparent"
@@ -281,7 +291,7 @@ export default function Catalog() {
                         />
                     </div>
 
-                    <div className="relative z-0 border-t border-[rgba(46,46,46,0.08)]">
+                    <div className="relative z-[1] border-t border-[rgba(46,46,46,0.08)]">
                         <div className="mx-auto max-w-screen-2xl px-6 py-10 md:px-20 md:py-44">
                             <div className="grid grid-cols-1 gap-14 md:grid-cols-2 md:items-start md:gap-x-10 md:gap-y-0 lg:gap-x-14">
                                 <div className="catalog-products-grid-left grid min-w-0 grid-cols-1 gap-14 md:gap-16">
