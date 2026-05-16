@@ -1,18 +1,7 @@
-import { createElement, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { animate, motion as Motion, useMotionValue, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import AccordionMotion from '../components/AccordionMotion';
-import {
-    ArrowUpRight,
-    ChevronDown,
-    Compass,
-    Gem,
-    Handshake,
-    Landmark,
-    Mail,
-    MessageSquareText,
-    Sparkles,
-    UserRound,
-} from 'lucide-react';
+import AccordionRow from '../components/AccordionRow';
+import { Compass, Gem, Sparkles, UserRound } from 'lucide-react';
 import HeroLiveNoise from '../components/HeroLiveNoise';
 import PageTransition from '../components/PageTransition';
 
@@ -54,98 +43,11 @@ const MATERIALS_FEATURED = [
     },
 ];
 
-const easeView = [0.22, 1, 0.36, 1];
-
-/** Shared chrome only — each panel’s inner copy is hardcoded below for bespoke typography. */
-function AccordionRow({
-    sectionId,
-    expandedIds,
-    onToggle,
-    title,
-    teaser,
-    icon,
-    imageSrc,
-    imageAlt,
-    children,
-}) {
-    const isExpanded = expandedIds.has(sectionId);
-    const panelId = `${sectionId}-panel`;
-
-    return (
-        <Motion.article
-            initial={{ y: 18, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.08, margin: '0px 0px -40px 0px' }}
-            transition={{ duration: 0.5, ease: easeView }}
-            className={`overflow-hidden rounded-[24px] border transition-[border-color] duration-200 ${
-                isExpanded ? 'border-black/18' : 'border-black/10 hover:border-black/16'
-            }`}
-        >
-            <button
-                type="button"
-                onClick={() => onToggle(sectionId)}
-                className="no-cursor-magnetic group flex w-full items-start justify-between gap-4 px-5 py-4 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 md:px-6 md:py-5"
-                aria-expanded={isExpanded}
-                aria-controls={panelId}
-            >
-                <div className="flex min-w-0 items-start gap-3.5">
-                    <span
-                        className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border text-[#2d2d2d] transition-[border-color,background-color] duration-200 ${
-                            isExpanded ? 'border-black/15' : 'border-black/10'
-                        }`}
-                    >
-                        {createElement(icon, { size: 17, strokeWidth: 1.8 })}
-                    </span>
-                    <div className="min-w-0">
-                        <h3 className="truncate font-sans text-[1.08rem] font-medium tracking-tight text-[#171717] md:text-[1.22rem]">
-                            {title}
-                        </h3>
-                        {!isExpanded ? (
-                            <p className="mt-1.5 line-clamp-1 max-w-2xl font-sans text-[0.84rem] font-normal text-[#666664] md:text-[0.88rem]">
-                                {teaser}
-                            </p>
-                        ) : null}
-                    </div>
-                </div>
-                <span
-                    className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border text-[#242424] transition-[border-color,background-color] duration-200 ${
-                        isExpanded ? 'border-black/15 bg-black/3' : 'border-black/10'
-                    }`}
-                >
-                    <ChevronDown
-                        size={18}
-                        strokeWidth={1.9}
-                        className={`transition-transform duration-200 ease-out ${isExpanded ? 'rotate-180' : ''}`}
-                    />
-                </span>
-            </button>
-
-            <AccordionMotion open={isExpanded} id={panelId} className="px-5 md:px-6">
-                <div className="grid gap-5 border-t border-black/8 py-5 md:grid-cols-12 md:items-start md:gap-8 md:py-6">
-                    <div className="group relative md:col-span-5">
-                        <div className="relative aspect-4/3 overflow-hidden rounded-[20px] border border-black/8">
-                            <img
-                                src={imageSrc}
-                                alt={imageAlt}
-                                className="h-full w-full object-cover brightness-[0.98] contrast-[1.03] saturate-[0.95] transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-                                loading="lazy"
-                            />
-                            <div
-                                className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(255,255,255,0.08),rgba(25,25,25,0.14))]"
-                                aria-hidden
-                            />
-                        </div>
-                    </div>
-                    <div className="min-w-0 md:col-span-7">{children}</div>
-                </div>
-            </AccordionMotion>
-        </Motion.article>
-    );
-}
-
 export default function About() {
     const [activeMaterialIndex, setActiveMaterialIndex] = useState(0);
-    const [expandedSectionIds, setExpandedSectionIds] = useState(() => new Set(['about-studio']));
+    const [expandedSectionIds, setExpandedSectionIds] = useState(
+        () => new Set(['about-studio', 'manifesto', 'founder', 'vision']),
+    );
     const rootRef = useRef(null);
     const heroRef = useRef(null);
     const prefersReducedMotion = useReducedMotion();
@@ -279,7 +181,7 @@ export default function About() {
                 <section
                     id="about-sections"
                     className="about__accordion relative overflow-hidden border-b border-black/6"
-                    aria-label="Studio details and inquiries"
+                    aria-label="Studio details"
                 >
 
                     <div className="relative mx-auto w-full max-w-[96rem] px-6 py-16 sm:px-10 md:py-20 lg:px-12 xl:px-16">
@@ -411,116 +313,6 @@ export default function About() {
                                         To redefine furniture as sculptural presence, creating a new dimension of
                                         living where objects transform space into sanctuary.
                                     </p>
-                                </div>
-                            </AccordionRow>
-
-                            <AccordionRow
-                                sectionId="discuss-project"
-                                expandedIds={expandedSectionIds}
-                                onToggle={toggleSection}
-                                title="Discuss a project"
-                                teaser="Share scope, timeline, and space — we’ll respond with care."
-                                icon={MessageSquareText}
-                                imageSrc={picPath('(10).webp')}
-                                imageAlt="Desk scene with materials and design sketches"
-                            >
-                                <div className="space-y-5">
-                                    <p className="max-w-md font-sans text-[0.88rem] font-light leading-relaxed text-[#5a5a56]">
-                                        Tell us what you’re building. Fields are for layout only until a backend is
-                                        wired.
-                                    </p>
-                                    <form
-                                        className="grid gap-4 rounded-2xl border border-black/10 bg-black/[0.02] p-4 md:grid-cols-2 md:p-5"
-                                        onSubmit={(e) => e.preventDefault()}
-                                    >
-                                        <label className="flex flex-col gap-1.5 md:col-span-1">
-                                            <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#6b6b67]">
-                                                Name
-                                            </span>
-                                            <input
-                                                type="text"
-                                                placeholder="Your name"
-                                                className="h-11 rounded-xl border border-black/12 bg-white/90 px-3.5 font-sans text-sm text-[#1a1a18] outline-none transition-colors placeholder:text-[#9a9a95] focus:border-[#b8924a]/50"
-                                            />
-                                        </label>
-                                        <label className="flex flex-col gap-1.5 md:col-span-1">
-                                            <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#6b6b67]">
-                                                Email
-                                            </span>
-                                            <input
-                                                type="email"
-                                                placeholder="you@studio.com"
-                                                className="h-11 rounded-xl border border-black/12 bg-white/90 px-3.5 font-sans text-sm text-[#1a1a18] outline-none transition-colors placeholder:text-[#9a9a95] focus:border-[#b8924a]/50"
-                                            />
-                                        </label>
-                                        <label className="flex flex-col gap-1.5 md:col-span-2">
-                                            <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#6b6b67]">
-                                                Project details
-                                            </span>
-                                            <textarea
-                                                rows={4}
-                                                placeholder="Scope, timeline, intended space, references…"
-                                                className="rounded-xl border border-black/12 bg-white/90 px-3.5 py-3 font-sans text-sm text-[#1a1a18] outline-none transition-colors placeholder:text-[#9a9a95] focus:border-[#b8924a]/50"
-                                            />
-                                        </label>
-                                        <button
-                                            type="submit"
-                                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1a1a18] px-5 font-sans text-[0.8rem] font-medium tracking-wide text-white transition-transform hover:-translate-y-0.5 md:col-span-2"
-                                        >
-                                            Send inquiry
-                                            <Mail size={14} strokeWidth={2} />
-                                        </button>
-                                    </form>
-                                </div>
-                            </AccordionRow>
-
-                            <AccordionRow
-                                sectionId="furniture-inquiries"
-                                expandedIds={expandedSectionIds}
-                                onToggle={toggleSection}
-                                title="Furniture inquiries"
-                                teaser="Pricing, materials, availability, and bespoke pieces from the collection."
-                                icon={Landmark}
-                                imageSrc={picPath('(11).webp')}
-                                imageAlt="Sculptural furniture detail with premium materials"
-                            >
-                                <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                                    <p className="max-w-md font-sans text-[0.95rem] font-light leading-[1.8] text-[#3f3f3c] md:text-[1rem]">
-                                        For pricing, materials, availability, and bespoke variations of pieces from the
-                                        Studio Vortessa collection.
-                                    </p>
-                                    <button
-                                        type="button"
-                                        className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-black/15 bg-[#1a1a18] px-6 py-2.5 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-white transition-all hover:-translate-y-0.5 hover:bg-black md:self-auto"
-                                    >
-                                        Click to connect
-                                        <ArrowUpRight size={14} strokeWidth={2.2} />
-                                    </button>
-                                </div>
-                            </AccordionRow>
-
-                            <AccordionRow
-                                sectionId="commissions-collaborations"
-                                expandedIds={expandedSectionIds}
-                                onToggle={toggleSection}
-                                title="Commissions & Collaborations"
-                                teaser="Architecture, hospitality, and custom sculptural installations."
-                                icon={Handshake}
-                                imageSrc={picPath('(12).webp')}
-                                imageAlt="Collaborative design moodboard in neutral tones"
-                            >
-                                <div className="flex flex-col gap-6 border-l-2 border-[#b8924a]/35 pl-5 md:flex-row md:items-stretch md:justify-between md:pl-6">
-                                    <p className="max-w-lg font-sans text-[0.95rem] font-light leading-[1.82] text-[#3f3f3c] md:text-[1rem]">
-                                        For architectural projects, hospitality environments, and custom sculptural
-                                        installations developed in collaboration with the studio.
-                                    </p>
-                                    <button
-                                        type="button"
-                                        className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-2xl border-2 border-[#1a1a18] bg-transparent px-6 py-3 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[#1a1a18] transition-all hover:-translate-y-0.5 hover:bg-[#1a1a18] hover:text-white md:self-center"
-                                    >
-                                        Click to connect
-                                        <ArrowUpRight size={14} strokeWidth={2.2} />
-                                    </button>
                                 </div>
                             </AccordionRow>
                         </div>

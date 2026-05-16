@@ -19,9 +19,9 @@ import Closing from './sections/Closing';
 import Landing from './pages/Landing';
 import Catalog from './pages/Catalog';
 import About from './pages/About';
+import About2 from './pages/About2';
 import Contact from './pages/Contact';
 import Product from './pages/Product';
-import DiscussProject from './pages/DiscussProject';
 
 /** Remount product page when slug changes so variant state resets without an effect. */
 function ProductRoute() {
@@ -69,7 +69,11 @@ function AppRoutes() {
                 <Route path="catalog2" element={<Navigate to="/catalog" replace />} />
                 <Route path="product/:slug" element={<ProductRoute />} />
                 <Route path="about" element={<About />} />
-                <Route path="discuss-project" element={<DiscussProject />} />
+                <Route path="about2" element={<About2 />} />
+                <Route
+                    path="discuss-project"
+                    element={<Navigate to="/contact?inquiry=discuss-project#discuss-project" replace />}
+                />
                 <Route path="contact" element={<Contact />} />
             </Route>
         </Routes>
@@ -132,7 +136,7 @@ function ScrollRestorationWithLenis() {
             return;
         }
 
-        if (pathname === '/about' && hash) {
+        if ((pathname === '/about' || pathname === '/contact') && hash) {
             const sectionId = hash.replace(/^#/, '');
             if (lenis) {
                 if (routePathChanged) {

@@ -66,50 +66,8 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                         >
                             A new dimension of living where furniture becomes art and spaces become sanctuaries.
                         </Motion.p>
-
-                        <div className="closing__mid relative mt-4 flex flex-col gap-5 md:mt-5 md:flex-row md:items-start md:justify-between md:gap-6">
-                            <Motion.nav
-                                className="closing__nav flex flex-col gap-2.5 md:max-w-xs"
-                                aria-label="Footer"
-                                initial={{ y: 14, opacity: 0 }}
-                                whileInView={{ y: 0, opacity: 1 }}
-                                viewport={view}
-                                transition={{ duration: 0.42, ease, delay: 0.08 }}
-                            >
-                                <Link
-                                    className="w-fit py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
-                                    to="/catalog"
-                                >
-                                    Catalogue
-                                </Link>
-                                <Link
-                                    className="w-fit py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
-                                    to="/about"
-                                >
-                                    About
-                                </Link>
-                                <Link
-                                    className="w-fit py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/92 transition-colors duration-300 hover:text-accent-gold"
-                                    to="/contact"
-                                >
-                                    Contact us
-                                </Link>
-                            </Motion.nav>
-                        </div>
-
-                        <div className="closing__bottom mt-5 flex flex-col justify-between gap-4 border-t border-white/15 pt-4 sm:flex-row sm:items-end md:mt-6 md:gap-5">
-                            <Motion.p
-                                className="closing__newsletter max-w-sm text-sm font-normal tracking-[0.09em] uppercase text-white/90"
-                                initial={{ y: 18, opacity: 0 }}
-                                whileInView={{ y: 0, opacity: 1 }}
-                                viewport={view}
-                                transition={{ duration: 0.55, ease, delay: 0.04 }}
-                            >
-                                Sign up for our newsletter
-                            </Motion.p>
-
-                            <Motion.div
-                                className="closing__legal flex flex-col items-start gap-2 sm:items-end"
+                        <Motion.div
+                                className="closing__legal w-full flex flex-row justify-end"
                                 initial={{ y: 18, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={view}
@@ -119,10 +77,36 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                                     href="https://instagram.com"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/70 transition-colors hover:text-accent-gold"
+                                    aria-label="Instagram"
+                                    className="inline-flex py-0.5 text-white/70 transition-colors hover:text-accent-gold"
                                 >
-                                    Instagram
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="h-5 w-5"
+                                        aria-hidden
+                                    >
+                                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                                    </svg>
                                 </a>
+                            </Motion.div>
+
+                        <div className="closing__bottom mt-5 flex flex-col justify-between gap-4 border-t border-white/15 pt-4 sm:flex-row sm:items-end md:mt-6 md:gap-5">
+                            <Motion.p
+                                className="closing__newsletter max-w-sm text-sm font-normal tracking-[0.09em] uppercase text-white/90"
+                                initial={{ y: 18, opacity: 0 }}
+                                whileInView={{ y: 0, opacity: 1 }}
+                                viewport={view}
+                                transition={{ duration: 0.55, ease, delay: 0.04 }}
+                            >
+                                <div className="flex flex-row items-start gap-6 sm:items-end">
                                 <Link
                                     to="/catalog"
                                     className="py-0.5 text-sm font-normal tracking-[0.09em] uppercase text-white/70 transition-colors hover:text-accent-gold"
@@ -136,6 +120,16 @@ export default function Closing({ className = '', catalogSnapSection = false }) 
                                 >
                                     Pr1vacy p0l1cy
                                 </Link>
+                                </div>
+                            </Motion.p>
+
+                            <Motion.div
+                                className="closing__legal flex flex-row items-start gap-2 sm:items-end"
+                                initial={{ y: 18, opacity: 0 }}
+                                whileInView={{ y: 0, opacity: 1 }}
+                                viewport={view}
+                                transition={{ duration: 0.42, ease, delay: 0.1 }}
+                            >
                                 <span className="mt-1 text-sm font-normal uppercase tracking-[0.09em] text-white/60">
                                     &copy; {new Date().getFullYear()} Studio Vortessa Inc. All rights reserved
                                 </span>

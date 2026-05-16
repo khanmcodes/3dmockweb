@@ -39,7 +39,7 @@ function AtlasCard({ product, pairSide }) {
     const [variant, setVariant] = useState(initial);
 
     const productPath = getProductPath(product);
-    const inquiryHref = `/contact?piece=${encodeURIComponent(product.name)}`;
+    const inquiryHref = `/contact?inquiry=furniture-inquiries&piece=${encodeURIComponent(product.name)}`;
 
     const isLeft = pairSide === 'left';
     const isRight = pairSide === 'right';
@@ -259,7 +259,7 @@ export default function Catalog() {
                         </h1>
                         <motion.a
                             href="#collections"
-                            className="catalog2-hero__cta mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-3 font-medium text-black transition-opacity hover:opacity-90"
+                            className="catalog2-hero__cta mt-6 inline-flex tracking-normal items-center gap-2 rounded-2xl bg-transparent px-8 py-3 font-medium text-white/70 transition-opacity hover:text-white"
                             initial={{ y: 20, opacity: 0, scale: 0.96 }}
                             animate={{ y: 0, opacity: 1, scale: 1 }}
                             transition={{ duration: 0.75, ease: [0.33, 0.11, 0.02, 1], delay: prefersReducedMotion ? 0 : 0.85 }}

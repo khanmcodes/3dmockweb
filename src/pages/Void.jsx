@@ -88,7 +88,7 @@ export default function Void() {
                     >
                         <Link
                             to="/catalog"
-                            className="catalog2-hero__cta mt-5 inline-flex items-center text-lg gap-2 rounded-xl bg-white px-6 py-2 font-medium tracking-tight text-black/70 transition-opacity hover:opacity-90"
+                            className="catalog2-hero__cta mt-5 inline-flex items-center text-lg gap-2 rounded-xl bg-transparent px-6 py-2 font-medium tracking-tight text-white/70 transition-opacity hover:text-white"
                             aria-label="Enter the void — open catalog"
                         >
                             ENT3R THE V01D
